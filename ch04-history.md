@@ -41,10 +41,7 @@ style: |
 </div>
 
 <!--
-歡迎來到第四章：修改歷史紀錄。
-這一章我們要學習如何讓 Git 歷史更整潔、更有意義。
-在開發過程中，我們難免會有雜亂的 commit 訊息、多餘的 WIP commit，或是需要補救的歷史紀錄。
-這章會介紹六個常見的狀況題，以及三種主要的修改歷史工具：reset、revert、rebase。
+歡迎來到第四章：修改歷史紀錄。你有沒有遇過，commit 完才發現訊息打錯，或是一個 commit 裡面塞了太多東西，搞得歷史一團亂？這章就是專門來處理這些情境的。我們會介紹幾個常用工具，讓 Git 歷史變得更整潔、更有意義。接下來先看本章大綱。
 -->
 
 ---
@@ -61,10 +58,7 @@ layout: default
 - **Reset、Revert 與 Rebase 的差別** — 三種修改歷史的方式比較
 
 <!--
-這章共有六個主題。
-前五個是實際工作中常遇到的狀況題，每個都有對應的 Git 指令解法。
-第六個是概念整理，幫助大家區分 reset、revert、rebase 三種工具的適用場景。
-所有修改歷史的操作都有風險，特別是已推送到遠端的 commit，修改前請務必確認影響範圍。
+這章共有六個主題，前五個都是實際工作中很常遇到的狀況題，每個都有對應的 Git 指令解法。第六個是概念整理，幫大家區分 reset、revert、rebase 三種工具的適用場景。要特別提醒的是，修改歷史的操作都有風險，特別是已經推送到遠端的 commit，修改前一定要確認影響範圍。接下來我們來看第一個狀況題。
 -->
 
 ---
@@ -76,9 +70,7 @@ class: flex flex-col justify-center items-center text-center
 # 【狀況題】修改歷史訊息
 
 <!--
-第一個狀況題：修改歷史訊息。
-你有沒有 commit 之後才發現訊息打錯、少寫了重要資訊，或是想補上 ticket 編號？
-這一節我們來看如何修改 commit 訊息。
+第一個狀況題：修改歷史訊息。你有沒有遇過，commit 完之後才發現訊息打錯字、少寫了重要資訊，或是忘了補上 ticket 編號？我們來看有哪些方式可以修改。
 -->
 
 ---
@@ -112,10 +104,7 @@ git commit --amend
 </div>
 
 <!--
-git commit --amend 是最簡單的修改歷史操作。
-加上 -m 參數可以直接指定新訊息，不加的話會開啟預設編輯器（通常是 vim 或 nano）。
-特別要強調：amend 不是「編輯」原本的 commit，而是建立一個全新的 commit 取代它。
-這也是為什麼已推送的 commit 做 amend 之後，需要 force push 才能更新遠端。
+`git commit --amend` 是最常用的修改歷史操作。加上 `-m` 參數可以直接指定新訊息，不加的話會開啟預設編輯器。有一個重點要強調：amend 不是「編輯」原本的 commit，而是建立一個全新的 commit 取代它，hash 會不一樣。這就是為什麼已推送的 commit 做 amend 之後，需要 force push 才能更新遠端。接下來看怎麼修改更早之前的 commit 訊息。
 -->
 
 ---
@@ -147,10 +136,7 @@ pick c7d8e9f 更新 README
 將想修改的那一行 `pick` 改成 `reword`（或 `r`），存檔離開後，Git 會依序停在每個標記 reword 的 commit，讓你輸入新訊息。
 
 <!--
-當需要修改的不是最新的 commit 時，就要用到互動式 rebase。
-HEAD~3 表示列出最近三個 commit，N 可以依需求調整。
-reword 指令告訴 Git：保留這個 commit 的變更，但停下來讓我重新輸入訊息。
-如果要修改多個 commit，可以一次把多行改成 reword，Git 會逐一停下來讓你修改。
+想像一下，歷史就像是一個清單，互動式 rebase 讓我們可以進入那個清單去修改某一行。`HEAD~3` 表示列出最近三個 commit，N 可以依需求調整。把想修改的那行從 `pick` 改成 `reword`，Git 就會在那個 commit 停下來讓你重新輸入訊息。如果要修改多個 commit 訊息，一次改多行就好，Git 會逐一停下來。接下來我們來看修改歷史的注意事項。
 -->
 
 ---
@@ -200,10 +186,7 @@ git push --force-with-lease origin feature/my-branch
 </div>
 
 <!--
-修改歷史最大的風險就是影響到其他人的工作。
-原則是：未推送的 commit 隨意修改都沒問題；已推送的 commit 修改前要三思。
---force-with-lease 是比 --force 更安全的選擇，因為它會先確認遠端沒有你不知道的新 commit，再決定是否覆蓋。
-在個人 feature branch 上 force push 通常是可接受的，但在主分支上絕對不推薦。
+修改歷史最大的風險就是影響到其他人的工作。原則很簡單：還沒推送的 commit 隨意修改都沒問題；已推送的 commit 修改之前要三思。`--force-with-lease` 比 `--force` 更安全，因為它會先確認遠端沒有你不知道的新 commit，再決定是否覆蓋。在個人 feature branch 上 force push 通常是可接受的，但主分支上絕對不建議。接下來我們來看第二個狀況題。
 -->
 
 ---
@@ -215,9 +198,7 @@ class: flex flex-col justify-center items-center text-center
 # 【狀況題】合併多個 Commit
 
 <!--
-第二個狀況題：把多個 commit 合併成一個。
-開發時常常會有很多 "WIP"、"fix typo"、"temp" 這類雜亂的 commit。
-在提 PR 之前，我們可以把這些 commit 整理成幾個乾淨有意義的 commit。
+第二個狀況題：把多個 commit 合併成一個。大家開發的時候有沒有這樣的習慣：一邊寫一邊 commit，留下一堆 "WIP"、"fix typo"、"temp" 這樣的訊息？在提 PR 之前，我們可以把這些整理成幾個乾淨有意義的 commit。
 -->
 
 ---
@@ -251,9 +232,7 @@ layout: default
 </div>
 
 <!--
-清晰的 Git 歷史不只是美觀問題，更是實用問題。
-當三個月後需要 git bisect 找 bug，或是 git blame 理解某行程式碼的來龍去脈，雜亂的 WIP commit 會讓這些工作變得很困難。
-在提 PR 之前整理 commit 歷史，是對 reviewer 的尊重，也是對未來維護者的照顧。
+清晰的 Git 歷史不只是美觀問題，而是實用問題。三個月後如果需要用 `git bisect` 找 bug，或是用 `git blame` 理解某行程式碼的來龍去脈，一堆 WIP commit 會讓這些工作變得很困難。在提 PR 之前整理 commit，是對 reviewer 的尊重，也是對未來維護者的照顧。接下來我們來看 squash 和 fixup 這兩個指令。
 -->
 
 ---
@@ -299,10 +278,7 @@ fixup  e5f6a7b WIP: 最後修正
 </div>
 
 <!--
-squash 和 fixup 都是把 commit 往上合併的指令，差別只在是否保留訊息。
-使用 squash 時，Git 會開啟編輯器列出所有要合併的訊息，讓你決定最終訊息要寫什麼。
-使用 fixup 時，Git 直接丟棄該 commit 的訊息，不需要額外操作。
-實務上，WIP 和 temp 這類訊息通常用 fixup；如果 commit 訊息中有有價值的資訊（例如某個特殊的實作決策），就用 squash 保留。
+`squash` 和 `fixup` 都是把 commit 往上合併的指令，差別只在是否保留訊息。使用 `squash` 時，Git 會開啟編輯器列出所有要合併的訊息，讓你決定最終要寫什麼。使用 `fixup` 時，Git 直接丟棄該 commit 的訊息，不需要額外操作。WIP 和 temp 這類訊息通常用 fixup；如果 commit 訊息裡有有價值的資訊，就用 squash 保留。接下來看實戰示範。
 -->
 
 ---
@@ -340,10 +316,7 @@ f3a2b1c feat: 新增使用者登入功能
 ```
 
 <!--
-這是最常見的 squash 使用情境。
-注意第一行必須保持 pick，因為 squash 和 fixup 是「合併到上一個」，第一個 commit 沒有上一個可以合併。
-如果不小心把第一行也改成 squash，Git 會報錯。
-如果過程中出現問題，可以用 git rebase --abort 回到操作前的狀態。
+注意第一行一定要保持 `pick`，因為 squash 和 fixup 是「合併到上一個」，第一個 commit 沒有上一個可以合併，如果不小心把第一行也改成 squash，Git 會報錯。如果過程中出現問題或搞混了，可以用 `git rebase --abort` 回到操作前的乾淨狀態。接下來我們來看更進一步的操作：拆解一個 commit。
 -->
 
 ---
@@ -355,9 +328,7 @@ class: flex flex-col justify-center items-center text-center
 # 【狀況題】拆解一個 Commit
 
 <!--
-第三個狀況題：把一個 commit 拆解成多個。
-有時候我們一次 commit 了太多東西，或是兩個不相關的變更被放在同一個 commit 裡。
-這一節我們來看如何用 rebase edit 把一個 commit 拆開。
+第三個狀況題：把一個 commit 拆解成多個。有時候一次 commit 了太多東西，或是兩個不相關的變更被放在同一個 commit 裡。我們來看如何用 rebase edit 把它拆開。
 -->
 
 ---
@@ -390,9 +361,7 @@ layout: default
 </div>
 
 <!--
-commit 應該像函式一樣，只做一件事。
-當一個 commit 做了兩件事，往後如果要用 git revert 還原其中一件事，就會變得很麻煩。
-把 commit 拆開雖然麻煩，但能讓歷史更乾淨，對長期維護大有幫助。
+想像一下，commit 就像一個便利貼，上面應該只寫一件事。當一個 commit 做了兩件事，往後如果要用 `git revert` 還原其中一件事，就會很麻煩，因為另一件事也會一起被還原。把 commit 拆開雖然麻煩一點，但能讓歷史更清晰，對長期維護大有幫助。接下來看操作步驟。
 -->
 
 ---
@@ -423,9 +392,7 @@ git reset HEAD~
 ```
 
 <!--
-edit 指令告訴 Git：停在這個 commit，讓我做一些修改。
-Git 會套用該 commit，然後暫停，等待我們的操作。
-接著用 git reset HEAD~ 把剛才套用的 commit 「退回」，變更保留在工作目錄，讓我們可以重新分批 commit。
+`edit` 指令告訴 Git：停在這個 commit，讓我做一些修改。Git 會套用該 commit，然後暫停等待我們操作。接著用 `git reset HEAD~` 把剛才套用的 commit「退回」，變更保留在工作目錄，讓我們可以重新分批 commit。接下來看後半段的步驟。
 -->
 
 ---
@@ -463,9 +430,7 @@ git rebase --continue
 </div>
 
 <!--
-分批 add 的關鍵是要清楚知道哪些檔案屬於哪個邏輯單元。
-如果一個檔案同時包含兩種變更（例如同一個 controller 同時有 bug fix 和新功能），可以用 git add -p 進行 hunk 級別的暫存。
-git rebase --continue 告訴 Git 我已經處理完這個 edit 停靠點，請繼續往後處理剩餘的 commit。
+分批 add 的關鍵是要清楚知道哪些檔案屬於哪個邏輯單元。如果一個檔案同時包含兩種變更，可以用 `git add -p` 進行 hunk 級別的暫存，精確挑選要放進這次 commit 的行。`git rebase --continue` 告訴 Git 我已經處理完這個 edit 停靠點，請繼續往後處理剩餘的 commit。接下來看第四個狀況題。
 -->
 
 ---
@@ -477,8 +442,7 @@ class: flex flex-col justify-center items-center text-center
 # 【狀況題】在 Commit 之間插入新 Commit
 
 <!--
-第四個狀況題：在兩個現有 commit 之間插入一個新的 commit。
-這個情境比較少見，但確實會遇到：發現某個早期的功能 commit 遺漏了一個必要的設定。
+第四個狀況題：在兩個現有 commit 之間插入一個新的 commit。這個情境相對少見，但確實會遇到，例如發現某個早期的功能 commit 遺漏了一個必要的設定。
 -->
 
 ---
@@ -511,8 +475,7 @@ pick  e5f6a7b 新增報表功能
 ```
 
 <!--
-插入新 commit 的關鍵是用 edit 停在目標 commit 之後，然後在那個時間點新增我們想插入的 commit。
-這比「修改」舊 commit 更精確，因為我們是在特定歷史時間點新增一個獨立的 commit。
+插入新 commit 的關鍵是用 `edit` 停在目標 commit 之後，然後在那個時間點新增我們想插入的 commit。這比「修改」舊 commit 更精確，因為我們是在特定歷史時間點新增一個獨立的 commit。接下來看實際的插入步驟。
 -->
 
 ---
@@ -548,10 +511,7 @@ git rebase --continue
 ```
 
 <!--
-和拆解 commit 不同，這裡我們不需要先做 git reset。
-edit 停靠後，我們直接在現有狀態上新增檔案並 commit，這個新 commit 就會插入在停靠點之後。
-git rebase --continue 之後，Git 繼續套用後面的 commit，最終歷史就像是這個設定 commit 從一開始就存在一樣。
-如果插入點之後的 commit 和新插入的 commit 有衝突，Git 會要求手動解衝突。
+和拆解 commit 不同，這裡不需要先做 `git reset`。`edit` 停靠後，我們直接在現有狀態上新增檔案並 commit，這個新 commit 就會插入在停靠點之後。`git rebase --continue` 之後，Git 繼續套用後面的 commit，最終歷史就像是這個設定 commit 從一開始就存在一樣。如果插入點之後的 commit 和新插入的有衝突，Git 會要求手動解。接下來整理什麼時候適合用這個方式。
 -->
 
 ---
@@ -594,9 +554,7 @@ layout: default
 </div>
 
 <!--
-在大多數情況下，直接在最後新增 commit 是最簡單的做法，不需要改動歷史。
-只有在歷史順序對閱讀者有重要意義，或是有特殊的 CI/CD 需求（例如某個 commit 觸發特定部署），才需要插入到特定位置。
---autosquash 是一個實用的自動化技巧，搭配 git commit --fixup 可以讓整理工作更輕鬆。
+大多數情況下，直接在最後新增 commit 是最簡單的做法，不需要改動歷史。只有在歷史順序對閱讀者有重要意義，或是有特殊的 CI/CD 需求，才需要插入到特定位置。`--autosquash` 搭配 `git commit --fixup` 是個實用技巧，可以讓整理工作更輕鬆，有機會可以試試看。接下來我們來看第五個狀況題。
 -->
 
 ---
@@ -608,8 +566,7 @@ class: flex flex-col justify-center items-center text-center
 # 【狀況題】刪除或調整 Commit 順序
 
 <!--
-第五個狀況題：刪除不需要的 commit，或是調整 commit 的順序。
-有時候我們會誤 commit 了測試用的程式碼、實驗性的變更，或是想重新排列 commit 的邏輯順序。
+第五個狀況題：刪除不需要的 commit，或是調整 commit 的順序。你有沒有遇過，不小心把測試用的 debug 程式碼 commit 進去了？或是想重新排列 commit 的邏輯順序？這一節我們來看怎麼處理。
 -->
 
 ---
@@ -645,9 +602,7 @@ pick  d4e5f6a 更新文件
 </div>
 
 <!--
-drop 指令是最直接的刪除方式，也可以直接把整行刪掉，效果一樣。
-刪除前要確認清楚：這個 commit 的所有變更都不需要嗎？
-如果被刪除的 commit 中有部分變更是需要的，建議先把那部分移出來建立新 commit，再 drop 原本的 commit。
+`drop` 指令是最直接的刪除方式，也可以直接把那一整行刪掉，效果一樣。刪除前要確認清楚：這個 commit 的所有變更都不需要嗎？如果被刪除的 commit 中有部分變更是需要的，建議先把那部分移出來建立新 commit，再 drop 原本的。接下來看怎麼調整 commit 的順序。
 -->
 
 ---
@@ -679,10 +634,7 @@ pick  b2c3d4e 新增前端登入頁面
 在編輯器中**直接移動行的位置**，就能調整 commit 的先後順序。
 
 <!--
-調整順序的操作非常直觀：在編輯器中把行移到想要的位置就好。
-但要注意：如果兩個 commit 修改了同一個檔案，調換順序可能會產生衝突。
-Git 會提示衝突，需要手動解決後再 git rebase --continue。
-調整順序主要是為了讓歷史更容易閱讀，不是必要操作，如果衝突太多，考慮放棄。
+調整順序的操作非常直觀：在編輯器中把行移到想要的位置就好。但要注意，如果兩個 commit 修改了同一個檔案，調換順序可能會產生衝突，Git 會提示衝突，需要手動解決後再 `git rebase --continue`。調整順序主要是為了讓歷史更容易閱讀，如果衝突太多，考慮直接放棄就好。接下來看衝突的處理方式。
 -->
 
 ---
@@ -718,9 +670,7 @@ git rebase --abort
 ```
 
 <!--
-rebase --abort 是你的安全網。
-任何時候 rebase 進行到一半，覺得太複雜或搞不清楚狀況，執行 git rebase --abort 都能回到操作前的乾淨狀態。
-解衝突的步驟和一般 merge 衝突一樣：找到衝突標記（<<<<、====、>>>>），決定保留哪個版本，然後 git add 標記已解決。
+`git rebase --abort` 是你的安全網，任何時候 rebase 進行到一半，覺得太複雜或搞不清楚狀況，執行這個指令都能回到操作前的乾淨狀態。解衝突的步驟和一般 merge 衝突一樣：找到衝突標記，決定保留哪個版本，然後 `git add` 標記已解決。接下來我們來看本章最重要的概念整理：reset、revert、rebase 的差別。
 -->
 
 ---
@@ -732,9 +682,7 @@ class: flex flex-col justify-center items-center text-center
 # Reset、Revert 與 Rebase 的差別
 
 <!--
-最後一個主題：釐清三種修改歷史工具的差別。
-reset、revert、rebase 都可以「改變」目前的程式碼狀態，但它們的機制和適用場景完全不同。
-這是 Git 學習者最容易混淆的概念之一，我們來好好整理。
+最後一個主題：釐清這三種工具的差別。reset、revert、rebase 都可以「改變」目前的程式碼狀態或 commit 歷史，但它們的機制和適用場景完全不同，是 Git 學習者最容易混淆的概念之一，我們來好好整理。
 -->
 
 ---
@@ -781,11 +729,7 @@ HEAD 移動，變更完全丟棄，無法恢復（除非用 reflog）
 </div>
 
 <!--
-git reset 的本質是移動 HEAD 指標，三種模式的差別在於工作目錄和暫存區的狀態。
---soft 最溫和，只移動 HEAD，所有變更都還在暫存區，隨時可以重新 commit。
---mixed 是預設，變更退回工作目錄，需要重新 git add。
---hard 最危險，變更直接丟棄，但可以用 git reflog 找回（在 Git 垃圾回收之前）。
-reset 是本機操作，不會影響遠端，但如果 reset 後再 push，遠端分支和本機就會分歧，需要 force push。
+想像一下，`git reset` 就像是把時間倒回去。三種模式的差別在於你帶了多少東西回來：`--soft` 把變更帶進暫存區，`--mixed` 把變更帶進工作目錄，`--hard` 則是什麼都不帶，變更直接消失。`--hard` 最危險，但如果用了 reflog 通常還是救得回來，所以別太怕。接下來看 revert。
 -->
 
 ---
@@ -823,10 +767,7 @@ git revert --no-commit a1b2c3d
 </div>
 
 <!--
-git revert 是最安全的「還原」操作，因為它不修改既有歷史，只是新增一個反向操作的 commit。
-這意味著可以安全地推送到遠端，其他人拉取後也能正確同步。
-特別適合在主分支上還原問題 commit：不需要 force push，不影響其他人的工作。
-缺點是歷史中會留下「曾經新增過這個功能，然後還原了」的痕跡，但這通常是好事，保留了完整的決策歷程。
+`git revert` 是最安全的還原操作，因為它不修改既有歷史，只是新增一個「抵消」那個 commit 效果的新 commit。這意味著可以安全地推送到遠端，其他人拉取後也能正確同步。特別適合在主分支上還原有問題的 commit，不需要 force push，也不影響其他人的工作。歷史中會留下「曾經有這個 commit，然後被 revert 了」的痕跡，但這通常是好事。接下來看 rebase。
 -->
 
 ---
@@ -860,10 +801,7 @@ feature:             D' - E' - F'
 D'、E'、F' 是新的 commit（不同的 hash），但內容相同（套用在新的 base 上）。
 
 <!--
-rebase 最重要的概念是：它會建立全新的 commit（hash 不同），即使內容看起來一樣。
-這就是為什麼已推送的 commit 做 rebase 後需要 force push：本機的 commit hash 和遠端不一樣了。
-互動式 rebase（-i）是本章的核心工具，可以做到 reword、squash、fixup、edit、drop 等操作。
-rebase main 則用於讓 feature branch 追上主分支的最新進度，避免 merge 時產生大量合併提交。
+Rebase 最重要的概念是：它會建立全新的 commit，hash 不同，即使內容看起來一樣。這就是為什麼已推送的 commit 做 rebase 後需要 force push。互動式 rebase（`-i`）是本章的核心工具，可以做到 reword、squash、fixup、edit、drop 等操作。接下來我們用一張表格做個完整的比較。
 -->
 
 ---
@@ -890,10 +828,7 @@ layout: default
 </div>
 
 <!--
-這張表格是這章最重要的總結。
-核心原則是「公開的歷史不要重寫」：已推送到遠端、其他人可能已基於它開發的 commit，用 revert 最安全。
-只有在個人 feature branch 上，或是有明確的團隊共識下，才適合做 reset 或 rebase 來整理歷史。
-另外要記住 git reflog 是你的後悔藥：即使執行了 reset --hard 或誤操作 rebase，reflog 記錄了 HEAD 的所有移動歷程，可以用來找回「遺失」的 commit（在 Git 垃圾回收之前）。
+這張表格是本章最重要的總結。核心問題只有一個：「這個 commit 已經推送了嗎，其他人有沒有在用它？」如果是，用 revert 最安全；如果沒有，reset 或 rebase 都可以隨意整理。接下來看一個決策流程圖，幫大家在實際工作中快速做出選擇。
 -->
 
 ---
@@ -921,10 +856,7 @@ layout: default
 ```
 
 <!--
-這個決策流程可以幫助在實際工作中快速做出選擇。
-最重要的問題是：「這個 commit 已經推送了嗎？其他人有沒有基於它開發？」
-如果答案是「否」，幾乎可以隨意整理；如果「是」，優先考慮 revert。
-黃金原則：Don't rewrite public history。公開的、共享的歷史不要重寫，這是 Git 協作的基本禮儀。
+我們把這個決策流程記起來，實際工作中遇到問題，先問自己「這個 commit 推送了嗎？」，答案決定了你能用哪些工具。黃金原則只有一句：不要重寫公開的共享歷史。還有別忘了，`git reflog` 永遠是你的後悔藥，幾乎所有本地操作都能用它找回來。第四章到這裡就結束了。
 -->
 
 ---
@@ -938,9 +870,5 @@ layout: end
 <Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
 
 <!--
-第四章到這裡結束。
-這一章我們學了五個常見的狀況題：修改訊息、合併 commit、拆解 commit、插入 commit、刪除或調整順序。
-也釐清了 reset、revert、rebase 三種工具的差異和適用時機。
-記住黃金原則：未推送的歷史可以自由整理，已推送的歷史用 revert 最安全。
-下一章我們會繼續探索 Git 的其他進階功能。
+第四章到這裡結束。我們學了五個常見狀況題：修改訊息、合併 commit、拆解 commit、插入 commit、刪除或調整順序，也釐清了 reset、revert、rebase 三種工具的差異和適用時機。記住黃金原則：未推送的歷史可以自由整理，已推送的歷史用 revert 最安全。下一章我們會繼續探索 Git 的其他進階功能。
 -->
