@@ -5,7 +5,6 @@ highlighter: shiki
 lineNumbers: true
 drawings:
   persist: false
-transition: slide-left
 title: 
 routeAlias: chXX
 style: |

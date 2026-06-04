@@ -3,9 +3,6 @@ theme: penguin
 class: text-center
 highlighter: shiki
 lineNumbers: true
-drawings:
-  persist: false
-transition: slide-left
 title: Git 版本控制課程
 routeAlias: home
 style: |
@@ -89,28 +86,33 @@ style: |
     </Link>
     <Link to="ch03" class="chapter-card">
       <div class="chapter-num">Ch 3</div>
-      <div>分支與合併</div>
-      <div class="chapter-subtitle">branch / checkout / merge / fast-forward</div>
+      <div>使用分支</div>
+      <div class="chapter-subtitle">branch / merge / rebase / conflict</div>
     </Link>
     <Link to="ch04" class="chapter-card">
       <div class="chapter-num">Ch 4</div>
-      <div>遠端儲存庫</div>
-      <div class="chapter-subtitle">remote / clone / push / pull / fetch</div>
+      <div>修改歷史紀錄</div>
+      <div class="chapter-subtitle">amend / rebase -i / reset / revert</div>
     </Link>
     <Link to="ch05" class="chapter-card">
       <div class="chapter-num">Ch 5</div>
-      <div>進階指令</div>
-      <div class="chapter-subtitle">rebase / cherry-pick / stash / reset</div>
+      <div>標籤</div>
+      <div class="chapter-subtitle">git tag / lightweight / annotated</div>
     </Link>
     <Link to="ch06" class="chapter-card">
       <div class="chapter-num">Ch 6</div>
-      <div>Git 工作流程</div>
-      <div class="chapter-subtitle">GitFlow / GitHub Flow / Trunk-based</div>
+      <div>其它常見狀況題</div>
+      <div class="chapter-subtitle">stash / cherry-pick / filter-branch / HEAD</div>
     </Link>
     <Link to="ch07" class="chapter-card">
       <div class="chapter-num">Ch 7</div>
-      <div>衝突解決與協作</div>
-      <div class="chapter-subtitle">conflict / PR / code review</div>
+      <div>遠端共同協作</div>
+      <div class="chapter-subtitle">GitHub / push / pull / PR / fork</div>
+    </Link>
+    <Link to="ch08" class="chapter-card">
+      <div class="chapter-num">Ch 8</div>
+      <div>使用 Git Flow</div>
+      <div class="chapter-subtitle">master / develop / feature / release / hotfix</div>
     </Link>
   </div>
 </div>
@@ -118,7 +120,24 @@ style: |
 ---
 src: ./ch01-intro.md
 ---
-
 ---
 src: ./ch02-basic.md
+---
+---
+src: ./ch03-branch.md
+---
+---
+src: ./ch04-history.md
+---
+---
+src: ./ch05-tag.md
+---
+---
+src: ./ch06-situations.md
+---
+---
+src: ./ch07-github.md
+---
+---
+src: ./ch08-gitflow.md
 ---

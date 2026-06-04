@@ -3,9 +3,6 @@ theme: penguin
 class: text-center
 highlighter: shiki
 lineNumbers: true
-drawings:
-  persist: false
-transition: slide-left
 title: 開始使用 Git
 routeAlias: ch02
 style: |
@@ -55,31 +52,22 @@ layout: default
 
 # Outline
 
-**Part 1 — 基礎操作**
-
-| # | 主題 |
-| --- | --- |
-| 1 | 新增、初始 Repository |
-| 2 | 把檔案交給 Git 控管 |
-| 3 | 工作區、暫存區與儲存庫 |
-| 4 | 檢視紀錄 |
-| 5 | 【狀況題】如何在 Git 裡刪除檔案或變更檔名？ |
-| 6 | 【狀況題】修改 Commit 紀錄 |
-| 7 | 【狀況題】追加檔案到最近一次的 Commit |
-| 8 | 【狀況題】新增目錄？ |
-
-**Part 2 — 進階操作**（下半部）
-
-| # | 主題 |
-| --- | --- |
-| 9 | 【狀況題】有些檔案不想被 Git 控管？ |
-| 10 | 查看特定檔案的修改記錄 |
-| 11 | 【狀況題】等等，這行程式碼是誰寫的？ |
-| 12 | 使用標籤 Tag |
-| 13 | 【狀況題】SHA-1 是什麼？為什麼看起來那麼奇怪？ |
-| 14 | Git 物件：Blob、Tree、Commit、Tag |
-| 15 | 【狀況題】不小心 git add 了不該加的檔案？ |
-| 16 | 【狀況題】Commit 之後發現有個檔案修改錯了？ |
+- **新增、初始 Repository** — `git init` / `git clone`
+- **把檔案交給 Git 控管** — `git add` / `git status`
+- **工作區、暫存區與儲存庫** — 三大區域運作流程
+- **檢視紀錄** — `git log` / `git diff`
+- **刪除檔案或變更檔名** — `git rm` / `git mv`
+- **修改 Commit 紀錄** — `git commit --amend`
+- **追加檔案到最近一次 Commit** — `--amend` 技巧
+- **新增目錄** — `.gitkeep` 做法
+- **不想被 Git 控管的檔案** — `.gitignore` 設定
+- **查看特定檔案的修改記錄** — `git log -p` / `git blame`
+- **這行程式碼是誰寫的？** — `git blame` 用法
+- **使用標籤 Tag** — `git tag` / annotated tag
+- **SHA-1 是什麼？** — 雜湊值與物件定址
+- **Git 物件** — Blob、Tree、Commit、Tag 詳解
+- **不小心 git add 了不該加的檔案** — `git restore --staged`
+- **Commit 之後發現修改錯了** — `git reset` / `git revert`
 
 <!--
 這張是本章的整體大綱。我們今天會把前半段的 8 個主題走完。前 4 個是最基本的工作流程，後 4 個是實際工作中常遇到的「狀況題」。狀況題的設計是因為工作中常常會遇到各種突發狀況，不可能每次都按照理想流程走。先把這些常見狀況的應對方式學起來，會讓大家對 Git 的使用更有信心。
@@ -1353,7 +1341,6 @@ layout: default
 
 ### 開始使用 Git：後半段重點回顧
 
-<v-clicks>
 
 - **.gitignore 保護機密**：建立之前就追蹤的檔案，要用 `git rm --cached` 才能停止追蹤；.gitignore 本身要 commit 進 repo 讓團隊共享
 
@@ -1365,7 +1352,6 @@ layout: default
 
 - **reflog 是終極安全網**：幾乎所有「誤操作」都能在 90 天內透過 reflog 找回；HEAD 是 Git 的位置指標，理解它讓你讀懂所有 Git 操作
 
-</v-clicks>
 
 <!-- 總結的時候，重點不是重複每個指令，而是讓大家帶走幾個核心心態：Git 幾乎不可能搞爛，因為有 reflog。.gitignore 要越早設越好，機密絕對不能進 repo。git log 和 git blame 是調查工具，出 bug 先查歷史。reset 的三種模式理解清楚，就不會再用錯。還有 git add -p 這個習慣，養成之後你的 commit 歷史會乾淨很多，以後的自己（和你的同事）都會感謝你。 -->
 
