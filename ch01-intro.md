@@ -646,7 +646,13 @@ cat ~/.gitconfig
 ```
 
 
-**~/.gitconfig 範例內容：**
+<!--
+Git 設定檔是純文字 .ini 格式，用 --edit 直接用編輯器打開。設定設錯了用 --unset 刪除。
+-->
+
+---
+
+# ~/.gitconfig 範例內容
 
 ```ini
 [user]
@@ -662,9 +668,14 @@ cat ~/.gitconfig
     lg = log --oneline --graph --all --decorate
 ```
 
+<div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+設定檔用 <code>[section]</code> 分組、<code>key = value</code> 設定值。可直接手動編輯，不必透過 <code>git config</code> 指令。
+
+</div>
 
 <!--
-Git 的設定檔就是一個純文字的 .ini 格式檔案，存在你的家目錄下。用 --edit 可以直接用你設定的編輯器打開它，直接修改比一行一行下指令更快。看到這個範例設定檔，應該可以確認自己的設定是否都到位了。如果某個設定設錯了，用 --unset 可以刪掉那個 key，或是直接編輯檔案刪掉對應的行。接下來進入最後一個主題：怎麼查文件。
+看到這個範例設定檔，應該就能確認你的設定是否都到位了。
 -->
 
 ---
@@ -699,8 +710,11 @@ git <verb> -h
 git config -h
 ```
 
+---
 
-**範例輸出（git config -h）：**
+# git help — 範例輸出
+
+**`git config -h` 輸出範例：**
 
 ```
 usage: git config [<options>]
@@ -711,6 +725,12 @@ Config file location
     --local               use repository config file
     -f, --file <file>     use given config file
 ```
+
+<div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+平常最常用 <code>-h</code>（快速查選項）；深入研究用 <code>git help</code>（完整文件）。
+
+</div>
 
 
 <!--
