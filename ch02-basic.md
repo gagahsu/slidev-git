@@ -53,7 +53,7 @@ layout: default
 - **三大工作區域** — Working Directory / Staging Area / Repository
 - **檢視紀錄** — `git log`
 - **【狀況題】刪除與改名** — `git rm` / `git mv`
-- **【狀況題】修改 Commit** — `--amend` / `.gitkeep`
+- **【狀況題】空目錄** — `.gitkeep`
 - **【狀況題】檔案忽略與查詢** — `.gitignore` / `git log -p` / `git blame`
 - **【狀況題】還原與修復** — `git restore` / `git reset` / `reflog`
 
@@ -679,8 +679,9 @@ $ git commit -m "將 hello.html 重新命名為 world.html"
 ```
 
 <!--
-改名的邏輯跟刪除一樣，git mv 是 Git 原生的移動和改名指令，效果等同於先 mv 再 git add --all。一個有趣的冷知識：Git 其實不在乎檔案叫什麼名字，它是根據「內容」來計算 SHA-1 的，所以改名的時候不會產生新的 Blob 物件，只會更新 Tree 物件。這也是為什麼 Git 能識別出改名操作。如果你既改名又改了很多內容，Git 可能識別不出來，會當成 delete + new。接下來進入狀況題：修改 commit 紀錄。
+改名的邏輯跟刪除一樣，git mv 是 Git 原生的移動和改名指令，效果等同於先 mv 再 git add --all。一個有趣的冷知識：Git 其實不在乎檔案叫什麼名字，它是根據「內容」來計算 SHA-1 的，所以改名的時候不會產生新的 Blob 物件，只會更新 Tree 物件。這也是為什麼 Git 能識別出改名操作。如果你既改名又改了很多內容，Git 可能識別不出來，會當成 delete + new。接下來進入下一個狀況題：空目錄的問題。
 -->
+
 
 ---
 layout: section
@@ -688,148 +689,6 @@ class: flex flex-col justify-center items-center text-center
 ---
 
 # Part 6
-## 【狀況題】修改 Commit 紀錄
-
-<!--
-你有沒有 commit 完之後發現訊息打錯字，或是寫了一些不該寫的東西想改掉？這個狀況題就是為這種時刻準備的。
--->
-
----
-
-# 為什麼需要修改 Commit 紀錄？
-
-常見情境：
-
-<br>
-
-| 情境 | 說明 |
-| --- | --- |
-| Commit 訊息打錯字 | 手殘 `git commit -m "修復登入BUf"` |
-| 訊息不夠清楚 | 想補充更多說明 |
-| 訊息包含不當內容 | 下班前心情差，訊息寫了情緒性字眼 |
-| 格式不符合團隊規範 | 事後才發現需要加 issue 編號 |
-
-<br>
-
-> **修改 Commit 紀錄有多種方式，最簡單的是 `--amend`（只適用於最近一次）**
-
-<!--
-工程師有時候心情不好，會在 commit 訊息裡打出情緒性的字眼，等到要 push 之前才發現。這個狀況比想像的常見，不用問我怎麼知道。修改 commit 的方式有好幾種：--amend、git rebase -i、git reset 拆掉重 commit，還有一種非常不正確的方式——刪掉整個 .git 目錄重來，對，真的有人這樣做過。接下來看最簡單的 --amend 用法。
--->
-
----
-
-# `git commit --amend` — 修改最近一次 Commit
-
-| 指令 | 說明 |
-| --- | --- |
-| `git commit --amend -m "新訊息"` | 直接在指令列修改訊息 |
-| `git commit --amend` | 開啟 Vim 編輯器修改訊息 |
-
-```bash
-# 發現最後一次 commit 訊息打錯了
-$ git log --oneline
-4879515 (HEAD -> main) 修復登入BUf   ← 這裡打錯了
-
-$ git commit --amend -m "修復登入 Bug"
-[main 614a90c] 修復登入 Bug
-
-$ git log --oneline
-614a90c (HEAD -> main) 修復登入 Bug  ← 新的 SHA-1！
-```
-
-<!--
---amend 是修改最近一次 commit 最簡單的方式。執行之後你會注意到一件事：SHA-1 值變了！這不是 bug，因為 commit 的 SHA-1 是由 commit 內容（包含訊息）計算出來的，訊息改了 SHA-1 當然也跟著變。這代表 --amend 實際上是「丟掉舊 commit、建立新 commit」，而不是真的「修改」舊的。如果這個 commit 已經 push 到遠端，修改後要 push 就必須用 force push，這會影響其他協作者，請非常謹慎。接下來看什麼情況下不應該修改 commit。
--->
-
----
-
-# ⚠️ 修改已推送的 Commit 請謹慎
-
-<br>
-
-<div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 1rem 1.2rem; border-radius: 4px; margin-bottom: 1rem;">
-  <strong>修改歷史請盡量不要使用在已經 Push 出去的 Commit 上。</strong><br>
-  這可能會造成其他協作者的困擾，甚至導致他們的工作遺失。
-</div>
-
-<br>
-
-| 狀況 | 建議做法 |
-| --- | --- |
-| Commit 還沒 push | 可以放心使用 `--amend` |
-| Commit 已 push，只有你一個人的 repo | 可以 force push，但注意風險 |
-| Commit 已 push，多人協作 | **不建議修改**，改用新 commit 補充說明 |
-
-<!--
---amend 的黃金原則是：只對還沒有 push 出去的 commit 使用。一旦 push 到遠端，其他人可能已經在你的 commit 基礎上繼續工作了，這時候 amend 並 force push，對方在下次 pull 時就會遇到衝突，甚至搞不清楚發生了什麼事。如果是個人的 repo 而且確認沒有人用你的分支，force push 是可以接受的；多人協作的情況下，建議直接建一個新的 commit 來補充或修正。接下來看「追加檔案到最後一次 commit」這個技巧。
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Part 7
-## 【狀況題】追加檔案到最近一次的 Commit
-
-<!--
-Commit 之後才發現少 add 了一個檔案，不想為了一個小遺漏多開一個 commit 讓歷史看起來很亂？這個狀況超級常見，我們有很優雅的解法。
--->
-
----
-
-# 情境：Commit 後才發現漏了檔案
-
-<br>
-
-<div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 1rem 1.2rem; border-radius: 4px; margin-bottom: 1rem;">
-  剛完成一次 Commit，卻發現有個相關檔案忘記加進去了。<br>
-  不想再開一個新的 Commit，因為這樣歷史紀錄會很瑣碎。
-</div>
-
-<br>
-
-| 解決方案 | 說明 |
-| --- | --- |
-| 方案一：`git reset` | 拆掉最後一次 commit，加入後重新 commit |
-| 方案二：`git commit --amend --no-edit` | 將新檔案「合併」進最後一次 commit（推薦） |
-
-<!--
-這個情境幾乎每個工程師都遇過：剛 commit 了「新增灰姑娘故事」，結果發現圖片檔案忘記 add 了。這時候有兩條路：用 git reset 把 commit 拆掉加入圖片後重新 commit，或是直接用 --amend --no-edit 把圖片追加進剛才的 commit、不改訊息。第二個方法更優雅，不需要重新輸入訊息，是我個人最推薦的做法。接下來看實際操作的指令。
--->
-
----
-
-# 使用 `--amend --no-edit` 追加檔案
-
-| 指令 | 說明 |
-| --- | --- |
-| `git add <遺漏的檔案>` | 把忘記加的檔案放入暫存區 |
-| `git commit --amend --no-edit` | 將暫存區內容併入最後一次 commit，不修改訊息 |
-
-```bash
-# 發現漏加了 cinderella.html
-$ git add cinderella.html
-
-# 不開編輯器，訊息沿用上一次
-$ git commit --amend --no-edit
-[main 8a3f219] 新增灰姑娘故事
-
-# 確認 cinderella.html 已包含在最後一次 commit
-$ git show --stat HEAD
-```
-
-<!--
---no-edit 的意思是「沿用上一次的 commit 訊息，不要打開編輯器」。沒有這個參數的話，--amend 會打開 Vim 讓你修改訊息，加了就可以跳過這一步。執行後 SHA-1 同樣會改變，這是正常的。git show --stat HEAD 可以確認最新一次 commit 包含了哪些檔案的改動。同樣地，這個操作僅適用於還沒有 push 的 commit。接下來看一個大家可能沒想到的 Git 限制：空目錄的問題。
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Part 8
 ## 【狀況題】新增目錄？
 
 <!--
@@ -907,7 +766,7 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 5
+# Part 7
 ## 狀況題：檔案忽略與查詢
 
 <!--
@@ -1185,7 +1044,7 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 6
+# Part 8
 ## 狀況題：還原與修復
 
 <!--
