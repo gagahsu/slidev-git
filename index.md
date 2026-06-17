@@ -5,6 +5,7 @@ highlighter: shiki
 lineNumbers: true
 title: Git 版本控制課程
 routeAlias: home
+routerMode: hash
 style: |
   .slidev-layout p,
   .slidev-layout li,

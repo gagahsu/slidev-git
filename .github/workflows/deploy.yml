@@ -32,9 +32,6 @@ jobs:
       - name: Build
         run: pnpm build index.md
 
-      - name: Fix SPA routing for GitHub Pages
-        run: cp dist/index.html dist/404.html
-
       - uses: actions/configure-pages@v4
 
       - uses: actions/upload-pages-artifact@v3
