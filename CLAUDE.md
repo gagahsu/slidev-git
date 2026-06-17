@@ -67,6 +67,9 @@ routeAlias: ch01
 | 6 | ch06-situations.md | 其它常見狀況題 |
 | 7 | ch07-history.md | 修改歷史紀錄 |
 | 8 | ch08-gitflow.md | 使用 Git Flow |
+| 9 | ch09-git-internals.md | Git 底層原理 |
+| 10 | ch10-advanced-workflow.md | 進階操作技巧 |
+| 11 | ch11-github-advanced.md | 進階 GitHub 操作 |
 
 ## Slidev Conventions
 

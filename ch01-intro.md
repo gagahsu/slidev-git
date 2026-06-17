@@ -55,9 +55,6 @@ layout: default
 - **初始設定** — `git config` 使用者資訊、編輯器、換行符號
 - **取得說明** — `git help`、man page
 
-<div style="margin-top:0.8rem; display:inline-block; padding:0.45rem 1rem; background:#fffbeb; border:1.5px dashed #d97706; border-radius:8px; font-size:0.85rem;">
-  <span style="color:#d97706; font-weight:700;">📌 補充</span><span style="color:#78350f;"> — Git 物件模型（Blob / Tree / Commit / Tag）</span>
-</div>
 
 <!--
 今天一共有七個主題，前兩個是觀念層面的，後五個是實作層面的。第一次學 Git 最重要的不是背下所有指令，而是理解 Git 的思考方式——指令忘了可以查，但觀念搞通了，以後學任何進階功能都會輕鬆很多。我們先從「沒有版本控制的世界」開始。
@@ -355,85 +352,7 @@ Untracked files:                ← 未追蹤（紅色）
 
 
 <!--
-git status 是我們在用 Git 時最常執行的指令，沒有之一。不管做任何操作之前，先跑一下 git status 確認狀態，這個習慣能幫我們避免很多失誤。輸出分三個區塊：Changes to be committed 是暫存區的內容，顯示綠色；Changes not staged 是改了但還沒 add 的，紅色；Untracked files 是 Git 完全不認識的新檔案，也是紅色。Git 還很貼心地在每個區塊下方寫了下一步該執行什麼指令，非常適合新手參考。接下來進入 Git 物件模型。
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-<div style="border: 2px dashed #d97706; border-radius: 16px; padding: 1.2rem 2.5rem; display: inline-block; background: #fffbeb;">
-  <div style="color: #d97706; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem;">📌 進階 ／ 自學</div>
-  <div style="color: #92400e; font-size: 1.8rem; font-weight: 900;">Git 物件模型</div>
-  <div style="color: #b45309; font-size: 0.85rem; margin-top: 0.4rem;">Blob / Tree / Commit / Tag — 依需要自行閱讀</div>
-</div>
-
-<!--
-第三個主題進入比較底層的概念：Git 的物件模型。很多同學會問「這個要學嗎？我只是想用 Git 管程式碼啊。」了解物件模型不是要讓大家變成 Git 工程師，而是當你遇到奇怪問題、或看到那串 SHA-1 亂碼時，你會知道它是什麼、代表什麼，不會完全摸不著頭緒。接下來看 Git 的四種物件。
--->
-
----
-
-# Git 的四種物件
-
-Git 以「內容定址儲存（Content-Addressable Storage）」管理所有資料，每個物件以 **SHA-1 雜湊值**命名。
-
-
-| 物件類型 | 說明 | 類比 |
-| --- | --- | --- |
-| **Blob** | 儲存檔案內容（不含檔名） | 檔案本身 |
-| **Tree** | 儲存目錄結構（檔名 + blob/tree 參照） | 資料夾 |
-| **Commit** | 指向一個 tree，記錄作者、時間、訊息、parent | 快照 + 標籤 |
-| **Tag** | 指向特定 commit 的具名參照 | 書籤 |
-
-
-
-```
-Commit  ──► Tree (root)
-                ├── blob: README.md
-                ├── blob: main.py
-                └── tree: src/
-                          ├── blob: app.py
-                          └── blob: utils.py
-```
-
-
-<!--
-Git 把所有東西存成四種物件，每個物件用 SHA-1 雜湊值識別。Blob 只存檔案「內容」，不管檔名叫什麼；Tree 儲存目錄結構，把檔名和對應 Blob 綁在一起；Commit 是一個快照，指向當下的整棵 Tree，同時記錄作者、時間和父 commit；Tag 就像書籤，讓你用有意義的名字指向某個 commit。這個結構圖展示了 Git 怎麼用四種物件的組合還原專案的任何歷史狀態，接下來我們再仔細看 Commit 物件裡面存了什麼。
--->
-
----
-
-# Commit 物件內容
-
-每個 commit 儲存以下資訊：
-
-```bash
-# 查看 commit 物件原始內容
-git cat-file -p HEAD
-```
-
-
-**輸出範例：**
-
-```
-tree 4b825dc642cb6eb9a060e54bf8d69288fbee4904
-parent a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2
-author  Jane Doe <jane@example.com> 1717430400 +0800
-committer Jane Doe <jane@example.com> 1717430400 +0800
-
-Add login feature
-
-Implement JWT-based authentication with refresh token support.
-```
-
-
-
-> **重點：** parent 欄位使 commit 形成有向無環圖（DAG），這就是 Git 歷史的核心結構。
-
-<!--
-用 git cat-file -p HEAD 可以直接看到 commit 物件的原始內容，是個很好的理解工具。你有沒有注意到 parent 這個欄位？每個 commit 都記得自己的上一個是誰，這個鏈結讓所有 commit 形成一條歷史線，在圖論上叫做有向無環圖。tree 指向這次快照的根目錄；author 和 committer 記錄誰在什麼時候建立這個 commit；最底下才是 commit 訊息。接下來我們來實際把 Git 裝起來。
+git status 是我們在用 Git 時最常執行的指令，沒有之一。不管做任何操作之前，先跑一下 git status 確認狀態，這個習慣能幫我們避免很多失誤。輸出分三個區塊：Changes to be committed 是暫存區的內容，顯示綠色；Changes not staged 是改了但還沒 add 的，紅色；Untracked files 是 Git 完全不認識的新檔案，也是紅色。Git 還很貼心地在每個區塊下方寫了下一步該執行什麼指令，非常適合新手參考。接下來我們來實際把 Git 裝起來。
 -->
 
 ---

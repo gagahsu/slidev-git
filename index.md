@@ -123,36 +123,43 @@ style: |
     </Link>
   </div>
 
-  <div style="display:flex; align-items:center; width:100%; max-width:960px; margin:1.6rem 0 0; gap:1rem;">
-    <div style="flex:1; height:1px; background:linear-gradient(90deg, transparent, #d97706);"></div>
-    <span style="color:#d97706; font-weight:700; font-size:0.95rem; white-space:nowrap; letter-spacing:0.05em;">▶ 進階／自學內容</span>
-    <div style="flex:1; height:1px; background:linear-gradient(90deg, #d97706, transparent);"></div>
-  </div>
+  <div style="height:1px; width:100%; max-width:960px; background:linear-gradient(90deg, transparent, #d97706, transparent); margin:1.6rem 0 0;"></div>
 
-  <div class="chapter-grid">
+  <div class="chapter-grid" style="margin-top:1rem;">
     <Link to="ch05" class="chapter-card-adv">
-      <div class="adv-badge">進階・自學</div>
       <div class="chapter-num">Ch 5</div>
       <div>標籤</div>
       <div class="chapter-subtitle">git tag / lightweight / annotated</div>
     </Link>
     <Link to="ch06" class="chapter-card-adv">
-      <div class="adv-badge">進階・自學</div>
       <div class="chapter-num">Ch 6</div>
       <div>其它常見狀況題</div>
       <div class="chapter-subtitle">stash / cherry-pick / filter-repo</div>
     </Link>
     <Link to="ch07" class="chapter-card-adv">
-      <div class="adv-badge">進階・自學</div>
       <div class="chapter-num">Ch 7</div>
       <div>修改歷史紀錄</div>
       <div class="chapter-subtitle">rebase -i / reset / revert</div>
     </Link>
     <Link to="ch08" class="chapter-card-adv">
-      <div class="adv-badge">進階・自學</div>
       <div class="chapter-num">Ch 8</div>
       <div>使用 Git Flow</div>
       <div class="chapter-subtitle">feature / release / hotfix</div>
+    </Link>
+    <Link to="ch09" class="chapter-card-adv">
+      <div class="chapter-num">Ch 9</div>
+      <div>Git 底層原理</div>
+      <div class="chapter-subtitle">物件模型 / HEAD / 分支指標</div>
+    </Link>
+    <Link to="ch10" class="chapter-card-adv">
+      <div class="chapter-num">Ch 10</div>
+      <div>進階操作技巧</div>
+      <div class="chapter-subtitle">rebase / hotfix / commitlint</div>
+    </Link>
+    <Link to="ch11" class="chapter-card-adv">
+      <div class="chapter-num">Ch 11</div>
+      <div>進階 GitHub 操作</div>
+      <div class="chapter-subtitle">fork sync / force push / Pages</div>
     </Link>
   </div>
 </div>
@@ -180,4 +187,13 @@ src: ./ch07-history.md
 ---
 ---
 src: ./ch08-gitflow.md
+---
+---
+src: ./ch09-git-internals.md
+---
+---
+src: ./ch10-advanced-workflow.md
+---
+---
+src: ./ch11-github-advanced.md
 ---
