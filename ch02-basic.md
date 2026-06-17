@@ -206,7 +206,30 @@ $ git commit -m "初始化專案，新增 welcome.html"
 ```
 
 <!--
-接下來我們專門講 commit message 的寫法，這是很多人學 Git 時忽略的一塊，但在團隊協作時非常重要。
+接下來看一個新手常踩的坑。
+-->
+
+---
+
+# ⚠️ `git add` 後又修改了怎麼辦？
+
+<div style="background: #fef3c7; border-left: 4px solid #d97706; padding: 1rem 1.2rem; border-radius: 4px; margin-bottom: 1rem;">
+  <strong>Git 每次 Commit 只處理「暫存區」的內容。</strong><br>
+  如果 <code>git add</code> 之後又修改了檔案，必須<strong>再次 <code>git add</code></strong> 才能提交最新版本。
+</div>
+
+```bash
+$ echo "Hello" > welcome.html
+$ git add welcome.html       # 加入暫存區
+
+$ echo "World" >> welcome.html  # 又修改了！
+
+$ git commit -m "新增 welcome"
+# 此時 commit 的是 "Hello" 版本，不是 "Hello\nWorld"
+```
+
+<!--
+這是新手最常踩的坑。git add 之後，Git 只記住「當下那個時間點」的檔案內容，之後再改的東西不會自動進暫存區。所以 commit 之前養成習慣先跑一下 git status，看看有沒有「Changes not staged for commit」的警告，確認所有想提交的改動都已經 add 進去了。接下來我們專門講 commit message 的寫法，這是很多人學 Git 時忽略的一塊，但在團隊協作時非常重要。
 -->
 
 ---
@@ -464,29 +487,6 @@ git commit -m \
 
 <!--
 把規範落地最有效的方式是工具化，不要靠人工自律。commitlint 可以在 CI pipeline 裡自動檢查格式，不符合就讓 PR 無法 merge；commit-msg hook 則在本機提交時就直接攔截。VS Code 的 Conventional Commits 擴充套件讓你用圖形介面選 type 和填 scope，不用記格式。WIP commit 是開發過程中的草稿，只要在合入主分支前用 rebase -i 整理成有意義的 commit，並不是問題。
--->
-
----
-
-# ⚠️ `git add` 後又修改了怎麼辦？
-
-<div style="background: #fef3c7; border-left: 4px solid #d97706; padding: 1rem 1.2rem; border-radius: 4px; margin-bottom: 1rem;">
-  <strong>Git 每次 Commit 只處理「暫存區」的內容。</strong><br>
-  如果 <code>git add</code> 之後又修改了檔案，必須<strong>再次 <code>git add</code></strong> 才能提交最新版本。
-</div>
-
-```bash
-$ echo "Hello" > welcome.html
-$ git add welcome.html       # 加入暫存區
-
-$ echo "World" >> welcome.html  # 又修改了！
-
-$ git commit -m "新增 welcome"
-# 此時 commit 的是 "Hello" 版本，不是 "Hello\nWorld"
-```
-
-<!--
-這是新手最常踩的坑。git add 之後，Git 只記住「當下那個時間點」的檔案內容，之後再改的東西不會自動進暫存區。所以 commit 之前養成習慣先跑一下 git status，看看有沒有「Changes not staged for commit」的警告，確認所有想提交的改動都已經 add 進去了。接下來看什麼時候是 commit 的好時機。
 -->
 
 ---
