@@ -486,7 +486,7 @@ $ git commit -m "新增 welcome"
 ```
 
 <!--
-這是新手最常踩的坑。git add 之後，Git 只記住「當下那個時間點」的檔案內容，之後再改的東西不會自動進暫存區。所以 commit 之前養成習慣先跑一下 git status，看看有沒有「Changes not staged for commit」的警告，確認所有想提交的改動都已經 add 進去了。接下來正式進入三大區域的完整說明。
+這是新手最常踩的坑。git add 之後，Git 只記住「當下那個時間點」的檔案內容，之後再改的東西不會自動進暫存區。所以 commit 之前養成習慣先跑一下 git status，看看有沒有「Changes not staged for commit」的警告，確認所有想提交的改動都已經 add 進去了。接下來看什麼時候是 commit 的好時機。
 -->
 
 ---
@@ -495,67 +495,10 @@ class: flex flex-col justify-center items-center text-center
 ---
 
 # Part 3
-## 工作區、暫存區與儲存庫
+## Commit 的好時機
 
 <!--
-前面我們用了「暫存區」和「儲存庫」這些詞，現在讓我們正式介紹 Git 的三個核心區域。搞清楚這個模型之後，後面所有的指令都會豁然開朗。
--->
-
----
-
-# Git 的三個區域
-
-Git 把你的工作分成三個獨立的「空間」：
-
-<br>
-
-| 區域 | 英文名稱 | 說明 |
-| --- | --- | --- |
-| 工作目錄 | Working Directory | 你實際編輯檔案的地方 |
-| 暫存區 | Staging Area / Index | 準備提交的「候車室」 |
-| 儲存庫 | Repository | 正式儲存版本歷史的地方 |
-
-<!--
-三個區域是理解 Git 的最重要概念。可以這樣想：工作目錄是你家，暫存區是門口的整理箱，Repository 是正式的倉庫。你在家裡改好東西，挑選要帶出門的放進整理箱（git add），確認裝好了再搬進倉庫（git commit）。很多同學搞不懂為什麼要執行兩個指令，就是因為跳過了「整理箱」這個環節。接下來看三個區域的流動關係。
--->
-
----
-
-# 三個區域的流動關係
-
-<div style="display:flex; align-items:center; gap:0; margin:1.5em 0;">
-  <div style="text-align:center; padding:0.6em 1.2em; background:#1e3a5f; border-radius:6px; border:2px solid #4a9eff; min-width:130px;">
-    <div style="font-weight:700; font-size:1em; color:#fff;">工作目錄</div>
-    <div style="font-size:0.75em; color:#bfdbfe; margin-top:2px;">Working Dir</div>
-  </div>
-  <div style="display:flex; flex-direction:column; align-items:center; flex:1; padding:0 0.3em; font-family:monospace; font-size:0.85em;">
-    <div style="color:#10b981; white-space:nowrap;">── git add ──▶</div>
-    <div style="color:#f59e0b; white-space:nowrap; margin-top:6px;">◀── git restore ──</div>
-  </div>
-  <div style="text-align:center; padding:0.6em 1.2em; background:#1e3a5f; border-radius:6px; border:2px solid #4a9eff; min-width:110px;">
-    <div style="font-weight:700; font-size:1em; color:#fff;">暫存區</div>
-    <div style="font-size:0.75em; color:#bfdbfe; margin-top:2px;">Staging</div>
-  </div>
-  <div style="display:flex; flex-direction:column; align-items:center; flex:1; padding:0 0.3em; font-family:monospace; font-size:0.85em;">
-    <div style="color:#10b981; white-space:nowrap;">── git commit ──▶</div>
-    <div style="color:#f59e0b; white-space:nowrap; margin-top:6px;">◀── git restore --staged ──</div>
-  </div>
-  <div style="text-align:center; padding:0.6em 1.2em; background:#1e3a5f; border-radius:6px; border:2px solid #4a9eff; min-width:120px;">
-    <div style="font-weight:700; font-size:1em; color:#fff;">儲存庫</div>
-    <div style="font-size:0.75em; color:#bfdbfe; margin-top:2px;">Repository</div>
-  </div>
-</div>
-
-<br>
-
-| 指令 | 方向 | 說明 |
-| --- | --- | --- |
-| `git add` | 工作目錄 → 暫存區 | 將改動放入候車室 |
-| `git commit` | 暫存區 → 儲存庫 | 正式建立版本快照 |
-| `git commit -a -m "msg"` | 工作目錄 → 儲存庫 | 跳過暫存區（僅限已追蹤檔案） |
-
-<!--
-從左到右是「往前走」（新增版本），從右到左是「往後退」（撤銷改動）。特別注意 git commit -a 這個捷徑：它可以跳過 git add 直接 commit，但只對「已經被 Git 追蹤過」的檔案有效，全新建立的 Untracked 檔案還是必須先 git add。建議大家平時老老實實用兩步驟，讓自己對每次 commit 的內容更有掌控感。接下來看什麼時候是 commit 的好時機。
+有了基本操作之後，很多人會問：「那我應該多久 commit 一次？」我們來看幾個實用原則。
 -->
 
 ---
