@@ -257,8 +257,6 @@ class: flex flex-col justify-center items-center text-center
 | Repository | .git 目錄 | 所有歷史 commit 的永久儲存 | `committed` |
 
 
-**檔案狀態流程：**
-
 <div style="border: 2px solid #d97706; border-radius: 12px; padding: 1.2rem 1.5rem; margin-top: 0.5rem; background: #fff8f0;">
 
   <div style="display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:0.8rem;">
