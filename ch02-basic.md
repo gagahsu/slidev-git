@@ -852,27 +852,44 @@ layout: default
 
 # .gitignore 常用樣板
 
-### Node.js / Python / IDE 常見設定
+### Java / Spring Boot / Eclipse / VS Code / Angular
 
 ```text
-# Node.js
+# Java / Maven / Gradle
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+.mvn/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Spring Boot
+application-local.properties
+application-local.yml
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# Angular
 node_modules/
 dist/
-.env
-.env.local
+.angular/
+*.env
+*.env.local
 npm-debug.log*
+yarn-error.log
 
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-.pytest_cache/
-
-# IDE
-.idea/
-.vscode/
-*.suo
+# OS
 .DS_Store
 Thumbs.db
 ```
@@ -880,7 +897,7 @@ Thumbs.db
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 建立新專案時，GitHub 會在 repo 建立時提供選擇 .gitignore 樣板的選項，直接套用即可。</div>
 
 <!--
-與其從零開始寫 .gitignore，直接用現成樣板更省事。GitHub 建立新 repo 時就可以直接選語言的 .gitignore 樣板，套用即可。一個好習慣是建立全域的 .gitignore_global，設定在 git config --global core.excludesfile，處理 .DS_Store 這類「因為我用 Mac」的垃圾，不用污染每個專案的 .gitignore。接下來看已追蹤的檔案怎麼處理。
+這份樣板涵蓋了常見的 Java 全端開發環境：Maven/Gradle 的 target/ 編譯輸出、Spring Boot 的本地設定檔（application-local.yml 不要進版控）、Eclipse 的 workspace 設定、VS Code 的 .vscode/ 資料夾（但保留 extensions.json 讓團隊共享推薦擴充）、Angular 的 node_modules/ 和 .angular/ 快取，以及各平台 OS 產生的垃圾檔。建立專案時直接套用這份再依需求微調，省去手動摸索的時間。接下來看已追蹤的檔案怎麼處理。
 -->
 
 ---
