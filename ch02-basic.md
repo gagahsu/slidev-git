@@ -57,6 +57,10 @@ layout: default
 - **【狀況題】檔案忽略與查詢** — `.gitignore` / `git log -p` / `git blame`
 - **【狀況題】還原與修復** — `git restore` / `git reset` / `reflog`
 
+<div style="margin-top:0.8rem; display:inline-block; padding:0.45rem 1rem; background:#fffbeb; border:1.5px dashed #d97706; border-radius:8px; font-size:0.85rem;">
+  <span style="color:#d97706; font-weight:700;">📌 補充</span><span style="color:#78350f;"> — HEAD 概念 / git add -p / commitlint 工具實戰</span>
+</div>
+
 <!--
 今天的大綱分兩大塊：前半段四個主題是最基本的工作流程，後半段是實際工作中常遇到的狀況題。為什麼要設計狀況題？因為實際工作幾乎不會每次都按照理想流程走，先把這些常見情境的應對方式學起來，會讓大家對 Git 的使用更有信心。接下來先從建立 Repository 開始。
 -->
@@ -1012,6 +1016,18 @@ layout: default
 | `!important.log` | 例外：不忽略這個檔案 |
 | `#` 開頭 | 這是註解行 |
 
+<!--
+.gitignore 的語法很直覺，但有幾個地方值得注意。目錄結尾要加斜線，這樣 Git 才知道是整個目錄；! 開頭可以做例外，比如 *.log 忽略所有 log，但 !error.log 保留 error log。接下來看建立與提交 .gitignore 的方式。
+-->
+
+---
+layout: default
+---
+
+# .gitignore 設定規則（續）
+
+### 建立與提交
+
 ```bash
 # 建立 .gitignore
 touch .gitignore
@@ -1021,8 +1037,14 @@ git add .gitignore
 git commit -m "Add .gitignore"
 ```
 
+<div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+`.gitignore` 一定要 commit 進去，整個團隊才能共享相同的忽略規則，不然每個人 `git status` 的結果都不同。
+
+</div>
+
 <!--
-.gitignore 的語法很直覺，但有幾個地方值得注意。目錄結尾要加斜線，這樣 Git 才知道是整個目錄；! 開頭可以做例外，比如 *.log 忽略所有 log，但 !error.log 保留 error log。.gitignore 本身一定要 commit 進去，這樣整個團隊都享有相同的忽略規則，不然每個人本地跑 git status 的結果都不一樣。接下來看各語言的常用樣板。
+.gitignore 本身一定要 commit 進去，這樣整個團隊都享有相同的忽略規則，不然每個人本地跑 git status 的結果都不一樣。接下來看各語言的常用樣板。
 -->
 
 ---
@@ -1418,8 +1440,11 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 7
-## 進階概念
+<div style="border: 2px dashed #d97706; border-radius: 16px; padding: 1.2rem 2.5rem; display: inline-block; background: #fffbeb;">
+  <div style="color: #d97706; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem;">📌 進階 ／ 自學</div>
+  <div style="color: #92400e; font-size: 1.8rem; font-weight: 900;">進階概念</div>
+  <div style="color: #b45309; font-size: 0.85rem; margin-top: 0.4rem;">HEAD 指標 / git add -p — 依需要自行閱讀</div>
+</div>
 
 <!--
 進入最後一部分，兩個比較底層的主題。HEAD 是 Git 中最核心的概念之一，很多指令的行為都和它有關，理解 HEAD 可以讓你真正看懂 Git 在做什麼。git add -p 則是讓 commit 更乾淨的利器，每次只 commit 一個邏輯上完整的改動，是很多有經驗的工程師共同的習慣。
@@ -1691,8 +1716,11 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# 附錄
-# Commit Message 工具實戰
+<div style="border: 2px dashed #d97706; border-radius: 16px; padding: 1.2rem 2.5rem; display: inline-block; background: #fffbeb;">
+  <div style="color: #d97706; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem;">📌 進階 ／ 自學</div>
+  <div style="color: #92400e; font-size: 1.8rem; font-weight: 900;">Commit Message 工具實戰</div>
+  <div style="color: #b45309; font-size: 0.85rem; margin-top: 0.4rem;">commitlint / husky / rebase -i — 依需要自行閱讀</div>
+</div>
 
 <!--
 這部分是補充內容，把團隊實踐建議裡提到的四個工具一一示範安裝和使用方式：commitlint、commit-msg hook、GitHub Desktop Copilot、git rebase -i。

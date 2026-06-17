@@ -51,10 +51,13 @@ layout: default
 - **版本控制概念** — 為什麼需要版本控制？VCS 的演進歷史
 - **Git 是什麼** — 分散式架構、核心設計哲學
 - **Git 三大區域** — Working Directory / Staging Area / Repository
-- **Git 物件模型** — Blob、Tree、Commit、Tag
 - **安裝 Git** — Windows / macOS / Linux 安裝方式
 - **初始設定** — `git config` 使用者資訊、編輯器、換行符號
 - **取得說明** — `git help`、man page
+
+<div style="margin-top:0.8rem; display:inline-block; padding:0.45rem 1rem; background:#fffbeb; border:1.5px dashed #d97706; border-radius:8px; font-size:0.85rem;">
+  <span style="color:#d97706; font-weight:700;">📌 補充</span><span style="color:#78350f;"> — Git 物件模型（Blob / Tree / Commit / Tag）</span>
+</div>
 
 <!--
 今天一共有七個主題，前兩個是觀念層面的，後五個是實作層面的。第一次學 Git 最重要的不是背下所有指令，而是理解 Git 的思考方式——指令忘了可以查，但觀念搞通了，以後學任何進階功能都會輕鬆很多。我們先從「沒有版本控制的世界」開始。
@@ -360,8 +363,11 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 3
-# Git 物件模型
+<div style="border: 2px dashed #d97706; border-radius: 16px; padding: 1.2rem 2.5rem; display: inline-block; background: #fffbeb;">
+  <div style="color: #d97706; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem;">📌 進階 ／ 自學</div>
+  <div style="color: #92400e; font-size: 1.8rem; font-weight: 900;">Git 物件模型</div>
+  <div style="color: #b45309; font-size: 0.85rem; margin-top: 0.4rem;">Blob / Tree / Commit / Tag — 依需要自行閱讀</div>
+</div>
 
 <!--
 第三個主題進入比較底層的概念：Git 的物件模型。很多同學會問「這個要學嗎？我只是想用 Git 管程式碼啊。」了解物件模型不是要讓大家變成 Git 工程師，而是當你遇到奇怪問題、或看到那串 SHA-1 亂碼時，你會知道它是什麼、代表什麼，不會完全摸不著頭緒。接下來看 Git 的四種物件。

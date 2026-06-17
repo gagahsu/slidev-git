@@ -56,11 +56,11 @@ layout: default
 - **【狀況題】分支沒有小耳朵** — HEAD 與分支指標
 - **【常見問題】合併過的分支要留著嗎？** — 分支清理策略
 - **【狀況題】不小心砍掉未合併的分支** — git reflog 救援
-- **另一種合併方式（rebase）** — git rebase vs merge
 - **合併發生衝突了** — 衝突解決流程
-- **【冷知識】為什麼開分支「很便宜」？** — Git 的指標設計
-- **【冷知識】Git 怎麼知道在哪個分支？** — HEAD 指標原理
-- **【狀況題】從過去的 Commit 長新分支** — git checkout \<hash\>
+
+<div style="margin-top:0.8rem; display:inline-block; padding:0.45rem 1rem; background:#fffbeb; border:1.5px dashed #d97706; border-radius:8px; font-size:0.85rem;">
+  <span style="color:#d97706; font-weight:700;">📌 補充</span><span style="color:#78350f;"> — rebase / 冷知識（指標設計）/ 從過去 commit 長新分支</span>
+</div>
 
 <!--
 這是本章的大綱，共有十一個主題。前三個是核心操作，中間幾個是大家在實際開發中很常遇到的情境，最後兩個冷知識會帶大家看看 Git 分支的底層設計是怎麼回事。理解底層之後，遇到奇怪的狀況就不會只是盲目地亂試指令了。接下來我們來看第一部分。
@@ -641,8 +641,11 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 7
-# 另一種合併方式（rebase）
+<div style="border: 2px dashed #d97706; border-radius: 16px; padding: 1.2rem 2.5rem; display: inline-block; background: #fffbeb;">
+  <div style="color: #d97706; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.4rem;">📌 進階 ／ 自學</div>
+  <div style="color: #92400e; font-size: 1.8rem; font-weight: 900;">另一種合併方式（rebase）</div>
+  <div style="color: #b45309; font-size: 0.85rem; margin-top: 0.4rem;">rebase / 冷知識 / 從過去 commit 長分支 — 依需要自行閱讀</div>
+</div>
 
 <!--
 除了 merge 之外，還有另一種整合分支的方式叫做 rebase。它的哲學和 merge 不同，各有適合的使用場景，我們來比較一下。
