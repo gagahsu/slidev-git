@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm build --base /slidev-git/
+        run: pnpm build index.md --base /slidev-git/
 
       - uses: actions/configure-pages@v4
 
