@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 遠端共同協作 - 使用 GitHub
-routeAlias: ch07
+routeAlias: ch04
 layout: default
 style: |
   .slidev-layout p,

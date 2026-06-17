@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 修改歷史紀錄
-routeAlias: ch04
+routeAlias: ch07
 layout: default
 style: |
   .slidev-layout p,

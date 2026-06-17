@@ -48,17 +48,25 @@ routeAlias: ch01
 4. Add `<Link to="chXX" class="chapter-card">` card to `index.md`'s `.chapter-grid`
 5. Run `pnpm dev` — no additional installs needed
 
-## Planned Chapters
+## Chapters
+
+### Basic
 
 | Ch | File | Topic |
 | -- | ---- | ----- |
 | 1 | ch01-intro.md | Git 版本控制簡介 |
-| 2 | ch02-basic.md | 基本操作 |
-| 3 | ch03-branch.md | 分支與合併 |
-| 4 | ch04-remote.md | 遠端儲存庫 |
-| 5 | ch05-advanced.md | 進階指令 |
-| 6 | ch06-workflow.md | Git 工作流程 |
-| 7 | ch07-conflict.md | 衝突解決與協作 |
+| 2 | ch02-basic.md | 開始使用 Git |
+| 3 | ch03-branch.md | 使用分支 |
+| 4 | ch04-github.md | 遠端共同協作 - 使用 GitHub |
+
+### Advanced
+
+| Ch | File | Topic |
+| -- | ---- | ----- |
+| 5 | ch05-tag.md | 標籤 |
+| 6 | ch06-situations.md | 其它常見狀況題 |
+| 7 | ch07-history.md | 修改歷史紀錄 |
+| 8 | ch08-gitflow.md | 使用 Git Flow |
 
 ## Slidev Conventions
 

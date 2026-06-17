@@ -91,8 +91,8 @@ style: |
     </Link>
     <Link to="ch04" class="chapter-card">
       <div class="chapter-num">Ch 4</div>
-      <div>修改歷史紀錄</div>
-      <div class="chapter-subtitle">amend / rebase -i / reset / revert</div>
+      <div>遠端共同協作</div>
+      <div class="chapter-subtitle">GitHub / push / pull / PR / fork</div>
     </Link>
     <Link to="ch05" class="chapter-card">
       <div class="chapter-num">Ch 5</div>
@@ -106,8 +106,8 @@ style: |
     </Link>
     <Link to="ch07" class="chapter-card">
       <div class="chapter-num">Ch 7</div>
-      <div>遠端共同協作</div>
-      <div class="chapter-subtitle">GitHub / push / pull / PR / fork</div>
+      <div>修改歷史紀錄</div>
+      <div class="chapter-subtitle">amend / rebase -i / reset / revert</div>
     </Link>
     <Link to="ch08" class="chapter-card">
       <div class="chapter-num">Ch 8</div>
@@ -127,7 +127,7 @@ src: ./ch02-basic.md
 src: ./ch03-branch.md
 ---
 ---
-src: ./ch04-history.md
+src: ./ch04-github.md
 ---
 ---
 src: ./ch05-tag.md
@@ -136,7 +136,7 @@ src: ./ch05-tag.md
 src: ./ch06-situations.md
 ---
 ---
-src: ./ch07-github.md
+src: ./ch07-history.md
 ---
 ---
 src: ./ch08-gitflow.md
