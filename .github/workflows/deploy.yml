@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: Build
-        run: pnpm build index.md --base /slidev-git/
+        run: pnpm build index.md
 
       - name: Fix SPA routing for GitHub Pages
         run: cp dist/index.html dist/404.html
