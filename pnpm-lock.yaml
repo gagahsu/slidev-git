@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@slidev/client@52.16.0':
+    hash: 7d958ad255caea5c7c8b9a5db29e511c9ab205232fbbacf2b08579f0848999d1
+    path: patches/@slidev__client@52.16.0.patch
+
 importers:
 
   .:
@@ -4920,7 +4925,7 @@ snapshots:
       '@shikijs/markdown-it': 4.2.0
       '@shikijs/twoslash': 4.2.0(typescript@6.0.3)
       '@shikijs/vitepress-twoslash': 4.2.0(@nuxt/kit@3.21.7)(typescript@6.0.3)
-      '@slidev/client': 52.16.0(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(esbuild@0.23.1)(lightningcss@1.32.0)(rolldown@1.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))
+      '@slidev/client': 52.16.0(patch_hash=7d958ad255caea5c7c8b9a5db29e511c9ab205232fbbacf2b08579f0848999d1)(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(esbuild@0.23.1)(lightningcss@1.32.0)(rolldown@1.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))
       '@slidev/parser': 52.16.0(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(typescript@6.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))
       '@slidev/types': 52.16.0(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(typescript@6.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))
       '@unocss/extractor-mdc': 66.7.0
@@ -5020,7 +5025,7 @@ snapshots:
       - utf-8-validate
       - webpack
 
-  '@slidev/client@52.16.0(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(esbuild@0.23.1)(lightningcss@1.32.0)(rolldown@1.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))':
+  '@slidev/client@52.16.0(patch_hash=7d958ad255caea5c7c8b9a5db29e511c9ab205232fbbacf2b08579f0848999d1)(@nuxt/kit@3.21.7)(@vue/compiler-sfc@3.5.35)(esbuild@0.23.1)(lightningcss@1.32.0)(rolldown@1.0.3)(vite@8.0.16(@types/node@22.19.19)(esbuild@0.23.1)(jiti@2.7.0)(sass@1.100.0)(tsx@4.22.4)(yaml@2.9.0))':
     dependencies:
       '@antfu/utils': 9.3.0
       '@fix-webm-duration/fix': 1.0.1
