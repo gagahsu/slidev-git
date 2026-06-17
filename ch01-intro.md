@@ -259,12 +259,63 @@ class: flex flex-col justify-center items-center text-center
 
 **檔案狀態流程：**
 
-```
-Untracked  ──git add──►  Staged  ──git commit──►  Committed
-                         (Index)                   (.git)
+<div style="border: 2px solid #d97706; border-radius: 12px; padding: 1.2rem 1.5rem; margin-top: 0.5rem; background: #fff8f0;">
 
-Committed  ──(修改)──►  Modified  ──git add──►  Staged
-```
+  <div style="display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:0.8rem;">
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Untracked</div>
+      <div style="font-size:0.8rem; color:#b45309;">未追蹤</div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin:0 0.6rem;">
+      <div style="display:flex; align-items:center; gap:0.3rem;">
+        <div style="font-size:0.72rem; color:#d97706; font-family:monospace;">git add</div>
+        <div style="color:#d97706; font-size:1.2rem;">→</div>
+      </div>
+    </div>
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Staged</div>
+      <div style="font-size:0.8rem; color:#b45309;">Index / 暫存區</div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin:0 0.6rem;">
+      <div style="display:flex; align-items:center; gap:0.3rem;">
+        <div style="font-size:0.72rem; color:#d97706; font-family:monospace;">git commit</div>
+        <div style="color:#d97706; font-size:1.2rem;">→</div>
+      </div>
+    </div>
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Committed</div>
+      <div style="font-size:0.8rem; color:#b45309;">.git 目錄</div>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:0;">
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Committed</div>
+      <div style="font-size:0.8rem; color:#b45309;">.git 目錄</div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin:0 0.6rem;">
+      <div style="display:flex; align-items:center; gap:0.3rem;">
+        <div style="font-size:0.72rem; color:#d97706; font-family:monospace;">修改檔案</div>
+        <div style="color:#d97706; font-size:1.2rem;">→</div>
+      </div>
+    </div>
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Modified</div>
+      <div style="font-size:0.8rem; color:#b45309;">已修改</div>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; margin:0 0.6rem;">
+      <div style="display:flex; align-items:center; gap:0.3rem;">
+        <div style="font-size:0.72rem; color:#d97706; font-family:monospace;">git add</div>
+        <div style="color:#d97706; font-size:1.2rem;">→</div>
+      </div>
+    </div>
+    <div style="border: 2px solid #d97706; border-radius:8px; padding:0.8rem 1rem; background:#ffffff; min-width:130px; text-align:center;">
+      <div style="font-weight:700; color:#92400e;">Staged</div>
+      <div style="font-size:0.8rem; color:#b45309;">Index / 暫存區</div>
+    </div>
+  </div>
+
+</div>
 
 
 <!--
