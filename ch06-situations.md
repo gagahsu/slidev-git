@@ -153,16 +153,29 @@ $ git stash drop stash@{1}
 $ git stash clear
 ```
 
-<br>
+<!--
+`stash pop` 是最常用的，用完就刪，不留雜物。`stash@{N}` 的 N 從 0 開始，0 是最新的。`stash clear` 要謹慎，刪了就真的找不回來了。接下來看指令差異速查。
+-->
+
+---
+
+# 取回暫存：指令差異
 
 | 指令 | 效果 |
 | --- | --- |
 | `stash pop` | 取回 + 從清單刪除 |
 | `stash apply` | 取回 + 保留在清單 |
 | `stash drop` | 只刪除，不取回 |
+| `stash clear` | 清空全部（謹慎！） |
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+如果想把同一份暫存套到多個分支，用 `stash apply`（不刪除清單）。一般情況用 `stash pop` 就夠了。
+
+</div>
 
 <!--
-`stash pop` 是最常用的，用完就刪，不留雜物。如果你想把同一份暫存套到多個地方，就用 `stash apply`，它不會刪除暫存。`stash@{N}` 的 N 從 0 開始，0 是最新的。`stash clear` 要謹慎，刪了就真的找不回來了。接下來進入第二個狀況題，也是最嚴重的一個。
+如果你想把同一份暫存套到多個地方，就用 `stash apply`，它不會刪除暫存。接下來進入第二個狀況題，也是最嚴重的一個。
 -->
 
 ---
@@ -377,7 +390,13 @@ $ git cherry-pick --continue
 $ git cherry-pick --abort
 ```
 
-<br>
+<!--
+Cherry-pick 的衝突處理流程跟 merge 衝突幾乎一樣：手動解決、`git add` 標記已解決、然後 `--continue` 繼續。接下來看三個控制指令的時機。
+-->
+
+---
+
+# Cherry-pick 衝突：控制指令
 
 | 指令 | 時機 |
 | --- | --- |
@@ -385,8 +404,14 @@ $ git cherry-pick --abort
 | `git cherry-pick --skip` | 跳過這個 commit（當改動已存在時） |
 | `git cherry-pick --abort` | 完全放棄，回到操作前狀態 |
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**`--skip` 使用時機：** 一系列 cherry-pick 中，某個 commit 的改動在目標分支已存在，用 `--skip` 跳過避免重複套用。
+
+</div>
+
 <!--
-Cherry-pick 的衝突處理流程跟 merge 衝突幾乎一樣：手動解決、`git add` 標記已解決、然後 `--continue` 繼續。`--skip` 比較少用，是在一系列 cherry-pick 中，某個 commit 的改動在目標分支已經存在了，用 `--skip` 跳過。後悔了可以 `--abort` 完全取消，回到操作前的乾淨狀態。接下來進入冷知識的第一個主題。
+`--skip` 比較少用，是在一系列 cherry-pick 中，某個 commit 的改動在目標分支已經存在了，用 `--skip` 跳過。後悔了可以 `--abort` 完全取消，回到操作前的乾淨狀態。接下來進入冷知識的第一個主題。
 -->
 
 ---
@@ -632,15 +657,12 @@ On branch main               ← 已回到正常狀態
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 6 結束
-
-### 遇到狀況不慌張，Git 幾乎都有解法
-
-<Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
+# Q & A
 
 <!--
-這章涵蓋了五個工作中很常見的 Git 情境：用 stash 暫存未完成的工作、帳號密碼洩漏的正確處理流程、用 cherry-pick 精準挑選 commit、真正從歷史移除檔案，以及理解 detached HEAD 是怎麼一回事。這些都是讓你在工作中更有底氣的實用技能。
+這一章涵蓋了工作中常見的情境：stash 暫存工作、帳號密碼洩漏的正確處理、cherry-pick 精準挑選 commit、從歷史移除檔案，以及 detached HEAD 的成因與處理。有任何問題嗎？
 -->

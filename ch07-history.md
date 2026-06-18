@@ -818,7 +818,15 @@ layout: default
 | **適用場景** | 本機撤銷暫存或 commit | 還原已推送的 commit | 整理本機 commit 歷史 |
 | **影響範圍** | 本機 | 本機＋遠端 | 本機（推後影響遠端） |
 
-<div style="background: #fff8f0; border-left: 4px solid #d97706; padding: 0.9rem 1.2rem; border-radius: 4px; margin-top: 1.2rem;">
+<!--
+這張表格是本章最重要的總結。核心問題只有一個：「這個 commit 已經推送了嗎？」接下來看選擇原則。
+-->
+
+---
+
+# 三種工具：選擇原則
+
+<div style="background: #fff8f0; border-left: 4px solid #d97706; padding: 0.9rem 1.2rem; border-radius: 4px; margin-bottom: 1.2rem;">
 
 **選擇原則：**
 - 還沒推送 → `reset` 或 `rebase -i` 自由整理
@@ -827,8 +835,14 @@ layout: default
 
 </div>
 
+| 情境 | 推薦工具 | 原因 |
+|------|----------|------|
+| 本機撤銷 commit | `git reset` | 只影響本機，乾淨 |
+| 還原已推送的 commit | `git revert` | 不需 force push，安全 |
+| 整理未推送的歷史 | `git rebase -i` | 彈性最大 |
+
 <!--
-這張表格是本章最重要的總結。核心問題只有一個：「這個 commit 已經推送了嗎，其他人有沒有在用它？」如果是，用 revert 最安全；如果沒有，reset 或 rebase 都可以隨意整理。接下來看一個決策流程圖，幫大家在實際工作中快速做出選擇。
+如果是，用 revert 最安全；如果沒有，reset 或 rebase 都可以隨意整理。接下來看一個決策流程圖，幫大家在實際工作中快速做出選擇。
 -->
 
 ---
@@ -860,15 +874,12 @@ layout: default
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 4 結束
-
-### 歷史可以整理，讓每個 Commit 都有意義
-
-<Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
+# Q & A
 
 <!--
-第四章到這裡結束。我們學了五個常見狀況題：修改訊息、合併 commit、拆解 commit、插入 commit、刪除或調整順序，也釐清了 reset、revert、rebase 三種工具的差異和適用時機。記住黃金原則：未推送的歷史可以自由整理，已推送的歷史用 revert 最安全。下一章我們會繼續探索 Git 的其他進階功能。
+這一章學了如何修改歷史紀錄：amend 修改最後一個 commit、rebase -i 的各種操作，以及 reset、revert、rebase 三者的差異與適用時機。記住黃金原則：未推送可以自由整理，已推送用 revert 最安全。有任何問題嗎？
 -->

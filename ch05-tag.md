@@ -162,7 +162,7 @@ $ git tag -a v0.9 1a2b3c4 -m "Beta release"
 
 ---
 
-# 查看與管理標籤
+# 查看標籤
 
 ```bash
 # 列出所有標籤（按字母順序排列）
@@ -184,17 +184,33 @@ Tagger: Alice <alice@example.com>
 Date:   Mon Jun  1 10:30:00 2026 +0800
 
 Release v1.0: 第一個正式版本
-
-commit 3c7d2b1...
-# （以下顯示 commit 的 diff 內容）
-
-# 刪除標籤（本地端）
-$ git tag -d v0.9
-Deleted tag 'v0.9' (was 1a2b3c4)
 ```
 
 <!--
-`git tag` 不帶參數就列出全部標籤。`git tag -l` 加萬用字元可以篩選，例如只看 v1.x 系列。`git show <tag>` 對 annotated tag 很有用，可以看到完整的打標籤資訊。注意 `git tag -d` 只刪除本地端，遠端的標籤要另外處理。接下來我們看推送標籤的部分。
+`git tag` 不帶參數就列出全部標籤。`git tag -l` 加萬用字元可以篩選，例如只看 v1.x 系列。`git show <tag>` 對 annotated tag 很有用，可以看到完整的打標籤資訊。接下來看刪除標籤的方式。
+-->
+
+---
+
+# 刪除標籤
+
+```bash
+# 刪除本地標籤
+$ git tag -d v0.9
+Deleted tag 'v0.9' (was 1a2b3c4)
+
+# 刪除遠端標籤
+$ git push origin --delete v0.9
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**注意：** `git tag -d` 只刪除本地端。遠端的標籤要另外用 `git push origin --delete <tag>` 處理，兩步驟缺一不可。
+
+</div>
+
+<!--
+注意 `git tag -d` 只刪除本地端，遠端的標籤要另外處理。接下來我們看推送標籤的部分。
 -->
 
 ---
@@ -205,21 +221,21 @@ Deleted tag 'v0.9' (was 1a2b3c4)
   <strong>⚠️ 注意：</strong><code>git push</code> 預設<strong>不會</strong>推送標籤！必須明確指定。
 </div>
 
-<br>
-
 ```bash
 # 推送單一標籤
 $ git push origin v1.0
 
 # 一次推送所有本地端有但遠端沒有的標籤
 $ git push origin --tags
-
-# 刪除遠端標籤（兩種寫法都可以）
-$ git push origin :refs/tags/v0.9
-$ git push origin --delete v0.9
 ```
 
-<br>
+<!--
+這是很多人第一次要發版時會卡的地方——`git push` 之後去 GitHub 找不到 Tag。原因就是 Git 預設不推送標籤，必須明確指定。接下來看指令速查表。
+-->
+
+---
+
+# 推送標籤到遠端：指令速查
 
 | 動作 | 指令 |
 | --- | --- |
@@ -227,8 +243,19 @@ $ git push origin --delete v0.9
 | 推送全部標籤 | `git push origin --tags` |
 | 刪除遠端標籤 | `git push origin --delete <tag>` |
 
+```bash
+# 刪除遠端標籤
+$ git push origin --delete v0.9
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**建議：** 刪除遠端標籤後，還要執行 `git tag -d <tag>` 把本地端的也一起清掉，保持同步。
+
+</div>
+
 <!--
-這是很多人第一次要發版時會卡的地方——`git push` 之後去 GitHub 找不到 Tag。原因就是 Git 預設不推送標籤，必須明確指定。`--tags` 旗標一次把本地有但遠端沒有的全部推過去，很方便。刪除遠端標籤的 `--delete` 寫法比較直覺，推薦用這個。接下來進入第二個主題，看標籤和分支在底層有什麼不同。
+`--tags` 旗標一次把本地有但遠端沒有的全部推過去，很方便。刪除遠端標籤的 `--delete` 寫法比較直覺，推薦用這個。接下來進入第二個主題，看標籤和分支在底層有什麼不同。
 -->
 
 ---
@@ -360,15 +387,12 @@ Git 有四種物件類型：Blob、Tree、Commit、Tag。Annotated tag 是獨立
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 5 結束
-
-### 用標籤標記每一個重要的里程碑
-
-<Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
+# Q & A
 
 <!--
-這章的重點整理：兩種標籤類型（lightweight vs annotated）、怎麼對過去的 commit 補打標籤、推送標籤到遠端的方式，以及標籤和分支在底層的根本差異——標籤是固定的，分支是移動的。下一章我們來看工作中最常踩到的幾個狀況題！
+這一章學了兩種標籤類型、如何對過去的 commit 補打標籤、推送標籤到遠端，以及標籤和分支的根本差異——標籤是靜態的，分支是動態的。如果還有任何疑問，歡迎提出來！
 -->

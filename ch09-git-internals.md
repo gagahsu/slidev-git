@@ -26,15 +26,16 @@ style: |
     text-align: center;
     font-family: monospace;
   }
+layout: default
 ---
 
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Ch 9
-# Git 底層原理
+<div class="flex flex-col justify-center items-center h-full" style="background: #ffffff;">
+  <p style="color: #d97706; font-size: 1rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.2rem;">Git 版本控制課程</p>
+  <h1 style="color: #92400e; font-size: 3.8rem; font-weight: 900; line-height: 1.15; margin-bottom: 1.5rem;">Git 底層原理</h1>
+  <div style="height: 4px; width: 320px; background: linear-gradient(90deg, #d97706, #fbbf24); border-radius: 2px; margin-bottom: 1.5rem;"></div>
+  <p style="color: #b45309; font-size: 1.15rem; font-style: italic;">「理解底層，讓操作更有把握」</p>
+  <Link to="home" style="margin-top: 2rem; color: #d97706; font-size: 0.9rem;">← 返回目錄</Link>
+</div>
 
 <!--
 這個章節把 Git 底層的核心概念拉出來單獨講清楚：物件模型、HEAD 指標、互動式暫存，以及分支的底層設計。這些知識不是操作 Git 的必要條件，但理解它們之後，很多「為什麼 Git 這樣運作」的問題就有了答案。
@@ -148,6 +149,14 @@ $ cat .git/HEAD
 ref: refs/heads/develop
 ```
 
+<!--
+可以把 HEAD 想成是書籤：你現在翻到哪一頁，HEAD 就指向哪一頁。通常 HEAD 是間接指向 commit 的：HEAD → 分支 → commit hash。接下來看 HEAD 的相對表示法。
+-->
+
+---
+
+# HEAD 的相對表示法
+
 | 表示法 | 意思 |
 | ------ | ---- |
 | `HEAD` | 目前的 commit |
@@ -155,8 +164,14 @@ ref: refs/heads/develop
 | `HEAD~3` | 前三個 commit |
 | `HEAD^2` | 合併 commit 的第二個父節點 |
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+很多 Git 指令都用到它：`git reset HEAD~1`、`git diff HEAD`、`git log HEAD`。`.git/HEAD` 這個檔案就是實際存放這個指標的地方，直接 `cat` 出來看會讓概念更具體。
+
+</div>
+
 <!--
-HEAD 值得花時間好好理解，因為很多 Git 指令都用到它——git reset HEAD~1、git diff HEAD、git log HEAD 等等。可以把 HEAD 想成是書籤：你現在翻到哪一頁，HEAD 就指向哪一頁。通常 HEAD 是間接指向 commit 的：HEAD -> 分支 -> commit hash。.git/HEAD 這個檔案就是實際存放這個指標的地方，直接 cat 出來看會讓概念更具體。接下來看 Detached HEAD 是怎麼回事。
+HEAD 值得花時間好好理解，因為很多 Git 指令都用到它。接下來看 Detached HEAD 是怎麼回事。
 -->
 
 ---
@@ -212,8 +227,6 @@ layout: default
 
 你在 `index.html` 裡同時修改了 header 和 footer，但想把它們分成兩次 commit，讓歷史更清晰。
 
-### git add -p：互動式分批暫存
-
 ```bash
 # 啟動互動式分塊選擇
 git add -p index.html
@@ -221,6 +234,14 @@ git add -p index.html
 # 或一次對所有改動過的檔案做選擇
 git add -p
 ```
+
+<!--
+這是讓 Git 歷史保持乾淨的秘密武器。Git 把檔案改動切成一塊一塊的 hunk，逐一問你要不要 stage。接下來看各選項的說明。
+-->
+
+---
+
+# git add -p：互動式分批暫存
 
 | 選項 | 說明 |
 | ---- | ---- |
@@ -232,7 +253,7 @@ git add -p
 | `?` | 顯示說明 |
 
 <!--
-這是讓 Git 歷史保持乾淨的秘密武器。開發時我們常常同時改了好幾個不相關的東西，懶得分次 commit。但等到 code review 或要找某個 bug 的時候，混在一起的 commit 就很惱人。git add -p 讓你在 add 的時候做選擇，Git 把檔案改動切成一塊一塊的 hunk，逐一問你要不要 stage。特別實用的是 s（split）可以把大 hunk 再切小，e（edit）可以精細到行。接下來看實際操作示範。
+開發時我們常常同時改了好幾個不相關的東西，懶得分次 commit。接下來看實際操作示範。
 -->
 
 ---
@@ -241,22 +262,34 @@ layout: default
 
 # git add -p 實際操作示範
 
+<div style="margin-bottom: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+💡 特別實用：`s`（split）可以把大 hunk 再切小，`e`（edit）可以精細到行。
+
+</div>
+
 ```text
 $ git add -p index.html
-diff --git a/index.html b/index.html
 @@ -1,5 +1,5 @@
 -<h1>Welcome</h1>
 +<h1>Welcome to Our Site</h1>
- <nav>...</nav>
-
 Stage this hunk [y,n,q,a,d,s,e,?]? y   ← 選 y，stage 這塊
 
 @@ -20,4 +20,4 @@
 -<footer>Copyright 2025</footer>
 +<footer>Copyright 2026</footer>
-
 Stage this hunk [y,n,q,a,d,s,e,?]? n   ← 選 n，跳過
 ```
+
+<!--
+Git 逐一顯示每個 hunk，你只要按一個字母做選擇，非常直覺。接下來看兩次分開 commit 的方式。
+-->
+
+---
+layout: default
+---
+
+# git add -p 實際操作示範：分次 commit
 
 ```bash
 # 第一次 commit：只有 header 的改動
@@ -270,7 +303,7 @@ $ git commit -m "Update footer copyright year"
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 用 <code>git diff --staged</code> 確認暫存區的內容後再 commit，確保只有想要的改動被加進去。</div>
 
 <!--
-把互動的過程視覺化展示出來，讓大家知道長什麼樣子。Git 逐一顯示每個 hunk，你只要按一個字母做選擇，非常直覺。這個習慣養成之後，git log 會變得非常漂亮：每個 commit 都是一個完整的「意圖」，以後要 cherry-pick 或 revert 某個功能也容易很多。不習慣 CLI 的同學，SourceTree 在 diff 視圖裡也支援用滑鼠選擇要 stage 的行，一樣好用。
+這個習慣養成之後，git log 會變得非常漂亮：每個 commit 都是一個完整的「意圖」，以後要 cherry-pick 或 revert 某個功能也容易很多。不習慣 CLI 的同學，SourceTree 在 diff 視圖裡也支援用滑鼠選擇要 stage 的行，一樣好用。
 -->
 
 ---
@@ -329,7 +362,19 @@ time git branch experiment/try-new-algo
 # real    0m0.001s   ← 1 毫秒！
 ```
 
-**對比 SVN 的做法：**
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**設計哲學：** Git 的分支如此輕量，正是為了讓你**毫無心理負擔地開分支**。每個小功能、每個實驗，都值得開一個分支。
+
+</div>
+
+<!--
+SVN 的 branch 是真的複製一份目錄，大型專案建立分支可能要等很久，也占用大量空間。接下來看 Git vs SVN 的比較。
+-->
+
+---
+
+# 建立分支：Git vs SVN
 
 | | Git | SVN |
 |--|-----|-----|
@@ -338,14 +383,14 @@ time git branch experiment/try-new-algo
 | **儲存空間** | 幾乎零成本 | 完整複製一份 |
 | **切換速度** | 快（只更新工作目錄差異） | 慢 |
 
-<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
 
-**設計哲學：** Git 的分支如此輕量，正是為了讓你**毫無心理負擔地開分支**。每個小功能、每個實驗，都值得開一個分支。
+理解這一點之後，就不會再有「這個改動太小，不值得開分支」的心理負擔了。Git 的分支只是移動一個指標，這個設計讓「頻繁開分支」變成可能。
 
 </div>
 
 <!--
-SVN 的 branch 是真的複製一份目錄，大型專案建立分支可能要等很久，也占用大量空間。Git 的分支只是移動一個指標，這個設計讓「頻繁開分支」變成可能，也是現代開發流程的基礎。理解這一點之後，就不會再有「這個改動太小，不值得開分支」的心理了。接下來看 HEAD 在分支中的角色。
+Git 的分支只是移動一個指標，這個設計讓「頻繁開分支」變成可能，也是現代開發流程的基礎。接下來看 HEAD 在分支中的角色。
 -->
 
 ---
@@ -425,9 +470,12 @@ Detached HEAD 聽起來很恐怖，但其實只是一種特殊狀態。在這個
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 9 結束
+# Q & A
 
-### Git 底層原理讓操作更有把握
+<!--
+這一章深入了 Git 的底層原理，從四種物件類型（blob、tree、commit、tag）到 HEAD 和 refs 的運作機制。理解底層讓你在操作 Git 時更有把握。如果有任何疑問歡迎提出！
+-->

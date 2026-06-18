@@ -117,7 +117,13 @@ A --- B --- C --- D --- E --- F  (main)
                hotfix/bug-123
 ```
 
-**常見的分支使用情境：**
+<!--
+有了分支，我們可以同時在多條時間線上工作。功能 A 在自己的線上，hotfix 又是另一條，它們互相不干擾。接下來看常見的使用情境。
+-->
+
+---
+
+# 分支的常見使用情境
 
 | 情境 | 說明 |
 |------|------|
@@ -128,7 +134,7 @@ A --- B --- C --- D --- E --- F  (main)
 | 版本發布 | 維護多個版本（v1.x、v2.x）各自的分支 |
 
 <!--
-有了分支，我們可以同時在多條時間線上工作。功能 A 在自己的線上，hotfix 又是另一條，它們互相不干擾。這就是為什麼現代開發流程，不管是 Git Flow、GitHub Flow 還是 trunk-based development，都以分支作為基礎。接下來看分支對多人協作的影響。
+這就是為什麼現代開發流程，不管是 Git Flow、GitHub Flow 還是 trunk-based development，都以分支作為基礎。接下來看分支對多人協作的影響。
 -->
 
 ---
@@ -179,7 +185,7 @@ class: flex flex-col justify-center items-center text-center
 
 ---
 
-# 查看與建立分支
+# 查看分支
 
 **查看所有分支：**
 
@@ -197,6 +203,14 @@ git branch -v       # 列出分支並顯示最新 commit
   hotfix/bug-123    h7i8j9k 修正驗證邏輯
 ```
 
+<!--
+`git branch -v` 這個參數特別好用，可以一眼看出每個分支現在指向哪個 commit，不用另外查 log。接下來看怎麼建立分支。
+-->
+
+---
+
+# 建立分支
+
 **建立新分支：**
 
 ```bash
@@ -210,7 +224,7 @@ git branch feature/payment    # 建立分支（停在目前位置，不切換）
 </div>
 
 <!--
-`git branch -v` 這個參數特別好用，可以一眼看出每個分支現在指向哪個 commit，不用另外查 log。要注意一個初學者常犯的錯：`git branch` 只是建立分支，不會自動切換過去，HEAD 還是停在原本的位置。想要切換過去的話，要再下一個指令，接下來我們就來看切換的方式。
+要注意一個初學者常犯的錯：`git branch` 只是建立分支，不會自動切換過去，HEAD 還是停在原本的位置。想要切換過去的話，要再下一個指令，接下來我們就來看切換的方式。
 -->
 
 ---
@@ -239,14 +253,29 @@ git switch -c feature/payment
 
 切換後，工作目錄的檔案會自動變成該分支的狀態。
 
+<!--
+Git 2.23 版把 `git checkout` 的功能拆成了 `git switch` 和 `git restore` 兩個指令，語意更清楚。`switch` 專門切換分支，`restore` 專門還原檔案。接下來看使用建議。
+-->
+
+---
+
+# 切換分支：使用建議
+
 <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
 
 **建議：** 新專案或新版 Git 使用 `git switch`，語意更清楚。`git checkout` 功能太多（切分支、還原檔案都是它），容易混淆。
 
 </div>
 
+| 指令 | 用途 |
+|------|------|
+| `git switch <branch>` | 切換到既有分支 |
+| `git switch -c <branch>` | 建立並切換（最常用） |
+| `git checkout <branch>` | 舊語法，同 switch |
+| `git checkout -b <branch>` | 舊語法，同 switch -c |
+
 <!--
-Git 2.23 版把 `git checkout` 的功能拆成了 `git switch` 和 `git restore` 兩個指令，語意更清楚。`switch` 專門切換分支，`restore` 專門還原檔案。我們建議新手優先學 `git switch`，比較不容易搞混。「建立並切換」是最常見的操作，每次開新功能都會用到。接下來看怎麼刪除分支。
+我們建議新手優先學 `git switch`，比較不容易搞混。「建立並切換」是最常見的操作，每次開新功能都會用到。接下來看怎麼刪除分支。
 -->
 
 ---
@@ -271,7 +300,13 @@ git branch -D feature/experiment    # 強制刪除，慎用！
 git push origin --delete feature/login
 ```
 
-**實際操作流程範例：**
+<!--
+記住小寫 `-d` 有保護機制，如果分支還沒合併會拒絕刪除；大寫 `-D` 則是強制刪除，不管有沒有合併都直接砍掉。接下來看完整操作流程。
+-->
+
+---
+
+# 刪除分支：完整操作流程
 
 ```bash
 git switch -c feature/payment    # 建立並切換
@@ -281,8 +316,14 @@ git merge feature/payment        # 合併
 git branch -d feature/payment   # 刪除已合併的分支
 ```
 
+| 指令 | 說明 |
+|------|------|
+| `git branch -d` | 安全刪除（已合併才能刪） |
+| `git branch -D` | 強制刪除（慎用！） |
+| `git push origin --delete` | 刪除遠端分支 |
+
 <!--
-分支的生命週期通常是：建立 → 開發 → 合併 → 刪除。記住小寫 `-d` 有保護機制，如果分支還沒合併會拒絕刪除；大寫 `-D` 則是強制刪除，不管有沒有合併都直接砍掉。後面有一個狀況題會說明萬一用 `-D` 刪錯了怎麼救回來。接下來我們來看合併的操作。
+分支的生命週期通常是：建立 → 開發 → 合併 → 刪除。後面有一個狀況題會說明萬一用 `-D` 刪錯了怎麼救回來。接下來我們來看合併的操作。
 -->
 
 ---
@@ -308,6 +349,20 @@ git switch main             # 先切換到要被合入的分支
 git merge feature/login     # 把 feature/login 合併進來
 ```
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**重點：** 合併時永遠是「切換到目標分支，再 merge 來源分支」。
+
+</div>
+
+<!--
+合併的方向很容易搞混，我們記住一個原則：你現在在哪個分支，就是把別人合進來。要把 feature 合進 main，就先切換到 main，再 merge feature。接下來看合併後怎麼確認結果。
+-->
+
+---
+
+# git merge 基本用法：確認結果
+
 **查看合併後的歷史：**
 
 ```bash
@@ -325,14 +380,8 @@ git log --oneline --graph --all
 * b2c3d4e 初始化專案
 ```
 
-<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
-
-**重點：** 合併時永遠是「切換到目標分支，再 merge 來源分支」。
-
-</div>
-
 <!--
-合併的方向很容易搞混，我們記住一個原則：你現在在哪個分支，就是把別人合進來。要把 feature 合進 main，就先切換到 main，再 merge feature。`git log --oneline --graph` 是確認合併結果的好工具，養成用這個指令確認的習慣之後，對分支結構的掌握度會提升很多。接下來看第一種合併模式：fast-forward。
+`git log --oneline --graph` 是確認合併結果的好工具，養成用這個指令確認的習慣之後，對分支結構的掌握度會提升很多。接下來看第一種合併模式：fast-forward。
 -->
 
 ---
@@ -359,13 +408,33 @@ git merge feature/login
 # Fast-forward
 ```
 
-**特性：**
+<!--
+想像一下，你開了一個分支去開發，這段時間 main 上什麼事都沒發生。這時候合併，Git 只需要把 main 的指標往前移動到 feature 的最新 commit 就好，不需要做任何額外的合併動作。接下來看 fast-forward 的特性。
+-->
+
+---
+
+# Fast-forward Merge：特性
+
+**Fast-forward 的特性：**
+
 - 不會產生新的合併 commit
 - 歷史線是線性的，看起來像從來沒有分支過
 - 如果不想要線性歷史，可以加 `--no-ff`
 
+```bash
+# 強制產生合併 commit（保留分支歷史）
+git merge --no-ff feature/login
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**何時用 --no-ff：** 希望從 log 圖上清楚看出這個功能是在獨立分支開發的，尤其適合團隊協作。
+
+</div>
+
 <!--
-想像一下，你開了一個分支去開發，這段時間 main 上什麼事都沒發生。這時候合併，Git 只需要把 main 的指標往前移動到 feature 的最新 commit 就好，不需要做任何額外的合併動作。結果是歷史看起來很乾淨，但也看不出來「曾經有個分支」。接下來看另一種情境：兩邊都有新 commit 的時候。
+結果是歷史看起來很乾淨，但也看不出來「曾經有個分支」。接下來看另一種情境：兩邊都有新 commit 的時候。
 -->
 
 ---
@@ -394,13 +463,27 @@ git merge feature/login
 # 輸出：Merge made by the 'ort' strategy.
 ```
 
+<!--
+3-way merge 的「3」指的是三個節點：兩個分支各自的最新 commit，以及它們的共同祖先。接下來看 3-way merge 的特性。
+-->
+
+---
+
+# 3-Way Merge：特性
+
 **特性：**
 - 產生一個新的合併 commit M
 - 保留了分支歷史（有「小耳朵」）
 - 歷史圖上可以看出曾經有哪些分支
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**為什麼叫 3-way：** Git 用三個版本做比較——兩個分支的最新 commit，加上它們的共同祖先 B。這樣才能正確判斷「這個改動是哪邊加的」，避免誤刪另一邊的修改。
+
+</div>
+
 <!--
-3-way merge 的「3」指的是三個節點：兩個分支各自的最新 commit，以及它們的共同祖先。Git 用這三個版本做比較，才能正確判斷「這個改動是哪邊加的」，避免誤刪另一邊的修改。這就是為什麼叫 3-way：不只看兩個版本的差，還要知道「從哪裡開始分開的」。接下來我們來看「小耳朵」的問題。
+不只看兩個版本的差，還要知道「從哪裡開始分開的」，這就是 3-way 的關鍵。接下來我們來看「小耳朵」的問題。
 -->
 
 ---
@@ -455,7 +538,13 @@ git merge --no-ff feature/login
 # 即使可以 fast-forward，也會強制產生合併 commit
 ```
 
-**比較：**
+<!--
+要不要加 `--no-ff` 是一個團隊風格的選擇，有些人喜歡線性的乾淨歷史，有些人喜歡保留分支痕跡。接下來看三種合併方式的比較。
+-->
+
+---
+
+# 三種合併方式比較
 
 | 合併方式 | 指令 | 產生合併 commit | 保留分支歷史 |
 |----------|------|:-:|:-:|
@@ -465,12 +554,12 @@ git merge --no-ff feature/login
 
 <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
 
-**團隊慣例：** 許多團隊規定 `merge --no-ff`，這樣從 log 上可以清楚看出每個功能分支的起訖。
+**團隊慣例：** 許多團隊規定 `merge --no-ff`，這樣從 log 上可以清楚看出每個功能分支的起訖。沒有絕對對錯，但整個團隊要統一規則。
 
 </div>
 
 <!--
-要不要加 `--no-ff` 是一個團隊風格的選擇，有些人喜歡線性的乾淨歷史，有些人喜歡保留分支痕跡。沒有絕對的對錯，但整個團隊要統一規則，否則 log 圖會很混亂。接下來我們來處理一個常見問題：合併後的分支要怎麼清理？
+沒有絕對的對錯，但整個團隊要統一規則，否則 log 圖會很混亂。接下來我們來處理一個常見問題：合併後的分支要怎麼清理？
 -->
 
 ---
@@ -509,35 +598,39 @@ $ git branch --no-merged
   experiment/new-ui  ← 還沒合併
 ```
 
+<!--
+已合併的分支即使刪掉，commit 還在，只是少了一個名字而已，所以可以放心刪。未合併的分支刪掉就是真的遺失那些 commit，需要謹慎。接下來看批次清理方式。
+-->
+
+---
+
+# 已合併 vs 未合併的分支：批次清理
+
 **批次刪除已合併分支（排除 main）：**
 
 ```bash
 git branch --merged | grep -v "main" | xargs git branch -d
 ```
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**建議：** 定期執行 `git branch --merged` 確認清單，再批次刪除，保持分支列表乾淨。已合併的分支刪掉只是少了名字，commit 本體還在。
+
+</div>
+
 <!--
-`git branch --merged` 非常好用，定期執行可以保持分支列表乾淨。已合併的分支即使刪掉，commit 還在，只是少了一個名字而已，所以可以放心刪。未合併的分支刪掉就是真的遺失那些 commit，需要謹慎。接下來看遠端分支的清理方式。
+`git branch --merged` 非常好用，定期執行可以保持分支列表乾淨。接下來看遠端分支的清理方式。
 -->
 
 ---
 
-# 分支清理策略
+# 分支清理策略：本地
 
 **本地分支清理：**
 
 ```bash
 git branch -d feature/login     # 刪除已合併的本地分支
 git branch -D experiment/failed # 強制刪除（不論合併狀態）
-```
-
-**遠端分支清理：**
-
-```bash
-git push origin --delete feature/login   # 刪除遠端分支
-
-# 清理已被刪除的遠端追蹤引用
-git fetch --prune
-git remote prune origin
 ```
 
 **建議的清理流程：**
@@ -549,7 +642,31 @@ git remote prune origin
 | 同步遠端 | `git fetch --prune` 清除失效的遠端引用 |
 
 <!--
-遠端分支的清理是很多人忽略的地方。當同事在 GitHub 上刪除了某個分支，你本地還是會有一個 `origin/feature-xxx` 的追蹤引用，但那個遠端分支已經不存在了。`git fetch --prune` 可以把這些失效的引用清掉，讓 `git branch -a` 的輸出更整潔。接下來我們來處理一個比較緊張的狀況：手滑刪掉了還沒合併的分支。
+分支用完就刪是個好習慣，避免分支列表越來越長。接下來看遠端分支的清理方式。
+-->
+
+---
+
+# 分支清理策略：遠端
+
+**遠端分支清理：**
+
+```bash
+git push origin --delete feature/login   # 刪除遠端分支
+
+# 清理已被刪除的遠端追蹤引用
+git fetch --prune
+git remote prune origin
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**說明：** 當同事在 GitHub 上刪除了分支，你本地還是會有 `origin/feature-xxx` 的追蹤引用。`git fetch --prune` 可以清掉這些失效引用，讓 `git branch -a` 的輸出更整潔。
+
+</div>
+
+<!--
+遠端分支的清理是很多人忽略的地方。`git fetch --prune` 可以把這些失效的引用清掉，讓 `git branch -a` 的輸出更整潔。接下來我們來處理一個比較緊張的狀況：手滑刪掉了還沒合併的分支。
 -->
 
 ---
@@ -581,15 +698,15 @@ git branch -D feature/payment
 刪除前：
 main:           A --- B
                        \
-feature/payment:        C --- D --- E  ← 指標消失了！
+feature/payment:        C --- D --- E  ← 分支指標指向 E
 
 刪除後：
 main:           A --- B
                        \
-                        C --- D --- E  ← commit 還在，只是沒有名字了
+                        C --- D --- E  ← 指標消失！commit 還在，只是沒有名字了
 ```
 
-commit 還在！只是**沒有分支名稱指向它**，暫時找不到而已。
+Git 的分支本質上只是一個**指標**——一個指向某個 commit 的名字。刪除分支只是把這個名字移除，commits C-D-E 本體仍安全地存放在 `.git/objects` 裡，只是變成「孤兒 commit」，沒有名字就找不到它們了。
 
 <!--
 Git 的分支只是一個指標，刪除分支只是刪掉那個指標，commit 本身還留在 Git 的物件資料庫裡。Git 有垃圾回收機制，只有「孤立」超過一段時間後才會真正清除，所以刪除後趕快找，通常都救得回來。接下來看怎麼找回來。
@@ -615,6 +732,14 @@ c3d4e5f HEAD@{3}: commit: 建立 payment 模組
 b2c3d4e HEAD@{4}: checkout: moving from main to feature/payment
 ```
 
+<!--
+reflog 記錄了每一次 HEAD 移動的快照，只要操作在本地端發生，幾乎都可以用 reflog 找回來。找到分支最後一次的 commit hash，接下來就能重建分支。
+-->
+
+---
+
+# 用 git reflog 找回被刪的分支：重建
+
 找到最後一次在那個分支的 commit hash（這裡是 `e5f6g7h`），重新建立分支：
 
 ```bash
@@ -624,12 +749,12 @@ git branch feature/payment e5f6g7h
 
 <div style="margin-top: 1rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
 
-**reflog 是你的後悔藥：** 它記錄了最近 90 天的所有 HEAD 變動，reset、刪分支、甚至 amend 都找得回來。
+**reflog 是你的後悔藥：** 它記錄了最近 90 天的所有 HEAD 變動，reset、刪分支、甚至 amend 都找得回來。整個過程大概一分鐘內可以搞定。
 
 </div>
 
 <!--
-`git reflog` 記錄了每一次 HEAD 移動的快照，只要操作在本地端發生，幾乎都可以用 reflog 找回來。找到分支最後一次的 commit hash，再用 `git branch` 重新建立指標就好了，整個過程大概一分鐘內可以搞定。接下來我們來看合併衝突怎麼解決。
+找到分支最後一次的 commit hash，再用 `git branch` 重新建立指標就好了。接下來我們來看合併衝突怎麼解決。
 -->
 
 ---
@@ -660,7 +785,13 @@ feature 分支的 greeting.js：
 合併時：Git 不知道要選哪個！→ 衝突
 ```
 
-**哪些情況不會衝突？**
+<!--
+衝突只在 Git 無法確定「要保留哪個版本」的時候才會發生。接下來看哪些情況不會衝突。
+-->
+
+---
+
+# 哪些情況會衝突？
 
 | 情境 | 結果 |
 |------|------|
@@ -669,8 +800,14 @@ feature 分支的 greeting.js：
 | 兩個分支修改**同一行** | 衝突！需要手動解決 |
 | 一方刪除、另一方修改同一檔案 | 衝突！需要手動決定 |
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**提醒：** 合併後最好確認結果，不要完全依賴 Git 的自動判斷——不同行自動合併了，不代表邏輯上沒問題。
+
+</div>
+
 <!--
-衝突只在 Git 無法確定「要保留哪個版本」的時候才會發生。你有沒有遇過，改了同一個檔案，merge 之後發現對方的改動消失了？那很可能是修改了不同行，Git 自動合併了，但結果不是你預期的。所以合併後最好還是確認一下結果，而不是完全依賴 Git 的自動判斷。接下來看衝突標記長什麼樣子。
+你有沒有遇過，改了同一個檔案，merge 之後發現對方的改動消失了？那很可能是修改了不同行，Git 自動合併了，但結果不是你預期的。接下來看衝突標記長什麼樣子。
 -->
 
 ---
@@ -687,7 +824,13 @@ console.log("Hello, Git!");
 >>>>>>> feature/greeting
 ```
 
-**三個區段的意義：**
+<!--
+衝突標記是 Git 留給你的提示，不是程式的一部分，千萬不要直接拿去執行。接下來看各區段的意義。
+-->
+
+---
+
+# Git 衝突標記：區段說明
 
 | 標記 | 說明 |
 |------|------|
@@ -695,10 +838,16 @@ console.log("Hello, Git!");
 | `=======` | 分隔線 |
 | `>>>>>>> feature/greeting` | 要合併進來的分支的內容 |
 
-**你的任務：**編輯這個檔案，決定最終要留什麼，然後**刪掉所有標記**。
+**你的任務：** 編輯這個檔案，決定最終要留什麼，然後**刪掉所有標記**。
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+可以選其中一個版本，也可以兩個都留，甚至寫全新版本——完全由你決定。
+
+</div>
 
 <!--
-衝突標記是 Git 留給你的提示，不是程式的一部分，千萬不要直接拿去執行。你需要把這三個區段的標記全部刪掉，留下你想要的最終內容。可以選其中一個版本，也可以兩個都留，甚至寫一個全新的版本，完全由你決定。接下來看完整的解決流程。
+你需要把這三個區段的標記全部刪掉，留下你想要的最終內容。接下來看完整的解決流程。
 -->
 
 ---
@@ -726,28 +875,42 @@ git add src/greeting.js     # 標記這個檔案已解決
 git commit                  # 完成合併 commit（訊息已預填）
 ```
 
-**使用 VS Code 解決衝突（推薦）：**
-
-```bash
-# 在 VS Code 中開啟有衝突的檔案
-# 會看到 "Accept Current Change / Accept Incoming Change / Accept Both" 按鈕
-code src/greeting.js
-```
-
 <!--
-解決衝突的核心流程就三步：編輯、`git add`、`git commit`。VS Code 的 merge editor 特別好用，會用顏色區分雙方的改動，有按鈕可以直接選擇要哪個版本，不需要手動刪除標記符號。如果你習慣用其他工具，也可以透過 `git mergetool` 配置。接下來我們來看兩個冷知識，了解 Git 分支的底層設計。
+解決衝突的核心流程就三步：編輯、`git add`、`git commit`。接下來看用 VS Code 解決衝突的方式。
 -->
 
 ---
-layout: end
----
 
-# Ch 3 結束
+# 衝突解決流程：使用 VS Code（推薦）
 
-### 分支讓開發更靈活
+```bash
+# 在 VS Code 中開啟有衝突的檔案
+code src/greeting.js
+```
 
-<Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
+VS Code 的 merge editor 會用顏色區分雙方改動，有按鈕可以直接選擇：
+
+- **Accept Current Change** — 保留 HEAD（你的）版本
+- **Accept Incoming Change** — 保留合併進來的版本
+- **Accept Both Changes** — 兩個都保留
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+不需要手動刪除標記符號，點按鈕即可。其他工具也可透過 `git mergetool` 配置。
+
+</div>
 
 <!--
-第三章到這裡結束。我們從「為什麼要分支」出發，學了分支的基本操作、合併的兩種模式，以及衝突解決的完整流程。這些概念都是團隊協作的基礎，下一章我們會開始看如何透過 GitHub 進行遠端共同協作。
+VS Code 的 merge editor 特別好用，有按鈕可以直接選擇要哪個版本，不需要手動刪除標記符號。如果你習慣用其他工具，也可以透過 `git mergetool` 配置。
+-->
+
+---
+layout: section
+class: flex flex-col justify-center items-center text-center
+---
+
+# Q & A
+
+<!--
+這一章學了分支的建立與切換、Fast-forward 與 3-way merge 的差異，以及如何解決合併衝突。如果對分支操作或 merge 策略還有疑問，現在是個好時機。下一章我們把本地的 Git 連上 GitHub，進入遠端協作！
 -->

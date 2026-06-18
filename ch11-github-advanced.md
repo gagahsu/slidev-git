@@ -26,15 +26,16 @@ style: |
     text-align: center;
     font-family: monospace;
   }
+layout: default
 ---
 
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Ch 11
-# 進階 GitHub 操作
+<div class="flex flex-col justify-center items-center h-full" style="background: #ffffff;">
+  <p style="color: #d97706; font-size: 1rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.2rem;">Git 版本控制課程</p>
+  <h1 style="color: #92400e; font-size: 3.8rem; font-weight: 900; line-height: 1.15; margin-bottom: 1.5rem;">進階 GitHub 操作</h1>
+  <div style="height: 4px; width: 320px; background: linear-gradient(90deg, #d97706, #fbbf24); border-radius: 2px; margin-bottom: 1.5rem;"></div>
+  <p style="color: #b45309; font-size: 1.15rem; font-style: italic;">「GitHub 是工具，Git 才是核心」</p>
+  <Link to="home" style="margin-top: 2rem; color: #d97706; font-size: 0.9rem;">← 返回目錄</Link>
+</div>
 
 <!--
 這個章節涵蓋幾個 GitHub 上的進階操作：同步 Fork、刪除遠端分支、正確使用 force push，以及 GitHub Pages 靜態網站托管。最後也會聊聊 Git 的分散式本質——不是一定要有 GitHub 才能協作。
@@ -64,14 +65,22 @@ git remote add upstream git@github.com:original-owner/repo.git
 
 # 確認兩個遠端都設定好了
 git remote -v
-# origin    git@github.com:YOUR_USERNAME/repo.git (fetch)
-# origin    git@github.com:YOUR_USERNAME/repo.git (push)
-# upstream  git@github.com:original-owner/repo.git (fetch)
-# upstream  git@github.com:original-owner/repo.git (push)
+# origin    git@github.com:YOUR_USERNAME/repo.git
+# upstream  git@github.com:original-owner/repo.git
 
 # 第二步：從 upstream 取得最新資料
 git fetch upstream
+```
 
+<!--
+upstream 這個名字代表「上游」，也就是原始的 repo。接下來看合併與推回的步驟。
+-->
+
+---
+
+# 同步 Fork 與原始 Repo：合併與推回
+
+```bash
 # 第三步：把 upstream/main 的更新合併到本機 main
 git checkout main
 git merge upstream/main
@@ -82,8 +91,14 @@ git rebase upstream/main
 git push origin main
 ```
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**快捷方式：** GitHub 網頁上提供「Sync fork」按鈕，一鍵同步，不需要手動執行以上指令。保持 fork 與 upstream 同步，PR 被合併的機率也會更高。
+
+</div>
+
 <!--
-upstream 這個名字代表「上游」，也就是原始的 repo。這個 sync fork 的流程在開源貢獻中非常常用。如果你的 fork 落後太多，提出的 PR 就可能有很多衝突，維護者要花很多時間處理，你的 PR 被合併的機率也會降低。保持 fork 和 upstream 同步是個好習慣，GitHub 現在也在網頁上提供了「Sync fork」按鈕，一鍵就能同步，非常方便。
+這個 sync fork 的流程在開源貢獻中非常常用。如果你的 fork 落後太多，提出的 PR 就可能有很多衝突，維護者要花很多時間處理，你的 PR 被合併的機率也會降低。
 -->
 
 ---
@@ -108,28 +123,36 @@ git push origin --delete feature/login
 
 # 方法二：舊語法（效果相同）
 git push origin :feature/login
-# 注意：分支名前面有個冒號，意思是「推送空的內容到遠端分支」
+# 分支名前面有個冒號，意思是「推送空的內容到遠端分支」
 
-# 刪除本機的遠端追蹤分支（清理已不存在的遠端分支引用）
+# 清理已不存在的遠端分支引用
 git remote prune origin
 # 或是在 fetch 時順便清理
 git fetch --prune
 ```
 
-<br>
+<!--
+現代的 --delete 語法更易讀，建議用這個。prune 執行後會把本機記錄的「已刪除遠端分支引用」清掉，讓 git branch -r 的結果清爽。接下來看注意事項和自動刪除設定。
+-->
 
-<div style="background: #fff8f0; border-left: 4px solid #d97706; padding: 1rem 1.5rem; border-radius: 4px;">
+---
+
+# 刪除遠端分支：注意事項
+
+<div style="background: #fff8f0; border-left: 4px solid #d97706; padding: 1rem 1.5rem; border-radius: 4px; margin-bottom: 1.2rem;">
 
 **注意：** 刪除遠端分支**不會**影響你的本機分支，只是把 GitHub 上的分支移除。如果你想同時刪除本機分支：`git branch -d feature/login`
 
 </div>
 
-<br>
+**GitHub 自動刪除設定：**
 
-**GitHub 自動刪除設定：** Repo Settings → General → 勾選 **Automatically delete head branches**，PR merge 後自動刪除遠端分支。
+Repo **Settings → General** → 勾選 **Automatically delete head branches**
+
+PR merge 後自動刪除遠端分支，省去手動清理的麻煩，強烈推薦開啟。
 
 <!--
-git push origin :branchname 這個舊語法很難直覺理解，但你在舊教材裡常看到，要知道它的意思：「推送空的內容到 feature/login，等於刪掉它」。現代的 --delete 語法更易讀，建議用這個。prune 的意思是「修剪」，執行後會把本機記錄的「已刪除遠端分支引用」清掉，讓 git branch -r 的結果清爽一些。GitHub 的自動刪除設定非常推薦開啟，省去手動清理的麻煩。
+GitHub 的自動刪除設定非常推薦開啟，省去手動清理的麻煩。
 -->
 
 ---
@@ -174,7 +197,7 @@ force push 的問題在於，它是以「你的版本為主」強制覆蓋遠端
 
 # Force Push 的正確使用時機
 
-**`git push --force-with-lease` — 更安全的 force push**
+**`--force-with-lease` — 更安全的 force push**
 
 ```bash
 # 不安全：直接覆蓋遠端，不管有沒有別人的新 commit
@@ -182,12 +205,22 @@ git push --force
 
 # 較安全：先確認遠端沒有你不知道的新 commit，再 force push
 git push --force-with-lease
-# 如果遠端有新 commit（別人 push 了），這個指令會失敗，保護你不誤刪別人的工作
+# 如果遠端有新 commit（別人 push 了），這個指令會失敗
 ```
 
-<br>
+<div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
 
-**何時可以 force push：**
+`--force-with-lease` 記住你上次 fetch 時遠端的位置，若有人在你之後 push 了新 commit，就拒絕 force push，保護你不誤刪別人的工作。
+
+</div>
+
+<!--
+--force-with-lease 是個非常好的設計，給 force push 加了一個安全網。接下來看何時可以 force push。
+-->
+
+---
+
+# Force Push：何時可以用？
 
 | 情境 | 可以？ | 說明 |
 | --- | --- | --- |
@@ -196,8 +229,14 @@ git push --force-with-lease
 | 共享的 develop 分支 | ⚠️ | 事先溝通，大家停工再做 |
 | main / master 分支 | ❌ | 嚴格禁止 |
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
+
+很多公司的規範：可以用 `--force-with-lease`，但禁止用 `--force`。
+
+</div>
+
 <!--
---force-with-lease 是個非常好的設計，給 force push 加了一個安全網。它的原理是：記住你上次 fetch 時遠端分支的位置，如果現在遠端的位置和你記錄的不一樣，代表有人 push 了新 commit，就拒絕 force push。不是百分之百安全，但比無腦 --force 安全很多。很多公司的規範是「可以用 --force-with-lease，但禁止用 --force」。接下來換個輕鬆的主題。
+不是百分之百安全，但比無腦 --force 安全很多。接下來換個輕鬆的主題。
 -->
 
 ---
@@ -272,15 +311,28 @@ GitHub Pages 是完全免費的靜態網站托管，由 GitHub 的 CDN 提供服
 
 # GitHub Pages 進階：搭配靜態網站生成器
 
-```bash
-# 搭配 Jekyll（GitHub 原生支援，無需 Actions）
-# 只要 repo 根目錄有 _config.yml，GitHub 自動 build
+| 框架 | 說明 |
+| --- | --- |
+| **Jekyll** | GitHub 原生支援，只要有 `_config.yml` 就自動 build，無需 Actions |
+| **Hugo** | Go 寫的，build 速度極快，需搭配 Actions 部署 |
+| **Astro / VitePress** | 現代前端生態，需搭配 Actions 部署 |
 
-# 搭配 Hugo 或其他框架，用 GitHub Actions 自動部署
-# .github/workflows/deploy.yml 範例：
-```
+<div style="margin-top: 1.2rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+搭配 GitHub Actions：每次 push 到 main 自動 build + deploy，完全自動化，免費又穩定。
+
+</div>
+
+<!--
+Jekyll 是 GitHub 原生支援的，push markdown 就自動編譯，不需要額外設定。但 Jekyll 比較慢，現在更多人用 Hugo 或 Astro。接下來看 Actions 的設定範例。
+-->
+
+---
+
+# GitHub Pages 進階：Actions 自動部署範例
 
 ```yaml
+# .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 on:
   push:
@@ -300,7 +352,7 @@ jobs:
 ```
 
 <!--
-靜態網站生成器搭配 GitHub Pages 是技術部落格的主流方案。Jekyll 是 GitHub 原生支援的，push markdown 就自動編譯，不需要額外設定。但 Jekyll 比較慢，現在更多人用 Hugo（Go 寫的，build 超快）或 Astro。搭配 GitHub Actions，每次 push 到 main 就自動 build 和部署，完全自動化，免費又穩定，是個人作品集的好選擇。
+搭配 GitHub Actions，每次 push 到 main 就自動 build 和部署，完全自動化，免費又穩定，是個人作品集的好選擇。
 -->
 
 ---
@@ -322,22 +374,21 @@ class: flex flex-col justify-center items-center text-center
 GitHub 只是協調多人協作最方便的工具，但 Git 本身是**分散式**的，不需要中央伺服器。
 
 ```bash
-# 把本機的某個目錄設定為「遠端」（同一台電腦的不同路徑）
+# 把本機的某個目錄設定為「遠端」
 git remote add local-backup /Users/alice/Backups/my-project.git
-
-# 推送到本機路徑
 git push local-backup main
 
 # 用本機路徑 clone
 git clone /path/to/another/repo my-copy
-
-# 用 file:// 協定（強制使用 Git 協定，不走捷徑）
-git clone file:///path/to/another/repo my-copy
 ```
 
-<br>
+<!--
+Git 是去中心化的，每個人的本機都是一個完整的 repo，GitHub 只是大家約定好的「協調點」。接下來看區網架設方式。
+-->
 
-**在區域網路內架設 Git 伺服器：**
+---
+
+# Git 的分散式本質：區網架設
 
 ```bash
 # 用 git daemon 在區網提供 Git 服務（唯讀）
@@ -347,8 +398,14 @@ git daemon --reuseaddr --base-path=/srv/git/ /srv/git/
 git clone git://192.168.1.100/my-project.git
 ```
 
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+在公司內網不通外網、或保密專案不能放雲端的情境下，可以用 `git daemon` 或在自己的伺服器上架設 Git 服務。兩台電腦在同一個 WiFi 下，甚至可以直接互相 push/pull，完全不需要任何伺服器。
+
+</div>
+
 <!--
-這個冷知識讓我們更深刻地理解 Git 的設計哲學。Git 是去中心化的，每個人的本機都是一個完整的 repo，GitHub 只是大家約定好的「協調點」。在公司內網不通外網、或保密專案不能放雲端的情境下，就可以用 git daemon 或在自己的伺服器上架設 Git 服務。兩台電腦在同一個 WiFi 下，甚至可以直接互相 push/pull，完全不需要任何伺服器。接下來我們來看各種替代方案的總覽。
+接下來我們來看各種替代方案的總覽。
 -->
 
 ---
@@ -361,25 +418,37 @@ git clone git://192.168.1.100/my-project.git
 | USB 隨身碟 | `git clone /media/usb/repo.git` | 離線環境 |
 | 區網 Git daemon | `git daemon` | 辦公室內網 |
 | SSH 伺服器 | `git clone user@host:/path/repo.git` | 自架 SSH 服務器 |
-| 自架 GitLab | GitLab Community Edition | 需要完整 GitHub 功能但要自架 |
-| Gitea | 輕量 Go 寫的自架方案 | 低資源需求的私有 Git 服務 |
 
-<br>
+<!--
+不需要完整的 web UI，直接用 bare git repository 加 SSH 是最簡單的方案，什麼都不用安裝。接下來看自架 Git 服務的選項。
+-->
 
-<div style="background: #fff8f0; border-left: 4px solid #d97706; padding: 1rem 1.5rem; border-radius: 4px;">
+---
+
+# 沒有 GitHub 的協作方式：自架 Git 服務
+
+| 方案 | 說明 | 適合場景 |
+| --- | --- | --- |
+| **Gitea** | 輕量 Go 寫的自架方案，一個 binary 就能跑 | 低資源需求的私有 Git 服務，可部署在樹莓派 |
+| **GitLab CE** | 功能完整，有內建 CI/CD | 需要完整 GitHub 功能但要自架 |
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
 
 **結論：** GitHub 提供的是**便利性**和**社群**，不是 Git 的必要元件。理解這一點，才能真正理解 Git 的架構設計。
 
 </div>
 
 <!--
-需要私有 Git 服務時，Gitea 是個很輕量的選擇，用 Go 寫的，一個 binary 就能跑，可以部署在樹莓派上。GitLab Community Edition 功能更完整，有內建 CI/CD，但資源需求也更高。如果只是個人小團隊，Gitea 就夠用了。當然，如果不需要完整的 web UI，直接用 bare git repository 加 SSH 是最簡單的方案，什麼都不用安裝。
+需要私有 Git 服務時，Gitea 是個很輕量的選擇，用 Go 寫的，一個 binary 就能跑，可以部署在樹莓派上。GitLab Community Edition 功能更完整，有內建 CI/CD，但資源需求也更高。如果只是個人小團隊，Gitea 就夠用了。
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 11 結束
+# Q & A
 
-### GitHub 是工具，Git 才是核心
+<!--
+這一章看了 GitHub 的進階功能，從 GitHub Actions CI/CD、protected branches，到 fork 工作流程，以及理解 Git 和 GitHub 的本質差異。如果有任何問題，歡迎提出來！
+-->

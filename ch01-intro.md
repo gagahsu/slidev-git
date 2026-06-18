@@ -740,15 +740,12 @@ Config file location
 -->
 
 ---
-layout: end
+layout: section
+class: flex flex-col justify-center items-center text-center
 ---
 
-# Ch 1 結束
-
-### 版本控制，從 Git 開始
-
-<Link to="home" style="margin-top: 1.5rem; display: inline-block; color: #d97706;">← 返回目錄</Link>
+# Q & A
 
 <!--
-第一章到這裡告一段落。今天的內容偏觀念多一點，很多同學可能會覺得「還沒有動手做好像還不踏實」，這是正常的感覺。觀念紮實了，後面章節的學習效率會快很多。回去之後可以把安裝和初始設定做好，確認 git --version 可以執行、git config --global user.name 有設正確，這樣下次上課就能直接從操作開始。有任何問題歡迎隨時提問，我們下一章見！
+這一章建立了版本控制的基礎觀念，從為什麼要用 Git、三大區域和物件模型，到安裝設定與查詢說明文件。如果還有任何疑問，現在是個好時機提出來。下一章我們就要開始動手操作了！
 -->
