@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: Git 底層原理
-routeAlias: ch09
+routeAlias: ch10
 style: |
   .slidev-layout p,
   .slidev-layout li,

@@ -57,7 +57,7 @@ layout: default
 
 
 <!--
-今天一共有七個主題，前兩個是觀念層面的，後五個是實作層面的。第一次學 Git 最重要的不是背下所有指令，而是理解 Git 的思考方式——指令忘了可以查，但觀念搞通了，以後學任何進階功能都會輕鬆很多。我們先從「沒有版本控制的世界」開始。
+今天一共有六個主題，前三個是觀念層面的，後三個是實作層面的。第一次學 Git 最重要的不是背下所有指令，而是理解 Git 的思考方式——指令忘了可以查，但觀念搞通了，以後學任何進階功能都會輕鬆很多。我們先從「沒有版本控制的世界」開始。
 -->
 
 ---
@@ -317,42 +317,7 @@ class: flex flex-col justify-center items-center text-center
 
 
 <!--
-這張表格把三個區域對應到 git status 輸出的關鍵字，建議先記下來。執行 git status 看到 modified 代表檔案在工作目錄被改了但還沒 add；staged 代表已經 add 進暫存區等待 commit；committed 代表安全存入 .git 歷史庫。下面的流程圖要特別注意那個循環：commit 之後如果你又改了檔案，它會變成 modified，得再走一次 add 到 commit 的流程，這是很多新手容易忽略的地方。接下來看 git status 的實際輸出。
--->
-
----
-
-# 查看目前狀態
-
-```bash
-# 查看工作目錄與暫存區的狀態
-git status
-
-# 簡短模式
-git status -s
-```
-
-
-**輸出範例：**
-
-```
-On branch main
-Changes to be committed:        ← 已暫存（綠色）
-  (use "git restore --staged <file>..." to unstage)
-        new file:   hello.txt
-
-Changes not staged for commit:  ← 已修改但未暫存（紅色）
-  (use "git add <file>..." to update what will be committed)
-        modified:   README.md
-
-Untracked files:                ← 未追蹤（紅色）
-  (use "git add <file>..." to include in what will be committed)
-        notes.txt
-```
-
-
-<!--
-git status 是我們在用 Git 時最常執行的指令，沒有之一。不管做任何操作之前，先跑一下 git status 確認狀態，這個習慣能幫我們避免很多失誤。輸出分三個區塊：Changes to be committed 是暫存區的內容，顯示綠色；Changes not staged 是改了但還沒 add 的，紅色；Untracked files 是 Git 完全不認識的新檔案，也是紅色。Git 還很貼心地在每個區塊下方寫了下一步該執行什麼指令，非常適合新手參考。接下來我們來實際把 Git 裝起來。
+這張表格把三個區域對應到 git status 輸出的關鍵字，建議先記下來。執行 git status 看到 modified 代表檔案在工作目錄被改了但還沒 add；staged 代表已經 add 進暫存區等待 commit；committed 代表安全存入 .git 歷史庫。下面的流程圖要特別注意那個循環：commit 之後如果你又改了檔案，它會變成 modified，得再走一次 add 到 commit 的流程，這是很多新手容易忽略的地方。這三個區域對應到的 `git status` 輸出，下一章實際操作時就會看到。接下來我們來實際把 Git 裝起來。
 -->
 
 ---
@@ -360,7 +325,7 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 4
+# Part 3
 # 安裝 Git
 
 <!--
@@ -482,7 +447,7 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 5
+# Part 4
 # 初始設定
 
 <!--
@@ -657,7 +622,7 @@ layout: section
 class: flex flex-col justify-center items-center text-center
 ---
 
-# Part 6
+# Part 5
 # 取得說明
 
 <!--
@@ -719,7 +684,6 @@ Config file location
 - **版本控制** 讓每次修改可追蹤、可回溯、可協作
 - Git 屬於**分散式 VCS**，每人都有完整歷史，速度快、可離線工作
 - Git 三大區域：**Working Directory → Staging Area → Repository**
-- Git 以 **SHA-1 物件（Blob / Tree / Commit / Tag）** 儲存所有資料
 - 安裝後必做：`git config --global user.name / user.email`
 - 設定分三層：**system < global < local**，越下層優先
 - 遇到問題善用 `git help <command>` 或 `git <command> -h`
@@ -728,7 +692,7 @@ Config file location
 
 <div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
 
-**下一章：** Ch 2 基本操作 — `git init` / `git add` / `git commit` / `git status` / `git log`
+**下一章：** Ch 2 開始使用 Git — 從 `git init` 出發，學會 add / commit / status / log
 
 <Link to="ch02" style="color: #d97706; font-weight: 600;">前往 Ch 2 →</Link>
 
@@ -736,7 +700,7 @@ Config file location
 
 
 <!--
-我們快速回顧今天學到的七個重點。版本控制解決了「檔案命名災難」和「多人協作混亂」兩大痛點；Git 的分散式架構讓每個人有完整歷史，即使離線也能工作；三大區域是理解所有 Git 操作的基礎；物件模型讓你知道 Git 怎麼儲存資料；安裝後的必要設定不要跳過；設定的三個層級讓你按需求靈活控制；遇到問題先查文件，不要猜。下一章我們就要開始動手做，把今天學到的觀念轉化成實際操作的技能！
+我們快速回顧今天學到的六個重點。版本控制解決了「檔案命名災難」和「多人協作混亂」兩大痛點；Git 的分散式架構讓每個人有完整歷史，即使離線也能工作；三大區域是理解所有 Git 操作的基礎；安裝後的必要設定不要跳過；設定的三個層級讓你按需求靈活控制；遇到問題先查文件，不要猜。下一章我們就要開始動手做，把今天學到的觀念轉化成實際操作的技能！
 -->
 
 ---
@@ -747,5 +711,5 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章建立了版本控制的基礎觀念，從為什麼要用 Git、三大區域和物件模型，到安裝設定與查詢說明文件。如果還有任何疑問，現在是個好時機提出來。下一章我們就要開始動手操作了！
+這一章建立了版本控制的基礎觀念，從為什麼要用 Git、Git 的三大區域，到安裝設定與查詢說明文件。如果還有任何疑問，現在是個好時機提出來。下一章我們就要開始動手操作，從 git init 建立第一個 repository 開始！
 -->

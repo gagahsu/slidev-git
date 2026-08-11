@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 標籤
-routeAlias: ch05
+routeAlias: ch06
 layout: default
 style: |
   .slidev-layout p,

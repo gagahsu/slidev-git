@@ -108,56 +108,61 @@ style: |
     </Link>
     <Link to="ch02" class="chapter-card">
       <div class="chapter-num">Ch 2</div>
-      <div>基本操作</div>
+      <div>開始使用 Git</div>
       <div class="chapter-subtitle">init / add / commit / status / log</div>
     </Link>
     <Link to="ch03" class="chapter-card">
       <div class="chapter-num">Ch 3</div>
-      <div>使用分支</div>
-      <div class="chapter-subtitle">branch / merge / conflict</div>
+      <div>遠端共同協作</div>
+      <div class="chapter-subtitle">GitHub / push / pull / PR</div>
     </Link>
     <Link to="ch04" class="chapter-card">
       <div class="chapter-num">Ch 4</div>
-      <div>遠端共同協作</div>
-      <div class="chapter-subtitle">GitHub / push / pull / PR</div>
+      <div>GitHub Desktop</div>
+      <div class="chapter-subtitle">介紹 / 下載安裝 / 基本使用</div>
+    </Link>
+    <Link to="ch05" class="chapter-card">
+      <div class="chapter-num">Ch 5</div>
+      <div>使用分支</div>
+      <div class="chapter-subtitle">branch / merge / conflict</div>
     </Link>
   </div>
 
   <div style="height:1px; width:100%; max-width:960px; background:linear-gradient(90deg, transparent, #d97706, transparent); margin:1.6rem 0 0;"></div>
 
   <div class="chapter-grid" style="margin-top:1rem;">
-    <Link to="ch05" class="chapter-card-adv">
-      <div class="chapter-num">Ch 5</div>
+    <Link to="ch06" class="chapter-card-adv">
+      <div class="chapter-num">Ch 6</div>
       <div>標籤</div>
       <div class="chapter-subtitle">git tag / lightweight / annotated</div>
     </Link>
-    <Link to="ch06" class="chapter-card-adv">
-      <div class="chapter-num">Ch 6</div>
+    <Link to="ch07" class="chapter-card-adv">
+      <div class="chapter-num">Ch 7</div>
       <div>其它常見狀況題</div>
       <div class="chapter-subtitle">stash / cherry-pick / filter-repo</div>
     </Link>
-    <Link to="ch07" class="chapter-card-adv">
-      <div class="chapter-num">Ch 7</div>
+    <Link to="ch08" class="chapter-card-adv">
+      <div class="chapter-num">Ch 8</div>
       <div>修改歷史紀錄</div>
       <div class="chapter-subtitle">rebase -i / reset / revert</div>
     </Link>
-    <Link to="ch08" class="chapter-card-adv">
-      <div class="chapter-num">Ch 8</div>
+    <Link to="ch09" class="chapter-card-adv">
+      <div class="chapter-num">Ch 9</div>
       <div>使用 Git Flow</div>
       <div class="chapter-subtitle">feature / release / hotfix</div>
     </Link>
-    <Link to="ch09" class="chapter-card-adv">
-      <div class="chapter-num">Ch 9</div>
+    <Link to="ch10" class="chapter-card-adv">
+      <div class="chapter-num">Ch 10</div>
       <div>Git 底層原理</div>
       <div class="chapter-subtitle">物件模型 / HEAD / 分支指標</div>
     </Link>
-    <Link to="ch10" class="chapter-card-adv">
-      <div class="chapter-num">Ch 10</div>
+    <Link to="ch11" class="chapter-card-adv">
+      <div class="chapter-num">Ch 11</div>
       <div>進階操作技巧</div>
       <div class="chapter-subtitle">rebase / hotfix / commitlint</div>
     </Link>
-    <Link to="ch11" class="chapter-card-adv">
-      <div class="chapter-num">Ch 11</div>
+    <Link to="ch12" class="chapter-card-adv">
+      <div class="chapter-num">Ch 12</div>
       <div>進階 GitHub 操作</div>
       <div class="chapter-subtitle">fork sync / force push / Pages</div>
     </Link>
@@ -171,29 +176,32 @@ src: ./ch01-intro.md
 src: ./ch02-basic.md
 ---
 ---
-src: ./ch03-branch.md
+src: ./ch03-github.md
 ---
 ---
-src: ./ch04-github.md
+src: ./ch04-github-desktop.md
 ---
 ---
-src: ./ch05-tag.md
+src: ./ch05-branch.md
 ---
 ---
-src: ./ch06-situations.md
+src: ./ch06-tag.md
 ---
 ---
-src: ./ch07-history.md
+src: ./ch07-situations.md
 ---
 ---
-src: ./ch08-gitflow.md
+src: ./ch08-history.md
 ---
 ---
-src: ./ch09-git-internals.md
+src: ./ch09-gitflow.md
 ---
 ---
-src: ./ch10-advanced-workflow.md
+src: ./ch10-git-internals.md
 ---
 ---
-src: ./ch11-github-advanced.md
+src: ./ch11-advanced-workflow.md
+---
+---
+src: ./ch12-github-advanced.md
 ---

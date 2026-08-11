@@ -56,20 +56,21 @@ routeAlias: ch01
 | -- | ---- | ----- |
 | 1 | ch01-intro.md | Git 版本控制簡介 |
 | 2 | ch02-basic.md | 開始使用 Git |
-| 3 | ch03-branch.md | 使用分支 |
-| 4 | ch04-github.md | 遠端共同協作 - 使用 GitHub |
+| 3 | ch03-github.md | 遠端共同協作 - 使用 GitHub |
+| 4 | ch04-github-desktop.md | GitHub Desktop 介紹與使用 |
+| 5 | ch05-branch.md | 使用分支 |
 
 ### Advanced
 
 | Ch | File | Topic |
 | -- | ---- | ----- |
-| 5 | ch05-tag.md | 標籤 |
-| 6 | ch06-situations.md | 其它常見狀況題 |
-| 7 | ch07-history.md | 修改歷史紀錄 |
-| 8 | ch08-gitflow.md | 使用 Git Flow |
-| 9 | ch09-git-internals.md | Git 底層原理 |
-| 10 | ch10-advanced-workflow.md | 進階操作技巧 |
-| 11 | ch11-github-advanced.md | 進階 GitHub 操作 |
+| 6 | ch06-tag.md | 標籤 |
+| 7 | ch07-situations.md | 其它常見狀況題 |
+| 8 | ch08-history.md | 修改歷史紀錄 |
+| 9 | ch09-gitflow.md | 使用 Git Flow |
+| 10 | ch10-git-internals.md | Git 底層原理 |
+| 11 | ch11-advanced-workflow.md | 進階操作技巧 |
+| 12 | ch12-github-advanced.md | 進階 GitHub 操作 |
 
 ## Slidev Conventions
 

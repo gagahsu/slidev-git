@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 使用分支
-routeAlias: ch03
+routeAlias: ch05
 layout: default
 style: |
   .slidev-layout p,
@@ -41,7 +41,7 @@ style: |
 </div>
 
 <!--
-歡迎來到第三章：使用分支。分支可以說是 Git 最讓人驚艷的特性，也是很多人從其他版本控制工具換過來之後第一個愛上的功能。這一章我們會從「為什麼需要分支」開始，一路帶大家學建立、切換、合併，以及遇到問題時怎麼解決。接下來我們先來看本章大綱。
+歡迎來到第五章：使用分支。分支可以說是 Git 最讓人驚艷的特性，也是很多人從其他版本控制工具換過來之後第一個愛上的功能。這一章我們會從「為什麼需要分支」開始，一路帶大家學建立、切換、合併，以及遇到問題時怎麼解決。接下來我們先來看本章大綱。
 -->
 
 ---
@@ -53,13 +53,13 @@ layout: default
 - **為什麼要使用分支？** — 分支的用途與使用時機
 - **開始使用分支** — git branch / git checkout / git switch
 - **合併分支** — git merge / fast-forward / 3-way merge
-- **【狀況題】分支沒有小耳朵** — HEAD 與分支指標
-- **【常見問題】合併過的分支要留著嗎？** — 分支清理策略
+- **【狀況題】合併發生衝突了** — 衝突標記與解決流程
+- **【狀況題】分支沒有小耳朵** — fast-forward 與 --no-ff
+- **【常見問題】合併過的分支要留著嗎？** — 刪除與清理策略
 - **【狀況題】不小心砍掉未合併的分支** — git reflog 救援
-- **合併發生衝突了** — 衝突解決流程
 
 <!--
-這是本章的大綱。前三個是核心操作，中間幾個是大家在實際開發中很常遇到的情境，最後是衝突解決的完整流程。接下來我們來看第一部分。
+這是本章的大綱。前三個是核心操作，接著馬上處理合併最常遇到的問題——衝突，最後幾個是實際開發中很常遇到的情境題。接下來我們來看第一部分。
 -->
 
 ---
@@ -275,55 +275,7 @@ Git 2.23 版把 `git checkout` 的功能拆成了 `git switch` 和 `git restore`
 | `git checkout -b <branch>` | 舊語法，同 switch -c |
 
 <!--
-我們建議新手優先學 `git switch`，比較不容易搞混。「建立並切換」是最常見的操作，每次開新功能都會用到。接下來看怎麼刪除分支。
--->
-
----
-
-# 刪除分支
-
-**刪除已合併的分支（安全）：**
-
-```bash
-git branch -d feature/login    # 如果已合併，可以刪除
-```
-
-**強制刪除（不論有沒有合併）：**
-
-```bash
-git branch -D feature/experiment    # 強制刪除，慎用！
-```
-
-**刪除遠端分支：**
-
-```bash
-git push origin --delete feature/login
-```
-
-<!--
-記住小寫 `-d` 有保護機制，如果分支還沒合併會拒絕刪除；大寫 `-D` 則是強制刪除，不管有沒有合併都直接砍掉。接下來看完整操作流程。
--->
-
----
-
-# 刪除分支：完整操作流程
-
-```bash
-git switch -c feature/payment    # 建立並切換
-# ... 開發、commit ...
-git switch main                  # 切回主線
-git merge feature/payment        # 合併
-git branch -d feature/payment   # 刪除已合併的分支
-```
-
-| 指令 | 說明 |
-|------|------|
-| `git branch -d` | 安全刪除（已合併才能刪） |
-| `git branch -D` | 強制刪除（慎用！） |
-| `git push origin --delete` | 刪除遠端分支 |
-
-<!--
-分支的生命週期通常是：建立 → 開發 → 合併 → 刪除。後面有一個狀況題會說明萬一用 `-D` 刪錯了怎麼救回來。接下來我們來看合併的操作。
+我們建議新手優先學 `git switch`，比較不容易搞混。「建立並切換」是最常見的操作，每次開新功能都會用到。分支的生命週期是「建立 → 開發 → 合併 → 刪除」，刪除的部分我們留到後面的清理策略一起講。接下來我們來看合併的操作。
 -->
 
 ---
@@ -483,7 +435,7 @@ git merge feature/login
 </div>
 
 <!--
-不只看兩個版本的差，還要知道「從哪裡開始分開的」，這就是 3-way 的關鍵。接下來我們來看「小耳朵」的問題。
+不只看兩個版本的差，還要知道「從哪裡開始分開的」，這就是 3-way 的關鍵。但 3-way merge 不一定每次都能順利自動完成，接下來我們就來看合併最常遇到的問題：衝突。
 -->
 
 ---
@@ -492,281 +444,10 @@ class: flex flex-col justify-center items-center text-center
 ---
 
 # Part 4
-# 【狀況題】分支沒有小耳朵
+# 【狀況題】合併發生衝突了，怎麼辦？
 
 <!--
-很多人剛開始用 Git 圖形化工具時，會發現有時候 log 圖上有分叉，有時候沒有，搞不清楚原因。這個「小耳朵」的問題，其實跟剛才講的 fast-forward 和 3-way merge 直接相關。
--->
-
----
-
-# 什麼是「小耳朵」？
-
-在 `git log --graph` 中，**分叉的圖形**就是「小耳朵」：
-
-```text
-有小耳朵（3-way merge）：
-*   a1b2c3d Merge branch 'feature'
-|\
-| * d4e5f6g feature 的 commit
-|/
-* b2c3d4e main 的 commit
-
-沒有小耳朵（fast-forward）：
-* d4e5f6g feature 的 commit
-* b2c3d4e main 的 commit
-* a1b2c3d 初始 commit
-```
-
-**為什麼沒有小耳朵？**
-
-Fast-forward 只是移動指標，不產生合併 commit，所以在 log 圖上看不出來曾經有分支。
-
-<!--
-你有沒有遇過，明明用了分支開發，但 `git log --graph` 看起來卻是一條直線？這就是 fast-forward 造成的，因為它只是把指標移動過去，不會留下合併的痕跡。有沒有小耳朵，完全取決於合併時有沒有產生合併 commit。如果你希望永遠保留分支歷史，可以用 `--no-ff`，接下來我們來看。
--->
-
----
-
-# 用 --no-ff 強制保留分支歷史
-
-如果你希望**永遠保留分支歷史**，可以加上 `--no-ff`：
-
-```bash
-git switch main
-git merge --no-ff feature/login
-# 即使可以 fast-forward，也會強制產生合併 commit
-```
-
-<!--
-要不要加 `--no-ff` 是一個團隊風格的選擇，有些人喜歡線性的乾淨歷史，有些人喜歡保留分支痕跡。接下來看三種合併方式的比較。
--->
-
----
-
-# 三種合併方式比較
-
-| 合併方式 | 指令 | 產生合併 commit | 保留分支歷史 |
-|----------|------|:-:|:-:|
-| Fast-forward | `git merge` | 否（如果可以的話） | 否 |
-| 強制合併 commit | `git merge --no-ff` | 是 | 是 |
-| 3-way merge | `git merge`（有分歧時自動） | 是 | 是 |
-
-<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
-
-**團隊慣例：** 許多團隊規定 `merge --no-ff`，這樣從 log 上可以清楚看出每個功能分支的起訖。沒有絕對對錯，但整個團隊要統一規則。
-
-</div>
-
-<!--
-沒有絕對的對錯，但整個團隊要統一規則，否則 log 圖會很混亂。接下來我們來處理一個常見問題：合併後的分支要怎麼清理？
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Part 5
-# 【常見問題】合併過的分支要留著嗎？
-
-<!--
-開發久了，分支列表可能會越來越長，看起來很亂。什麼分支可以刪、什麼不能刪，是很多人的疑問。我們來看怎麼判斷。
--->
-
----
-
-# 已合併 vs 未合併的分支
-
-**查看哪些分支已合併進目前分支：**
-
-```bash
-git branch --merged       # 已合併（可以安全刪除）
-git branch --no-merged    # 尚未合併（刪除要謹慎）
-```
-
-輸出範例：
-
-```text
-$ git branch --merged
-* main
-  feature/login      ← 已合併，可以刪
-  hotfix/bug-123     ← 已合併，可以刪
-
-$ git branch --no-merged
-  feature/payment    ← 還沒合併，刪了會遺失工作！
-  experiment/new-ui  ← 還沒合併
-```
-
-<!--
-已合併的分支即使刪掉，commit 還在，只是少了一個名字而已，所以可以放心刪。未合併的分支刪掉就是真的遺失那些 commit，需要謹慎。接下來看批次清理方式。
--->
-
----
-
-# 已合併 vs 未合併的分支：批次清理
-
-**批次刪除已合併分支（排除 main）：**
-
-```bash
-git branch --merged | grep -v "main" | xargs git branch -d
-```
-
-<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
-
-**建議：** 定期執行 `git branch --merged` 確認清單，再批次刪除，保持分支列表乾淨。已合併的分支刪掉只是少了名字，commit 本體還在。
-
-</div>
-
-<!--
-`git branch --merged` 非常好用，定期執行可以保持分支列表乾淨。接下來看遠端分支的清理方式。
--->
-
----
-
-# 分支清理策略：本地
-
-**本地分支清理：**
-
-```bash
-git branch -d feature/login     # 刪除已合併的本地分支
-git branch -D experiment/failed # 強制刪除（不論合併狀態）
-```
-
-**建議的清理流程：**
-
-| 時機 | 動作 |
-|------|------|
-| 功能完成、PR 合併後 | 立即刪除功能分支（本地 + 遠端） |
-| 定期維護 | `git branch --merged` 批次清理 |
-| 同步遠端 | `git fetch --prune` 清除失效的遠端引用 |
-
-<!--
-分支用完就刪是個好習慣，避免分支列表越來越長。接下來看遠端分支的清理方式。
--->
-
----
-
-# 分支清理策略：遠端
-
-**遠端分支清理：**
-
-```bash
-git push origin --delete feature/login   # 刪除遠端分支
-
-# 清理已被刪除的遠端追蹤引用
-git fetch --prune
-git remote prune origin
-```
-
-<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
-
-**說明：** 當同事在 GitHub 上刪除了分支，你本地還是會有 `origin/feature-xxx` 的追蹤引用。`git fetch --prune` 可以清掉這些失效引用，讓 `git branch -a` 的輸出更整潔。
-
-</div>
-
-<!--
-遠端分支的清理是很多人忽略的地方。`git fetch --prune` 可以把這些失效的引用清掉，讓 `git branch -a` 的輸出更整潔。接下來我們來處理一個比較緊張的狀況：手滑刪掉了還沒合併的分支。
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Part 6
-# 【狀況題】不小心砍掉未合併的分支
-
-<!--
-這是很多人都遇過的情況：手滑打了 `git branch -D`，或者搞錯分支名稱，把還沒合併的分支給刪掉了。別慌，Git 有辦法救回來，我們來看怎麼做。
--->
-
----
-
-# 問題：分支被強制刪除了！
-
-情境：你在 `feature/payment` 開發了幾天，沒有合併，手滑刪掉了：
-
-```bash
-git branch -D feature/payment
-# Deleted branch feature/payment (was a1b2c3d).
-```
-
-**分支刪除後發生了什麼？**
-
-```text
-刪除前：
-main:           A --- B
-                       \
-feature/payment:        C --- D --- E  ← 分支指標指向 E
-
-刪除後：
-main:           A --- B
-                       \
-                        C --- D --- E  ← 指標消失！commit 還在，只是沒有名字了
-```
-
-Git 的分支本質上只是一個**指標**——一個指向某個 commit 的名字。刪除分支只是把這個名字移除，commits C-D-E 本體仍安全地存放在 `.git/objects` 裡，只是變成「孤兒 commit」，沒有名字就找不到它們了。
-
-<!--
-Git 的分支只是一個指標，刪除分支只是刪掉那個指標，commit 本身還留在 Git 的物件資料庫裡。Git 有垃圾回收機制，只有「孤立」超過一段時間後才會真正清除，所以刪除後趕快找，通常都救得回來。接下來看怎麼找回來。
--->
-
----
-
-# 用 git reflog 找回被刪的分支
-
-**reflog 記錄了所有 HEAD 的移動歷史：**
-
-```bash
-git reflog
-```
-
-輸出範例：
-
-```text
-a1b2c3d HEAD@{0}: checkout: moving from feature/payment to main
-e5f6g7h HEAD@{1}: commit: 新增金流串接
-d4e5f6g HEAD@{2}: commit: 新增購物車 API
-c3d4e5f HEAD@{3}: commit: 建立 payment 模組
-b2c3d4e HEAD@{4}: checkout: moving from main to feature/payment
-```
-
-<!--
-reflog 記錄了每一次 HEAD 移動的快照，只要操作在本地端發生，幾乎都可以用 reflog 找回來。找到分支最後一次的 commit hash，接下來就能重建分支。
--->
-
----
-
-# 用 git reflog 找回被刪的分支：重建
-
-找到最後一次在那個分支的 commit hash（這裡是 `e5f6g7h`），重新建立分支：
-
-```bash
-git branch feature/payment e5f6g7h
-# Branch 'feature/payment' set up to track commit e5f6g7h.
-```
-
-<div style="margin-top: 1rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
-
-**reflog 是你的後悔藥：** 它記錄了最近 90 天的所有 HEAD 變動，reset、刪分支、甚至 amend 都找得回來。整個過程大概一分鐘內可以搞定。
-
-</div>
-
-<!--
-找到分支最後一次的 commit hash，再用 `git branch` 重新建立指標就好了。接下來我們來看合併衝突怎麼解決。
--->
-
----
-layout: section
-class: flex flex-col justify-center items-center text-center
----
-
-# Part 8
-# 合併發生衝突了，怎麼辦？
-
-<!--
-衝突是每個開發者遲早都會遇到的事。它不是錯誤，而是 Git 在說：「這兩個版本我沒辦法自動決定要哪個，請你來判斷。」其實只要了解流程，衝突並不可怕。
+衝突是每個開發者遲早都會遇到的事，也是剛學會 merge 之後最快會撞到的一堵牆，所以我們緊接著合併就講。它不是錯誤，而是 Git 在說：「這兩個版本我沒辦法自動決定要哪個，請你來判斷。」其實只要了解流程，衝突並不可怕。
 -->
 
 ---
@@ -876,7 +557,7 @@ git commit                  # 完成合併 commit（訊息已預填）
 ```
 
 <!--
-解決衝突的核心流程就三步：編輯、`git add`、`git commit`。接下來看用 VS Code 解決衝突的方式。
+解決衝突的核心流程就三步：編輯、`git add`、`git commit`。注意這裡的 add 和 commit 就是 Ch 2 學過的那兩個指令，衝突解決並沒有用到什麼特殊指令。接下來看用 VS Code 解決衝突的方式。
 -->
 
 ---
@@ -901,7 +582,330 @@ VS Code 的 merge editor 會用顏色區分雙方改動，有按鈕可以直接�
 </div>
 
 <!--
-VS Code 的 merge editor 特別好用，有按鈕可以直接選擇要哪個版本，不需要手動刪除標記符號。如果你習慣用其他工具，也可以透過 `git mergetool` 配置。
+VS Code 的 merge editor 特別好用，有按鈕可以直接選擇要哪個版本，不需要手動刪除標記符號。如果你習慣用其他工具，也可以透過 `git mergetool` 配置。衝突處理完之後，接下來我們回頭看一個很多人困惑的現象：明明開了分支，log 圖卻是一條直線。
+-->
+
+---
+layout: section
+class: flex flex-col justify-center items-center text-center
+---
+
+# Part 5
+# 【狀況題】分支沒有小耳朵
+
+<!--
+很多人剛開始用 Git 圖形化工具時，會發現有時候 log 圖上有分叉，有時候沒有，搞不清楚原因。這個「小耳朵」的問題，其實跟剛才講的 fast-forward 和 3-way merge 直接相關。
+-->
+
+---
+
+# 什麼是「小耳朵」？
+
+在 `git log --graph` 中，**分叉的圖形**就是「小耳朵」：
+
+```text
+有小耳朵（3-way merge）：
+*   a1b2c3d Merge branch 'feature'
+|\
+| * d4e5f6g feature 的 commit
+|/
+* b2c3d4e main 的 commit
+
+沒有小耳朵（fast-forward）：
+* d4e5f6g feature 的 commit
+* b2c3d4e main 的 commit
+* a1b2c3d 初始 commit
+```
+
+**為什麼沒有小耳朵？**
+
+Fast-forward 只是移動指標，不產生合併 commit，所以在 log 圖上看不出來曾經有分支。
+
+<!--
+你有沒有遇過，明明用了分支開發，但 `git log --graph` 看起來卻是一條直線？這就是 fast-forward 造成的，因為它只是把指標移動過去，不會留下合併的痕跡。有沒有小耳朵，完全取決於合併時有沒有產生合併 commit。想永遠保留分支歷史，就用前面講過的 `--no-ff`。接下來把三種合併方式並排比較一次。
+-->
+
+---
+
+# 三種合併方式比較
+
+| 合併方式 | 指令 | 產生合併 commit | 保留分支歷史 |
+|----------|------|:-:|:-:|
+| Fast-forward | `git merge` | 否（如果可以的話） | 否 |
+| 強制合併 commit | `git merge --no-ff` | 是 | 是 |
+| 3-way merge | `git merge`（有分歧時自動） | 是 | 是 |
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fef3c7; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**團隊慣例：** 許多團隊規定 `merge --no-ff`，這樣從 log 上可以清楚看出每個功能分支的起訖。沒有絕對對錯，但整個團隊要統一規則。
+
+</div>
+
+<!--
+沒有絕對的對錯，但整個團隊要統一規則，否則 log 圖會很混亂。接下來我們來處理一個常見問題：合併後的分支要怎麼清理？
+-->
+
+---
+layout: section
+class: flex flex-col justify-center items-center text-center
+---
+
+# Part 6
+# 【常見問題】合併過的分支要留著嗎？
+
+<!--
+開發久了，分支列表可能會越來越長，看起來很亂。什麼分支可以刪、什麼不能刪，是很多人的疑問。我們先看刪除分支的指令，再看怎麼判斷該不該刪。
+-->
+
+---
+
+# 刪除分支的三個指令
+
+**刪除已合併的分支（安全）：**
+
+```bash
+git branch -d feature/login    # 如果已合併，可以刪除
+```
+
+**強制刪除（不論有沒有合併）：**
+
+```bash
+git branch -D feature/experiment    # 強制刪除，慎用！
+```
+
+**刪除遠端分支：**
+
+```bash
+git push origin --delete feature/login
+```
+
+<!--
+記住小寫 `-d` 有保護機制，如果分支還沒合併會拒絕刪除；大寫 `-D` 則是強制刪除，不管有沒有合併都直接砍掉。本章最後一個狀況題會說明萬一用 `-D` 刪錯了怎麼救回來。接下來看分支從建立到刪除的完整生命週期。
+-->
+
+---
+
+# 分支的完整生命週期
+
+```bash
+git switch -c feature/payment    # 建立並切換
+# ... 開發、commit ...
+git switch main                  # 切回主線
+git merge feature/payment        # 合併
+git branch -d feature/payment   # 刪除已合併的分支
+```
+
+| 指令 | 說明 |
+|------|------|
+| `git branch -d` | 安全刪除（已合併才能刪） |
+| `git branch -D` | 強制刪除（慎用！） |
+| `git push origin --delete` | 刪除遠端分支 |
+
+<!--
+分支的生命週期通常是：建立 → 開發 → 合併 → 刪除。這五行指令就是一個功能分支從生到死的全部流程，大家可以把這頁記起來。接下來看怎麼判斷哪些分支已經可以刪了。
+-->
+
+---
+
+# 已合併 vs 未合併的分支
+
+**查看哪些分支已合併進目前分支：**
+
+```bash
+git branch --merged       # 已合併（可以安全刪除）
+git branch --no-merged    # 尚未合併（刪除要謹慎）
+```
+
+輸出範例：
+
+```text
+$ git branch --merged
+* main
+  feature/login      ← 已合併，可以刪
+  hotfix/bug-123     ← 已合併，可以刪
+
+$ git branch --no-merged
+  feature/payment    ← 還沒合併，刪了會遺失工作！
+  experiment/new-ui  ← 還沒合併
+```
+
+<!--
+已合併的分支即使刪掉，commit 還在，只是少了一個名字而已，所以可以放心刪。未合併的分支刪掉就是真的遺失那些 commit，需要謹慎。接下來看批次清理方式。
+-->
+
+---
+
+# 已合併 vs 未合併的分支：批次清理
+
+**批次刪除已合併分支（排除 main）：**
+
+```bash
+git branch --merged | grep -v "main" | xargs git branch -d
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**建議：** 定期執行 `git branch --merged` 確認清單，再批次刪除，保持分支列表乾淨。已合併的分支刪掉只是少了名字，commit 本體還在。
+
+</div>
+
+<!--
+`git branch --merged` 非常好用，定期執行可以保持分支列表乾淨。接下來看遠端分支的清理方式。
+-->
+
+---
+
+# 分支清理策略：什麼時候清？
+
+**建議的清理流程：**
+
+| 時機 | 動作 |
+|------|------|
+| 功能完成、PR 合併後 | 立即刪除功能分支（本地 + 遠端） |
+| 定期維護 | `git branch --merged` 批次清理 |
+| 同步遠端 | `git fetch --prune` 清除失效的遠端引用 |
+
+<!--
+分支用完就刪是個好習慣，避免分支列表越來越長。接下來看遠端分支的清理方式。
+-->
+
+---
+
+# 分支清理策略：遠端
+
+**遠端分支清理：**
+
+```bash
+git push origin --delete feature/login   # 刪除遠端分支
+
+# 清理已被刪除的遠端追蹤引用
+git fetch --prune
+git remote prune origin
+```
+
+<div style="margin-top: 1.5rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**說明：** 當同事在 GitHub 上刪除了分支，你本地還是會有 `origin/feature-xxx` 的追蹤引用。`git fetch --prune` 可以清掉這些失效引用，讓 `git branch -a` 的輸出更整潔。
+
+</div>
+
+<!--
+遠端分支的清理是很多人忽略的地方。`git fetch --prune` 可以把這些失效的引用清掉，讓 `git branch -a` 的輸出更整潔。接下來我們來處理一個比較緊張的狀況：手滑刪掉了還沒合併的分支。
+-->
+
+---
+layout: section
+class: flex flex-col justify-center items-center text-center
+---
+
+# Part 7
+# 【狀況題】不小心砍掉未合併的分支
+
+<!--
+這是很多人都遇過的情況：手滑打了 `git branch -D`，或者搞錯分支名稱，把還沒合併的分支給刪掉了。別慌，Git 有辦法救回來，我們來看怎麼做。
+-->
+
+---
+
+# 問題：分支被強制刪除了！
+
+情境：你在 `feature/payment` 開發了幾天，沒有合併，手滑刪掉了：
+
+```bash
+git branch -D feature/payment
+# Deleted branch feature/payment (was a1b2c3d).
+```
+
+**分支刪除後發生了什麼？**
+
+```text
+刪除前：
+main:           A --- B
+                       \
+feature/payment:        C --- D --- E  ← 分支指標指向 E
+
+刪除後：
+main:           A --- B
+                       \
+                        C --- D --- E  ← 指標消失！commit 還在，只是沒有名字了
+```
+
+Git 的分支本質上只是一個**指標**——一個指向某個 commit 的名字。刪除分支只是把這個名字移除，commits C-D-E 本體仍安全地存放在 `.git/objects` 裡，只是變成「孤兒 commit」，沒有名字就找不到它們了。
+
+<!--
+Git 的分支只是一個指標，刪除分支只是刪掉那個指標，commit 本身還留在 Git 的物件資料庫裡。Git 有垃圾回收機制，只有「孤立」超過一段時間後才會真正清除，所以刪除後趕快找，通常都救得回來。接下來看怎麼找回來。
+-->
+
+---
+
+# 用 git reflog 找回被刪的分支
+
+**reflog 記錄了所有 HEAD 的移動歷史：**
+
+```bash
+git reflog
+```
+
+輸出範例：
+
+```text
+a1b2c3d HEAD@{0}: checkout: moving from feature/payment to main
+e5f6g7h HEAD@{1}: commit: 新增金流串接
+d4e5f6g HEAD@{2}: commit: 新增購物車 API
+c3d4e5f HEAD@{3}: commit: 建立 payment 模組
+b2c3d4e HEAD@{4}: checkout: moving from main to feature/payment
+```
+
+<!--
+reflog 記錄了每一次 HEAD 移動的快照，只要操作在本地端發生，幾乎都可以用 reflog 找回來。找到分支最後一次的 commit hash，接下來就能重建分支。
+-->
+
+---
+
+# 用 git reflog 找回被刪的分支：重建
+
+找到最後一次在那個分支的 commit hash（這裡是 `e5f6g7h`），重新建立分支：
+
+```bash
+git branch feature/payment e5f6g7h
+# Branch 'feature/payment' set up to track commit e5f6g7h.
+```
+
+<div style="margin-top: 1rem; padding: 1rem 1.5rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**reflog 是你的後悔藥：** 它記錄了最近 90 天的所有 HEAD 變動，reset、刪分支、甚至 amend 都找得回來。整個過程大概一分鐘內可以搞定。
+
+</div>
+
+<!--
+找到分支最後一次的 commit hash，再用 `git branch` 重新建立指標就好了。接下來做個本章重點回顧。
+-->
+
+---
+
+# 本章重點回顧
+
+
+- **分支讓衝突變得可控** — 不是消滅衝突，而是讓它在合併時集中發生
+- **`git switch -c <name>`** 建立並切換（舊語法 `git checkout -b`）；`git branch` 只建立、不切換
+- **合併方向：先切到目標分支，再 merge 來源分支**
+- **Fast-forward 只移動指標**（無合併 commit、無小耳朵）；**3-way merge 產生合併 commit**（有小耳朵）
+- **`--no-ff` 強制留下分支痕跡** — 團隊統一規則比選哪一種更重要
+- **衝突解決三步：編輯檔案 → `git add` → `git commit`**，記得刪掉所有標記
+- **`git branch --merged` 判斷可刪**；`-d` 安全刪、`-D` 強制刪、`git fetch --prune` 清失效遠端引用
+- **刪錯分支用 `git reflog`** 找回 commit hash，再 `git branch <name> <hash>` 重建
+
+
+<div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: #fff8f0; border-left: 4px solid #d97706; border-radius: 4px;">
+
+**下一章：** Ch 6 標籤 — 用 `git tag` 幫重要的版本節點做標記
+
+<Link to="ch06" style="color: #d97706; font-weight: 600;">前往 Ch 6 →</Link>
+
+</div>
+
+<!--
+分支這一章的核心觀念只有一句話：分支就是一個指向 commit 的指標，建立、切換、刪除都非常輕量，這也是為什麼 Git 鼓勵大家「想開就開」。合併的兩種模式決定了歷史圖長什麼樣子，衝突則是合併時必然要面對的事，流程走過一次就不再可怕。最後別忘了 reflog，它讓刪錯分支不再是災難。
 -->
 
 ---
@@ -912,5 +916,5 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章學了分支的建立與切換、Fast-forward 與 3-way merge 的差異，以及如何解決合併衝突。如果對分支操作或 merge 策略還有疑問，現在是個好時機。下一章我們把本地的 Git 連上 GitHub，進入遠端協作！
+這一章學了分支的建立與切換、Fast-forward 與 3-way merge 的差異、衝突解決流程，以及分支清理和救援。如果對分支操作或 merge 策略還有疑問，現在是個好時機。下一章我們來學 Tag，看看怎麼幫重要的版本節點做標記！
 -->

@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 使用 Git Flow
-routeAlias: ch08
+routeAlias: ch09
 layout: default
 style: |
   .slidev-layout p,
@@ -41,7 +41,7 @@ style: |
 </div>
 
 <!--
-上一章我們學了 GitHub 上的協作工具，但光有工具還不夠——多人團隊還需要「規則」。什麼時候該開新分支？功能做完要合併到哪裡？怎麼準備一個正式上線版本？Git Flow 就是一套回答這些問題的分支管理規範，由 Vincent Driessen 在 2010 年提出，至今仍是業界廣泛採用的標準之一。接下來我們來看它解決了什麼問題。
+前面幾章我們學了分支、遠端協作、改寫歷史這些工具，但光有工具還不夠——多人團隊還需要「規則」。什麼時候該開新分支？功能做完要合併到哪裡？怎麼準備一個正式上線版本？Git Flow 就是一套回答這些問題的分支管理規範，由 Vincent Driessen 在 2010 年提出，至今仍是業界廣泛採用的標準之一。接下來我們來看它解決了什麼問題。
 -->
 
 ---

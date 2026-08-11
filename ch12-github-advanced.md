@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 進階 GitHub 操作
-routeAlias: ch11
+routeAlias: ch12
 style: |
   .slidev-layout p,
   .slidev-layout li,

@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 其它常見狀況題
-routeAlias: ch06
+routeAlias: ch07
 layout: default
 style: |
   .slidev-layout p,

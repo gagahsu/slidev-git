@@ -4,7 +4,7 @@ class: text-center
 highlighter: shiki
 lineNumbers: true
 title: 進階操作技巧
-routeAlias: ch10
+routeAlias: ch11
 style: |
   .slidev-layout p,
   .slidev-layout li,
