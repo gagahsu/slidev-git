@@ -62,6 +62,7 @@ style: |
 先問自己：commit 了嗎？還沒 commit，就用 Discard changes，把檔案還原到上一次存檔的樣子。
 commit 了，再問：Push 了嗎？還沒 Push，可以用 Undo 把最後一次 commit 收回來。
 已經 Push 了，別人可能已經拿到，就不能收回，要用 Revert 做一個反向的 commit 把它抵銷。
+【講師】可以出情境題讓大家判斷，例如 commit 了但還沒 Push、想改 Summary，要用哪一種。
 -->
 
 ---
@@ -96,6 +97,7 @@ commit 了，再問：Push 了嗎？還沒 Push，可以用 Undo 把最後一次
 在 Changes 分頁的檔案上按右鍵，選 Discard changes，確認之後，檔案就還原了。
 Desktop 很貼心，被丟掉的修改會先移到資源回收筒，真的按錯還有機會撿回來。
 對應的指令是 `git restore`。
+【講師】請大家故意把 index.html 改壞，再用 Discard changes 還原，親手做一次。
 -->
 
 ---
@@ -130,6 +132,7 @@ commit 之後，左下角會顯示 Committed just now，旁邊有一個 Undo 按
 按下去，這個 commit 就消失了，修改會回到 Changes 分頁，連 Summary 都幫我們留著。
 改好之後重新 commit 就好。
 要注意，Undo 只能收回最後一個、而且還沒 Push 的 commit。
+【講師】請大家做一個測試 commit 再按 Undo，看修改回到 Changes 的樣子。
 -->
 
 ---
@@ -168,6 +171,7 @@ Desktop 會新增一個 commit，內容剛好跟原本的相反，把它抵銷�
 最後記得 Push。
 因為歷史只增不減，隊友 Pull 的時候不會出問題。
 對應的指令是 `git revert`。
+【講師】可以請同學到 GitHub 的 commit 列表，確認多了一筆 Revert 開頭的 commit。
 -->
 
 ---
@@ -245,6 +249,7 @@ class: cheatsheet
 這門課的目標不是背指令，而是認得它們。
 以後看到網路教學或同事打指令，能對應到自己在 Desktop 裡按的是哪個按鈕，就夠了。
 這一頁可以用 export 匯出 PDF 印出來。
+【講師】課前可先用 `pnpm export:beginner` 匯出 PDF，印好小抄發給大家。
 -->
 
 ---
@@ -263,4 +268,5 @@ class: flex flex-col justify-center items-center text-center
 大家已經能用 GitHub Desktop 完成一整套協作流程了。
 遇到忘記的地方，回來翻對應的章節，每一章最後的檢查點也可以拿來自我檢查。
 想學更多，可以接著看進階課程，裡面有 tag、stash、rebase、Git Flow 這些更進階的主題。
+【講師】保留五到十分鐘做整體問答。
 -->

@@ -43,6 +43,7 @@ style: |
 很多人第一次看到衝突，以為專案壞掉了。
 其實衝突只是 Git 遇到它沒辦法自己決定的事，停下來問我們：要留哪一個？
 這一章我們會故意製造兩次衝突，一次在合併分支時，一次在 Pull 時，把它們都解掉。
+【講師】這章節奏放慢，每一步都等全部同學跟上再往下。
 -->
 
 ---
@@ -168,6 +169,7 @@ Git 合併的時候，大部分情況都能自己處理。
 從等號到一排大於符號，是要合併進來的分支的版本，VS Code 叫它 Incoming。
 我們的工作，就是決定最後要留下什麼，然後把三行標記刪乾淨。
 如果沒刪，網頁上就會直接顯示這些奇怪的符號。
+【講師】可以指著程式碼問大家，哪一段是 main 的版本，請同學回答後再往下。
 -->
 
 ---
@@ -205,6 +207,7 @@ class: flex flex-col justify-center items-center text-center
 現在兩條分支都改了同一行。
 第四步，在 main 上合併 change-title，衝突就會發生。
 這就是真實團隊最常遇到的情況：兩個人同時改了同一個地方。
+【講師】給大家五分鐘完成前三步，確認兩條分支各有一個修改標題的 commit，再一起做第四步。
 -->
 
 ---
@@ -265,6 +268,7 @@ class: flex flex-col justify-center items-center text-center
 這時候合併還沒有完成，Git 停在一半，等我們做決定。
 右下角有一個 Abort merge，按下去會放棄這次合併，回到合併之前的狀態。
 真的卡住、不知道怎麼辦的時候，可以用它重來，不會把專案弄壞。
+【講師】已經按了 Abort merge 的同學，回到上一頁的第四步重新合併即可。
 -->
 
 ---
@@ -312,6 +316,7 @@ VS Code 打開之後，會用顏色標出兩個版本，綠色是 Current，藍�
 上方有一排按鈕。
 Accept Current Change 留下 main 的版本，Accept Incoming Change 留下分支的版本，Accept Both Changes 兩個都留。
 點一下按鈕，標記就會自動刪掉。
+【講師】按鈕打不開 VS Code 的同學，檢查 Desktop 的 Options、Integrations 分頁是否選了 Visual Studio Code。
 -->
 
 ---
@@ -344,6 +349,7 @@ Accept Current Change 留下 main 的版本，Accept Incoming Change 留下分�
 再手動把兩行改成一行：「大家好，我是王小明，歡迎光臨」。
 存檔之前，一定要確認三種標記都已經不見了。
 最後按 Ctrl 加 S 存檔。
+【講師】巡視時特別檢查標記有沒有刪乾淨，這是最常漏掉的地方。
 -->
 
 ---
@@ -440,6 +446,7 @@ class: flex flex-col justify-center items-center text-center
 第三步，按 Fetch origin，按鈕會變成 Pull origin，旁邊同時有向下和向上的數字。
 按下 Pull origin，就會跳出跟剛才一樣的衝突對話框。
 因為 Pull 其實就是把 GitHub 的版本合併進本機，所以一樣可能衝突。
+【講師】先在投影幕上示範 GitHub 網頁的鉛筆圖示在哪裡，初學者常找不到。
 -->
 
 ---
@@ -528,6 +535,7 @@ class: flex flex-col justify-center items-center text-center
 第三，事先講好誰改哪裡，分工到不同檔案或不同區塊。
 不過衝突沒辦法完全避免，也不需要害怕。
 會解衝突，就能放心地跟別人協作，這就是下一章的主題。
+【講師】可以問大家，三個習慣裡哪一個在團隊裡最難做到，簡單交流一兩分鐘。
 -->
 
 ---
@@ -567,6 +575,7 @@ History 最上面六筆都是這一章做的，其中有兩筆 Merge commit。
 用瀏覽器打開 index.html，確認網頁上看不到任何衝突標記。
 最後確認上方沒有數字，代表都已經 Push，而且分支清單只剩 main。
 History 的順序如果跟圖上有一點不一樣，只要六筆都在就沒問題。
+【講師】給兩分鐘自我檢查，網頁上還看得到衝突標記的同學，個別協助刪除後再 commit 一次。
 -->
 
 ---
@@ -614,4 +623,5 @@ Current 是我們所在的分支，Incoming 是合併進來的那一邊。
 Pull 也會衝突，解法一樣，解完一定要 Push。
 到這裡，我們已經會處理協作時最麻煩的狀況了。
 下一章，我們要兩人一組，用 Pull Request 正式協作。
+【講師】下課前先請大家找好下一章的搭檔。
 -->

@@ -127,6 +127,7 @@ class: flex flex-col justify-center items-center text-center
 main 是正本，永遠保持可以展示的狀態。
 想試新東西，就開一條分支當草稿本，在草稿本上怎麼改都不會影響正本。
 滿意了，再把草稿本的內容合併回正本。
+【講師】可以先問大家，有沒有作業改到一半、想回到前一版卻回不去的經驗。
 -->
 
 ---
@@ -209,6 +210,7 @@ Name 填 add-skills，分支名稱用英文小寫、單字之間用減號連接�
 對話框下面寫著，新分支會從目前所在的分支分出去，所以第一步一定要先確認自己在 main。按 Create branch。
 建好之後，上方的 Current branch 就會顯示 add-skills，代表我們已經在這條分支上了。
 對應的指令是 `git switch -c`。
+【講師】巡視確認每位同學上方的 Current branch 都顯示 add-skills，再進下一步。
 -->
 
 ---
@@ -262,6 +264,7 @@ test、new branch 2 這種名稱，過幾天連自己都忘了是什麼。
 回到 Desktop，打勾，Summary 填「新增技能區塊」。
 注意看 Commit 按鈕，上面寫的是 add-skills，不是 main。
 這代表這個存檔只會存在 add-skills 這條分支上，main 完全不會被影響。
+【講師】給大家三分鐘完成，巡視時特別看 Commit 按鈕寫的是不是 add-skills。
 -->
 
 ---
@@ -300,6 +303,7 @@ test、new branch 2 這種名稱，過幾天連自己都忘了是什麼。
 切換分支時，Git 會把資料夾裡的檔案換成那條分支的版本。
 所以切換之前，記得先把修改 commit 掉，不然 Desktop 會問我們修改要留在哪裡，新手很容易選錯。
 對應的指令是 `git switch`。
+【講師】可以在投影幕上來回切換兩條分支，讓大家看瀏覽器重新整理後技能區塊消失又出現。
 -->
 
 ---
@@ -345,6 +349,7 @@ class: flex flex-col justify-center items-center text-center
 在清單裡選 add-skills，對話框下方會顯示 This will merge 1 commit from add-skills into main，代表這次會合併一個 commit。按下 Create a merge commit。
 上方會出現綠色的 Successfully merged，代表合併成功。
 對應的指令是先 `git switch main`，再 `git merge add-skills`。
+【講師】最常見的錯誤是站在 add-skills 上合併，按 Merge 之前先確認大家都切回 main。
 -->
 
 ---
@@ -442,6 +447,7 @@ class: flex flex-col justify-center items-center text-center
 不會，因為已經合併進 main 了，commit 都在 main 上，刪掉的只是 add-skills 這個名字而已。
 養成用完就刪的習慣，分支清單才不會越來越亂。
 對應的指令是 `git branch -d`。
+【講師】提醒對話框預設反白的是 Cancel，直接按 Enter 不會刪除。
 -->
 
 ---
@@ -506,6 +512,7 @@ class: flex flex-col justify-center items-center text-center
 確認目前在 main，History 最上面是「新增技能區塊」，這是在 add-skills 上做的，合併後就到了 main。
 分支清單裡應該只剩 main，因為 add-skills 已經刪掉了。
 最後確認上方沒有向上的數字，代表合併後的結果已經 Push 到 GitHub。
+【講師】給兩分鐘自我檢查，四項都打勾的同學舉手，沒完成的個別協助。
 -->
 
 ---
@@ -552,4 +559,5 @@ main 是正本，新功能就開分支當草稿本。
 合併完記得 Push，用完的分支刪掉。
 這一章的合併很順利，因為只有一邊有改動。
 下一章，我們要故意讓兩邊都改到同一行，看看會發生什麼事。
+【講師】開放兩三分鐘問答，再進入下一章。
 -->
