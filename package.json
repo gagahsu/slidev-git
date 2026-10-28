@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "slidev index.md",
     "build": "slidev build",
-    "export": "slidev export"
+    "export": "slidev export",
+    "dev:beginner": "slidev beginner.md",
+    "export:beginner": "slidev export beginner.md --output beginner.pdf"
   },
   "dependencies": {
     "@slidev/cli": "^52.14.2",
