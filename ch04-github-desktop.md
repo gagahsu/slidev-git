@@ -42,7 +42,10 @@ style: |
 </div>
 
 <!--
-大家好，前三章我們認識了版本控制的核心觀念，用指令列學了 init、add、commit、log，也學會了怎麼 push 上 GitHub、clone 別人的專案下來。這章要介紹另一條路：用滑鼠點一點就能做這些 Git 操作的圖形化工具——GitHub Desktop。因為指令的意思大家都懂了，這章看畫面會特別有感覺——每個按鈕背後對應哪個指令，一眼就能對上。對還不熟悉終端機的同學來說，這也是個很好的日常工具。我們會從「它是什麼」開始，一路講到下載安裝、登入設定，最後動手做一次 clone、commit、push、開分支、開 PR 的完整流程。
+歡迎來到第四章，GitHub Desktop。
+前三章我們都用指令操作 Git，這章要介紹另一條路：用滑鼠操作的圖形化工具。
+指令的意思大家都懂了，所以每個按鈕背後是哪個指令，一眼就能對上。
+學完這章，我們就能用它完成 clone、commit、push，一路到開 PR。
 -->
 
 ---
@@ -61,7 +64,11 @@ layout: default
 - **基本操作：分支與 Pull Request** — 建立分支、開 PR
 
 <!--
-這章總共八個主題，我們會照著「認識工具 → 裝好工具 → 設定帳號 → 看懂介面 → 實際操作」的順序走。操作的部分會順便提到每個按鈕背後對應的 git 指令是什麼——add、commit、log 是 Ch 2 學過的，push、pull、clone 是 Ch 3 學過的，這章等於把前面的指令再用另一種介面走一遍。分支的部分先有個印象就好，Ch 5 會正式教。
+這章一共八個主題。
+我們會依照認識工具、安裝、設定帳號、看懂介面，最後實際操作的順序來走。
+操作的部分，會順便對照每個按鈕背後的 git 指令。
+add、commit、log 是第二章學過的，push、pull、clone 是第三章學過的。
+分支的部分先有個印象就好，下一章會正式介紹。
 -->
 
 ---
@@ -73,7 +80,7 @@ class: flex flex-col justify-center items-center text-center
 ## 什麼是 GitHub Desktop？
 
 <!--
-先來搞清楚這個工具到底是什麼、為什麼會有它存在。
+先來搞清楚，這個工具是什麼，為什麼會有它。
 -->
 
 ---
@@ -90,7 +97,14 @@ class: flex flex-col justify-center items-center text-center
 - 分支一多，全部用文字列出來，容易選錯
 
 <!--
-不是說指令不好，指令永遠是最強大、最完整的操作方式。但當你想快速瀏覽「這次改了什麼」，或是要帶新同學上手，一個看得到檔案顏色、看得到分支圖的視窗，會直覺很多。這就是 GitHub Desktop 存在的原因。
+回想一下剛開始學指令的時候。
+add、commit、push 這些名詞還很陌生，打指令又怕打錯字、漏了參數。
+想看這次到底改了哪些檔案、哪幾行，純文字的輸出也不太好比對。
+分支一多，全部用文字列出來，很容易選錯。
+指令當然是最強大、最完整的操作方式。
+但想快速瀏覽「這次改了什麼」，或是帶新人上手的時候，
+一個看得到顏色、看得到分支圖的視窗，會直覺很多。
+這就是 GitHub Desktop 存在的原因。
 -->
 
 ---
@@ -114,7 +128,12 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-GitHub Desktop 跟我們裝的 Git 本身是兩個東西：Git 是版本控制引擎，GitHub Desktop 是蓋在它上面的操作介面。你在 Desktop 裡按下「Commit」，它背後做的事情，跟終端機打 `git commit` 是一樣的。理解這一點很重要，因為代表 Ch 1、Ch 2 學過的 Git 觀念——三大區域、暫存區、commit——在這裡完全通用，只是換了一種操作方式。
+GitHub Desktop 是 GitHub 官方推出的桌面程式，免費而且開源，支援 Windows 和 macOS。
+它可以連 GitHub，也可以連公司的 GitHub Enterprise，或是一般的 Git 遠端。
+要特別記住表格最後一行：每個按鈕背後，都對應一個 git 指令。
+Git 是版本控制的引擎，GitHub Desktop 是蓋在它上面的操作介面。
+在 Desktop 裡按下 Commit，跟在終端機打 `git commit`，做的是同一件事。
+所以前面學過的三大區域、暫存區這些觀念，在這裡完全通用，只是換了一種操作方式。
 -->
 
 ---
@@ -148,7 +167,13 @@ GitHub Desktop 跟我們裝的 Git 本身是兩個東西：Git 是版本控制�
 </div>
 
 <!--
-不用糾結「該學指令還是該學 Desktop」，這兩個是互補的工具。日常最頻繁的操作——看變更、commit、push、pull、切分支——用 Desktop 會又快又不容易出錯；但遇到比較進階的操作，像是我們後面章節會教的互動式 rebase，終端機還是比較有彈性。接下來我們就動手把它裝起來。
+那什麼時候適合用 Desktop 呢？
+想快速瀏覽改動、逐行比對，或是想用勾選的方式決定這次要 commit 什麼，用 Desktop 會很順手。
+團隊裡有不熟終端機的成員，或是需要看分支歷史圖的時候，它也很好用。
+但有些情境還是用指令比較好。
+例如需要精細控制的互動式 rebase、寫自動化腳本，或是在沒有圖形介面的遠端主機上。
+所以這兩者不是二選一。
+很多工程師日常用 Desktop 看改動和 commit，遇到複雜操作再切回終端機。
 -->
 
 ---
@@ -160,7 +185,7 @@ class: flex flex-col justify-center items-center text-center
 ## 下載與安裝
 
 <!--
-工具認識完了，接下來實際把它裝到電腦上。
+認識完工具，接下來把它安裝到電腦上。
 -->
 
 ---
@@ -181,7 +206,11 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-安裝之前先確認一下系統版本符不符合需求，尤其是公司配發的舊電腦，Windows 10 64-bit 是最低門檻。官網很貼心，打開網址就會自動顯示「Download for Windows」或「Download for macOS」，不用自己找連結。
+安裝之前，先確認系統版本。
+Windows 需要 Windows 10 的 64 位元版本以上，macOS 則要 12.0 以上。
+特別是公司配發的舊電腦，記得先檢查一下。
+下載的地方是官方網站 desktop.github.com。
+網站會自動偵測我們的作業系統，直接顯示對應的下載按鈕，不用自己挑版本。
 -->
 
 ---
@@ -196,7 +225,10 @@ class: flex flex-col justify-center items-center text-center
 | 4 | 等待安裝完成，程式會自動開啟 |
 
 <!--
-Windows 的安裝很單純，沒有什麼需要特別設定的選項，跟一般裝軟體一樣，一路「下一步」到底。執行的是標準的 .exe 安裝檔，安裝完成後程式會自動幫你打開，準備進入下一步：登入帳號。接下來看 macOS 的安裝方式。
+Windows 的安裝很單純。
+到官網點 Download for Windows，下載完成後執行安裝檔。
+沒有需要特別設定的選項，等它跑完，程式會自動開啟。
+接著就可以進入下一步，登入帳號。
 -->
 
 ---
@@ -211,7 +243,10 @@ Windows 的安裝很單純，沒有什麼需要特別設定的選項，跟一般
 | 4 | 開啟 GitHub Desktop 應用程式 |
 
 <!--
-macOS 版下載下來是壓縮檔，解壓縮後直接執行應用程式即可，不需要額外拖到 Applications 資料夾（雖然這樣做也可以）。安裝完成後，程式會自動幫你打開，準備進入下一步：登入帳號。
+macOS 的下載檔是一個壓縮檔。
+解壓縮之後，直接打開 GitHub Desktop 這個應用程式就可以了。
+想要的話，也可以把它拖進應用程式資料夾。
+一樣，安裝完成後就準備登入帳號。
 -->
 
 ---
@@ -223,7 +258,7 @@ class: flex flex-col justify-center items-center text-center
 ## 初次設定
 
 <!--
-軟體裝好了，第一次打開需要做兩件事：登入帳號、設定身份。
+軟體裝好了，第一次打開要先做兩件事：登入帳號，以及確認身份設定。
 -->
 
 ---
@@ -240,7 +275,11 @@ class: flex flex-col justify-center items-center text-center
 | Windows | File → Options → Accounts |
 
 <!--
-GitHub Desktop 第一次打開就要先登入帳號，之後不管是 clone、push、還是開 PR，才能正確對應到你的身份。登入的入口在 Settings 或 Options 裡的 Accounts 分頁，macOS 跟 Windows 的選單路徑不太一樣，照這張表找就對了。接下來看實際登入的操作步驟。
+第一次打開 GitHub Desktop，要先登入 GitHub 帳號。
+這樣之後 clone、push、開 PR，才能對應到我們的身份。
+登入的入口在設定裡的 Accounts 分頁。
+macOS 是在選單列的 GitHub Desktop 底下找 Settings，Windows 則是在 File 底下找 Options。
+兩個平台的路徑不太一樣，照著這張表找就對了。
 -->
 
 ---
@@ -255,7 +294,12 @@ GitHub Desktop 第一次打開就要先登入帳號，之後不管是 clone、pu
 | 4 | 授權完成後，瀏覽器會導回 GitHub Desktop |
 
 <!--
-登入的流程走的是瀏覽器授權（OAuth），不是直接在 Desktop 裡打帳號密碼。這樣的好處是，如果你開了兩步驟驗證，也能順順地在瀏覽器完成驗證，不會卡住。如果你同時有 GitHub.com 帳號和公司的 GitHub Enterprise 帳號，這兩個設定頁面都可以分別登入，互不影響。
+我們看登入的步驟。
+按下 Sign In 之後，瀏覽器會自動開啟 GitHub 的登入頁。
+如果瀏覽器已經登入了，直接按授權就好。
+授權完成後，瀏覽器會把我們帶回 GitHub Desktop。
+這跟上一章的瀏覽器授權是同一個概念，不需要在 Desktop 裡直接輸入密碼。
+所以就算開了兩步驟驗證，也能在瀏覽器裡順利完成。
 -->
 
 ---
@@ -283,7 +327,12 @@ git config --global user.email "你的信箱"
 </div>
 
 <!--
-這一步跟 Ch 1 講的 git config 其實是同一件事，只是 Desktop 幫你在介面上包了一層。特別要提醒的是 email 一致性問題：很多同學在公司電腦跟個人電腦設定了不同的 email，結果 GitHub 網頁上的貢獻牆一片空白，追根究柢就是這裡的 email 沒對上 GitHub 帳號綁定的 email。
+登入之後，GitHub Desktop 通常會自動帶入名字和 email。
+這就是第一章用 `git config` 設定的 `user.name` 和 `user.email`，只是 Desktop 把它包成了介面。
+如果要確認或修改，可以到設定裡的 Git 分頁。
+這裡要再提醒一次 email 的問題。
+很多人在公司電腦和個人電腦設了不同的 email，結果 GitHub 上的貢獻牆一片空白。
+原因就是這裡的 email，沒有對上 GitHub 帳號綁定的信箱。
 -->
 
 ---
@@ -295,7 +344,7 @@ class: flex flex-col justify-center items-center text-center
 ## 介面導覽
 
 <!--
-設定好了，打開主畫面。我們先花一點時間認識幾個最常用的區域，之後操作起來才知道要點哪裡。
+設定好了，打開主畫面。我們先認識幾個最常用的區域，之後操作才知道要點哪裡。
 -->
 
 ---
@@ -313,7 +362,14 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-把畫面拆成三塊來記就很好懂：左上角管「現在打開哪個 repo」，中間管「現在在哪個分支」，左側兩個分頁管「還沒 commit 的東西」跟「已經 commit 的歷史」。這三塊幾乎涵蓋了我們日常最常查看的資訊，跟指令列比起來，這裡是「看得到」而不用「打指令查」。
+主畫面可以拆成三塊來記。
+左上角的 Current Repository，管的是現在打開哪一個專案。
+上方中間的 Current Branch，管的是現在在哪個分支，也可以在這裡切換或建立分支。
+左側有兩個分頁。
+Changes 顯示還沒 commit 的改動，對應 `git status` 加上 `git diff`。
+History 顯示已經 commit 的歷史，對應 `git log`。
+這三塊幾乎涵蓋了我們日常最常看的資訊。
+差別在於，這裡是直接看得到，不用一個一個打指令去查。
 -->
 
 ---
@@ -325,7 +381,7 @@ class: flex flex-col justify-center items-center text-center
 ## 基本操作：Clone
 
 <!--
-介面認識完了，開始動手。第一步當然是把一個專案的程式碼拿到本機。
+介面認識完了，開始動手。第一步，是把專案的程式碼拿到本機。
 -->
 
 ---
@@ -343,7 +399,12 @@ class: flex flex-col justify-center items-center text-center
 | 5 | 選擇本機儲存路徑，點「Clone」 |
 
 <!--
-先看方法一：從瀏覽器逛到想要的 repo，直接一鍵帶進 Desktop，很適合平常就是逛 GitHub 找專案的情境。這個動作背後對應的指令，就是 Ch 3 學過的 git clone，只是 Desktop 幫你把網址帶好了。接下來看方法二。
+clone 有兩種方法，先看方法一，從 GitHub 網頁開始。
+到想要的 repo 頁面，點綠色的 Code 按鈕，選 Open with GitHub Desktop。
+GitHub Desktop 會自動打開，並帶入這個 repo 的資訊。
+選好要存在電腦的哪個位置，按 Clone 就完成了。
+平常在 GitHub 上逛到想要的專案時，這個方法最方便。
+背後做的事，就是上一章學過的 `git clone`，只是 Desktop 幫我們把網址帶好了。
 -->
 
 ---
@@ -360,7 +421,12 @@ class: flex flex-col justify-center items-center text-center
 | 4 | 點「Clone」 |
 
 <!--
-方法二是在 Desktop 裡直接操作，如果對方給你的是一個 Git URL（不一定在 GitHub 上），就用第三個分頁貼上網址。兩種方式殊途同歸，背後對應的都是 Ch 3 學過的 git clone。
+方法二是直接在 GitHub Desktop 裡操作。
+從選單列的 File 選 Clone Repository，會看到三個分頁。
+前兩個可以直接從我們的 GitHub 或公司帳號裡挑 repo。
+如果對方給的是一個 Git 網址，不一定在 GitHub 上，就用第三個 URL 分頁貼上網址。
+選好本機的路徑，按 Clone。
+兩種方法殊途同歸，背後都是 `git clone`。
 -->
 
 ---
@@ -372,7 +438,7 @@ class: flex flex-col justify-center items-center text-center
 ## 基本操作：Commit
 
 <!--
-Clone 下來之後，開始修改檔案，接著就要學怎麼在 Desktop 裡送出一次 commit。
+clone 下來之後，接著修改檔案，然後學怎麼在 Desktop 裡送出一個 commit。
 -->
 
 ---
@@ -392,7 +458,12 @@ Clone 下來之後，開始修改檔案，接著就要學怎麼在 Desktop 裡�
 點選任一檔案，右側會顯示逐行的差異（diff），點齒輪圖示可以切換 **Unified**（合併顯示）或 **Split**（左右並排）檢視模式。
 
 <!--
-這個畫面對應的就是我們熟悉的 <code>git status</code> 加上 <code>git diff</code>，只是用顏色取代了文字符號。綠黃紅三色一眼就能看出這次改動的規模，比起在終端機裡捲動一長串 diff 文字，直覺很多。
+改完檔案之後，切到左側的 Changes 分頁。
+這裡會用顏色標出每個檔案的狀態，綠色是新增，黃色是修改，紅色是刪除。
+點一下任何一個檔案，右邊就會顯示逐行的差異。
+點齒輪圖示，可以切換成合併顯示，或是左右並排比對。
+這個畫面對應的就是 `git status` 加上 `git diff`，只是用顏色取代了文字符號。
+比起在終端機裡捲動一長串文字，直覺很多。
 -->
 
 ---
@@ -418,7 +489,14 @@ Clone 下來之後，開始修改檔案，接著就要學怎麼在 Desktop 裡�
 </div>
 
 <!--
-這一步在指令列要用 <code>git add -p</code> 才能做到「只暫存某幾行」，操作起來要一直按 y/n/s 選擇，新手很容易搞混。Desktop 裡直接點一下滑鼠就能決定要不要包含某一行，是這個工具最好用的功能之一。
+每個檔案前面都有一個核取方塊，這就是 Desktop 版的暫存區。
+打勾，代表這個檔案會被加進這次的 commit，等於 `git add`。
+取消打勾，這個檔案就不會被包含進去。
+列表最上方還有一個總開關，可以一次全選或全不選。
+更好用的是，還能只 commit 檔案裡的某幾行。
+在右邊的差異畫面點一下想排除的那一行，它會變成灰色，只有保持藍色的行才會被 commit。
+在指令列，這要用 `git add -p` 才做得到，而且要一直按按鍵選擇，新手很容易搞混。
+在 Desktop 裡，點一下滑鼠就好，這是它最好用的功能之一。
 -->
 
 ---
@@ -433,7 +511,10 @@ Clone 下來之後，開始修改檔案，接著就要學怎麼在 Desktop 裡�
 | **Description** | 補充說明，選填（等同 commit message 的詳細內容） |
 
 <!--
-送出 commit 前要填的兩個欄位，Summary 是必填，Description 選填。接下來看實際送出的操作步驟。
+勾選好檔案之後，要在左側清單的最下方填寫兩個欄位。
+Summary 是必填的，用一句話說明這次改了什麼，也就是 commit 訊息的第一行。
+Description 是選填的，用來補充說明，對應訊息底下的詳細內容。
+第二章講的 commit message 原則，在這裡一樣適用。
 -->
 
 ---
@@ -448,7 +529,11 @@ Clone 下來之後，開始修改檔案，接著就要學怎麼在 Desktop 裡�
 | 4 | 點擊「Commit to &lt;分支名稱&gt;」按鈕 |
 
 <!--
-Summary 跟 Description 其實就是 <code>git commit -m "標題" -m "內文"</code> 拆成兩個輸入框。養成寫清楚 Summary 的習慣，之後在 History 分頁瀏覽歷史紀錄的時候會很有感——一行清楚的 Summary 比十行模糊的敘述有用多了。接下來看一個能省去打字的功能：用 Copilot 自動產生 commit message。
+送出 commit 的步驟是這樣。
+先勾選要 commit 的檔案，填寫 Summary，例如「新增登入頁面」。
+需要的話再填 Description，最後按下 Commit to，後面接著分支名稱的那個按鈕。
+Summary 和 Description，其實就是 `git commit` 帶兩個 `-m`，拆成兩個輸入框而已。
+養成寫清楚 Summary 的習慣，之後在 History 分頁回頭看的時候會很有感。
 -->
 
 ---
@@ -469,9 +554,14 @@ Summary 輸入框右側有一個 **✨ 圖示**，點下去會呼叫 GitHub Copi
 </div>
 
 <!--
-GitHub Desktop 內建 Copilot 整合，Summary 欄位旁邊那個星星圖示就是入口。它的原理是把你目前勾選要 commit 的 diff 送給 Copilot 分析，自動生成一句話的 Summary，改動比較複雜時還會順便填 Description。這對「不知道怎麼描述這次改了什麼」的情況特別有用，尤其是改動很雜、一時想不出精準用詞的時候。
-
-但兩件事要提醒：第一，這需要你的帳號有 Copilot 授權，免費帳號通常沒有這個功能；第二，Copilot 只看得到你「已經勾選」的檔案的 diff，如果勾選範圍不對，生成的訊息也會文不對題，所以務必先確認勾選的檔案正確，再點星星生成，最後也要親自檢查一遍生成的內容再送出，不要照單全收。
+Summary 輸入框的右邊，有一個星星圖示。
+點下去，GitHub Copilot 會分析目前的改動，自動幫我們產生 commit 訊息。
+改動比較複雜時，它還會順便填好 Description。
+不知道怎麼描述這次改了什麼的時候，這個功能特別好用。
+不過有兩件事要注意。
+第一，帳號要有 Copilot 的授權才能使用。
+第二，Copilot 只看得到已經勾選的檔案，勾錯了，產生的訊息也會文不對題。
+所以要先確認勾選的範圍，產生之後也要自己檢查一遍，不要照單全收。
 -->
 ---
 layout: section
@@ -482,7 +572,7 @@ class: flex flex-col justify-center items-center text-center
 ## 基本操作：Push / Pull
 
 <!--
-Commit 完只在本機，還要跟遠端同步，這一段來看怎麼推上去、拉下來。
+commit 完還只在本機，接下來要跟遠端同步。
 -->
 
 ---
@@ -504,7 +594,13 @@ commit 完成後，畫面上方會出現對應的按鈕：
 </div>
 
 <!--
-這個按鈕會隨著狀態變化：沒有新 commit 時顯示「Fetch origin」，本機領先遠端時顯示「Push origin」並附上數字，遠端領先本機時顯示「Pull origin」。這個數字提示背後的意思是「本機和遠端的 commit 歷史差了幾筆」，也就是 Ch 3 講的「本機領先／遠端領先」，Desktop 幫你先算好了，不用自己用 <code>git log</code> 一筆一筆數。
+commit 完成後，畫面上方會出現跟遠端同步的按鈕，它會隨著狀態改變。
+Push origin 對應 `git push`，把本機的 commit 推上 GitHub。
+Fetch origin 對應 `git fetch`，檢查遠端有沒有新的更新。
+Pull origin 對應 `git pull`，把遠端的新 commit 拉回來。
+按鈕上還會顯示數字。
+例如 Push origin 旁邊寫著 2，代表有兩個 commit 還沒推上去。
+這就是上一章講的本機領先或落後遠端，Desktop 已經幫我們算好了，不用自己去數。
 -->
 
 ---
@@ -516,7 +612,7 @@ class: flex flex-col justify-center items-center text-center
 ## 基本操作：分支與 Pull Request
 
 <!--
-最後這段來看怎麼在 Desktop 裡建立分支、切換分支，以及開 Pull Request 跟同事協作。
+最後這段，我們看怎麼在 Desktop 裡建立分支、切換分支，還有開 Pull Request。
 -->
 
 ---
@@ -535,7 +631,12 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-新增分支時記得確認「based on」那個基準分支選對了，這個小地方很容易點錯，尤其手上同時開著好幾個分支的時候。接下來看怎麼切換分支。
+建立分支的步驟很簡單。
+點上方的 Current Branch 下拉選單，按 New Branch。
+輸入分支名稱，最後按 Create Branch。
+這裡要特別注意 based on 那一欄，它決定新分支是從哪個分支長出來的。
+同時開著好幾個分支的時候，很容易選錯，建立前記得確認。
+這個動作對應的是 `git branch` 或 `git checkout -b`，下一章會詳細介紹。
 -->
 
 ---
@@ -553,7 +654,11 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-切換分支時如果手上還有沒 commit 的變更，Desktop 會很貼心地問你要不要一起帶過去，這一點比純指令列友善，指令列預設是直接擋下來，要求你先處理乾淨。
+切換分支一樣是從 Current Branch 下拉選單，選擇要切換的分支。
+如果手上還有沒 commit 的改動，Desktop 會問我們要怎麼處理。
+可以把改動留在原本的分支上，也可以一起帶到新的分支。
+在指令列，`git switch` 會直接把改動帶過去，只有在會衝突時才會擋下來。
+Desktop 則是每次都先問一聲，對新手來說比較不容易搞混。
 -->
 
 ---
@@ -575,7 +680,14 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-Desktop 幫你做的是「準備」的部分——確認分支已經推上去，並且一鍵帶你到瀏覽器的開 PR 頁面，實際填寫標題、描述、選擇合併目標，還是在 GitHub 網頁上完成。這跟我們稍後會學到的 Fork 工作流程是同一套邏輯，只是省去了自己找 repo 網址、自己點 Compare & pull request 按鈕的步驟。
+分支按下 Publish branch 推上遠端之後，就能直接開 Pull Request。
+確認目前在功能分支上，而且已經 push 過。
+從選單列的 Branch 選 Create Pull Request，或是直接按畫面上的按鈕。
+瀏覽器會自動打開 GitHub 的開 PR 頁面，帶好分支的資訊。
+接著在網頁上填寫標題和描述，選擇要合併到哪個分支，最後送出。
+Desktop 幫我們做的是準備的部分，實際填寫還是在 GitHub 網頁上完成。
+要注意，開 PR 需要對這個 repo 有寫入權限。
+沒有的話，就要用上一章的 Fork 流程，先複製一份到自己的帳號下。
 -->
 
 ---
@@ -590,6 +702,15 @@ layout: default
 2. 登入自己的 GitHub 帳號
 3. 確認 Git 身份設定裡的 name / email 與 GitHub 帳號一致
 
+<!--
+我們來做第一個練習：在自己的電腦上安裝並登入 GitHub Desktop。
+下載安裝之後，登入自己的 GitHub 帳號。
+最後確認 Git 設定裡的名字和 email，跟 GitHub 帳號一致。
+大家可以想一想：如果 email 對不上，會在哪裡看出問題？
+我們先暫停一下，自己動手試試看。
+【講師】給大家十分鐘完成安裝與登入，巡視確認每個人都登入成功。
+-->
+
 ---
 
 # 練習 1：解題提示
@@ -598,6 +719,15 @@ layout: default
 1. 依照系統需求表確認自己的作業系統版本符合安裝條件
 2. 忘記登入路徑的話，回頭看「初次設定」那一頁的表格
 3. email 對不上時，直接在 Git 設定頁面手動修改，或到 GitHub 網頁的 Settings → Emails 確認帳號綁定的信箱
+
+<!--
+我們來看提示。
+安裝前，先對照系統需求表，確認作業系統的版本符合條件。
+忘記登入的入口在哪裡，可以回頭看初次設定那一頁的表格。
+回答剛才的問題，email 對不上時，GitHub 上的貢獻牆會一片空白。
+這時候可以直接在 Desktop 的 Git 設定裡修改。
+也可以到 GitHub 網頁的 Settings 裡的 Emails，確認帳號綁定的是哪個信箱。
+-->
 
 ---
 layout: default
@@ -613,6 +743,15 @@ layout: default
 4. Push 到遠端
 5. 建立一個 Pull Request
 
+<!--
+第二個練習，我們用 GitHub Desktop 完整走一次協作流程。
+先 clone 一個自己有權限的 repo，建立一個新分支。
+修改一個檔案並 commit，push 到遠端，最後開一個 Pull Request。
+做的時候可以想一想：每一個步驟，背後對應的是哪一個 git 指令？
+我們先暫停一下，自己動手試試看。
+【講師】給大家十五分鐘，完成的人可以互相到對方的 PR 留言。
+-->
+
 ---
 
 # 練習 2：解題提示
@@ -622,6 +761,15 @@ layout: default
 2. 建立分支時記得確認基準分支是 main
 3. commit 前先在 Changes 分頁確認 diff 內容，只勾選你真的要送出的檔案
 4. Push 完成後，畫面上或選單列會出現「Create Pull Request」的入口
+
+<!--
+我們來看提示。
+如果沒有現成的 repo，可以先在 GitHub 網頁上建一個新的，再 clone 下來。
+建立分支時，記得確認 based on 選的是 main。
+commit 之前，先在 Changes 分頁看過改動，只勾選真的要送出的檔案。
+push 完成之後，畫面上或選單列就會出現 Create Pull Request 的入口。
+對照剛才的問題，這一路依序是 clone、branch、add、commit、push，最後在網頁上開 PR。
+-->
 
 ---
 layout: default
@@ -648,7 +796,14 @@ layout: default
 </div>
 
 <!--
-這一章沒有新的 Git 觀念，全部都是前三章學過的東西換一個介面呈現。真正要帶走的是那張「按鈕 ↔ 指令」的對照關係——知道自己按下去的是哪個指令，出問題的時候才知道要查什麼。
+我們回顧這章的重點。
+GitHub Desktop 不是取代 Git，底層跑的還是同一套指令。
+Changes 分頁對應 `git status` 和 `git diff`，History 分頁對應 `git log`。
+勾選檔案就是 `git add`，Summary 和 Description 就是 commit 訊息。
+同步按鈕上的數字，代表本機和遠端差了幾個 commit。
+email 要跟 GitHub 帳號一致，貢獻紀錄才會算進去。
+遇到複雜的操作，還是回到終端機。
+最重要的是記住按鈕和指令的對照，知道自己按下去的是什麼，出問題時才知道要查什麼。
 -->
 
 ---
@@ -659,5 +814,8 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章我們認識了 GitHub Desktop 這個圖形化工具：它是什麼、怎麼下載安裝、怎麼登入設定，以及 clone、commit、push、pull、開分支、開 PR 這一整套日常操作在介面上怎麼做。記得它跟指令列不是取代關係，而是互補——日常操作可以用 Desktop 加快速度，遇到複雜情境再切回終端機。有任何問題都歡迎現在提出來，下一章我們要進入分支的世界，學會怎麼讓多條開發線並行而不互相干擾。
+這一章沒有新的 Git 觀念，而是把前面學過的操作，換成圖形介面再走一遍。
+Desktop 和指令列是互補的，日常操作用 Desktop 加快速度，複雜的情境再切回終端機。
+下一章，我們要進入分支的世界，學會讓多條開發線同時進行，又不互相干擾。我們下一章見。
+【講師】開放提問，確認大家都完成了練習二的 PR。
 -->

@@ -38,7 +38,12 @@ layout: default
 </div>
 
 <!--
-這個章節涵蓋三個實用的進階主題：Rebase（讓歷史保持線性）、從過去的 Commit 長新分支（hotfix 的核心技能），以及 Commit 工具鏈（commitlint、husky、rebase -i）。掌握這些技能可以讓你的 Git 工作流更專業、歷史更乾淨。
+歡迎來到第十一章，進階操作技巧。
+這章有三個實用的主題。
+第一個是用 rebase 整合分支，讓歷史保持一直線。
+第二個是從過去的某個 commit 長出新分支，這是修補舊版本的核心技巧。
+第三個是一套 commit 工具，讓團隊的 commit 訊息自動符合規範。
+學完之後，我們的 Git 工作流程會更專業，歷史也會更乾淨。
 -->
 
 ---
@@ -50,7 +55,7 @@ class: flex flex-col justify-center items-center text-center
 # Rebase：另一種合併方式
 
 <!--
-除了 merge 之外，還有另一種整合分支的方式叫做 rebase。它的哲學和 merge 不同，各有適合的使用場景，我們來比較一下。
+除了 merge，還有另一種整合分支的方式，叫做 rebase。我們來看它和 merge 有什麼不同。
 -->
 
 ---
@@ -82,7 +87,13 @@ git rebase main          # 把 feature 的 commit 重新接在 main 最新處
 Rebase 讓 feature 的歷史「看起來像是從 main 最新版本開始開發的」。
 
 <!--
-Rebase 的字面意思是「重新設定基礎」。想像一下，你把自己的 commit 從原來的位置拔起來，重新接在新的基礎上。C 變成了 C'，D 變成了 D'，內容相同，但 hash 不同，因為它們的父節點已經改變了。這個設計讓歷史看起來非常乾淨，但也有需要注意的風險。接下來我們來比較 rebase 和 merge。
+第八章我們用過互動式 rebase 整理 commit，這裡來看 rebase 最原本的用途。
+rebase 的字面意思是「重新設定基礎」。
+看上面的圖，feature 原本是從 B 長出來的，但 main 之後又多了 E。
+在 feature 分支上執行 `git rebase main`。
+Git 會把 C 和 D 從原本的位置拔起來，重新接在 E 的後面，變成 C' 和 D'。
+內容一樣，但因為上一個 commit 變了，編號也跟著不同。
+結果就像 feature 是從 main 最新的版本開始開發的。
 -->
 
 ---
@@ -98,7 +109,13 @@ Rebase 的字面意思是「重新設定基礎」。想像一下，你把自己�
 | **公開分支** | 安全 | **避免用在已 push 的分支** |
 
 <!--
-Rebase 最大的優點是歷史線性，看起來乾淨；最大的風險是它修改了 commit hash，如果已經 push 到遠端就會造成歷史分歧。接下來看 log 比較。
+我們把 merge 和 rebase 放在一起比較。
+merge 會讓歷史分叉，留下小耳朵，原本的 commit 都會保留。
+rebase 則讓歷史變成一直線，但它是重新建立 commit，原本的 commit 不會保留。
+遇到衝突時，merge 只要解決一次，rebase 則可能要每個 commit 逐一解決。
+最重要的是最後一行。
+merge 用在公開分支是安全的，rebase 則要避免用在已經推送的分支上。
+因為它改變了 commit 編號，推上去之後，其他人的歷史就會和遠端對不起來。
 -->
 
 ---
@@ -122,7 +139,11 @@ merge 的 log：    rebase 的 log：
 </div>
 
 <!--
-記住黃金原則：只對還沒有推上去的本地 commit 做 rebase。接下來看 rebase 的操作細節。
+看看兩種方式產生的 log 長什麼樣子。
+左邊是 merge，可以看到 C 和 D 從旁邊分出去，最上面多了一個合併用的 commit。
+右邊是 rebase，所有 commit 排成一直線，沒有分叉，也沒有合併用的 commit。
+rebase 的歷史確實乾淨很多。
+但要記住黃金原則：只對還沒推送的本機 commit 做 rebase。
 -->
 
 ---
@@ -145,7 +166,12 @@ git rebase --abort
 ```
 
 <!--
-Rebase 中途發生衝突時，要逐個 commit 解決，每解完一個就 `git rebase --continue` 繼續。如果覺得太複雜，隨時可以 `git rebase --abort` 放棄，不會有任何副作用。接下來看 rebase 後怎麼合回 main。
+rebase 的操作很簡單，切換到功能分支，執行 `git rebase main`。
+如果過程中發生衝突，Git 會停下來。
+處理方式跟第八章一樣，先解決衝突，用 `git add` 標記，再執行 `git rebase --continue`。
+要注意的是，rebase 是一個 commit 一個 commit 重新套用的。
+所以可能會停下來好幾次，每次解決完就繼續。
+如果覺得太複雜，隨時可以用 `git rebase --abort`，回到開始之前的狀態。
 -->
 
 ---
@@ -165,7 +191,11 @@ git merge feature/login    # 線性歷史，自動 fast-forward
 </div>
 
 <!--
-Rebase 完之後再 merge，因為歷史已經是線性的，會自動 fast-forward。接下來進入第二部分。
+rebase 完成之後，再切回 main，把功能分支合併進來。
+這時候會發生 fast-forward。
+因為功能分支的 commit，已經接在 main 最新的位置後面了，兩邊沒有分歧。
+所以 Git 只需要把 main 的指標往前移，不需要產生合併用的 commit。
+先 rebase 再 merge，就能得到一條乾淨的直線歷史。
 -->
 
 ---
@@ -177,7 +207,7 @@ class: flex flex-col justify-center items-center text-center
 # 從過去的 Commit 長新分支
 
 <!--
-有時候我們需要從歷史中的某個特定點開始新工作，例如從一個舊版本做 hotfix，或是從某個穩定點開始做實驗。這個狀況題示範怎麼做。
+第二個主題：從過去的某個 commit，長出一條新分支。例如要修補一個已經發布的舊版本。
 -->
 
 ---
@@ -210,7 +240,13 @@ b2c3d4e 新增購物車功能
 </div>
 
 <!--
-`git log --oneline` 把每個 commit 精簡成一行，讓你快速瀏覽歷史。找到目標 commit 後，只需要前幾位 hash（通常 7 位就夠用），不需要全部 40 位。如果有打 tag，也可以直接用 tag 名稱代替 hash，例如 `v1.0.0`，更直觀。接下來看怎麼從那個點建立分支。
+第一步，是找到目標的 commit。
+用 `git log --oneline` 瀏覽歷史。
+假設我們要修補的是 1.0.0 版，它對應的 commit 是 9a8b7c6。
+找到編號之後，就可以從那個點建立分支。
+編號只需要前面幾碼，通常七碼就夠了。
+如果當初有打標籤，也可以直接用標籤名稱代替編號，例如 v1.0.0，更直觀。
+如果分支很多，加上 `--graph --all`，可以同時看到所有分支，更容易找到目標。
 -->
 
 ---
@@ -238,7 +274,11 @@ main:   9a8b7c6 --- ... --- a1b2c3d
 ```
 
 <!--
-從特定 commit 建立分支，本質上就是在建立分支的同時指定起點。如果不指定，預設起點就是 HEAD。接下來看完整的 hotfix 流程。
+建立分支的指令我們很熟悉，只是在最後面多加了一個起點。
+`git switch -c hotfix/v1.0.1`，後面接上 9a8b7c6。
+舊的寫法 `git checkout -b` 也一樣可以。
+如果不指定起點，預設就是從目前的 HEAD 開始。
+指定之後，新分支就會從那個舊的 commit 長出來，跟現在的 main 分開發展。
 -->
 
 ---
@@ -265,7 +305,12 @@ bug 在舊版本，要從舊版本的 commit 點開始修，不能從 main 最�
 </div>
 
 <!--
-接下來看合併、同步與清理的步驟。
+我們看完整的修補流程。
+第一步，找到舊版本的 commit 編號。
+第二步，從舊版本建立 hotfix 分支。
+第三步，修好 bug，add 之後 commit。
+這裡的關鍵是，bug 出現在舊版本，就要從舊版本開始修。
+如果從 main 最新的位置開始，就會夾帶還沒上線的功能，一起被送出去。
 -->
 
 ---
@@ -292,7 +337,12 @@ git branch -d hotfix/v1.0.1
 </div>
 
 <!--
-注意第 5 步：hotfix 修完之後，可能需要把這個修正帶回開發分支，這時候用 cherry-pick 是最精準的方式，只把那個修正的 commit 搬過來，不帶其他改動。接下來進入第三部分。
+接下來是合併和清理。
+第四步，切回 main，把 hotfix 分支合併進來。
+第五步，切到 develop，用 cherry-pick 把修正的那個 commit 帶過去。
+這樣下一個版本也會包含這個修正，同樣的 bug 不會再出現。
+cherry-pick 只會帶走那一個 commit，不會夾帶其他改動，所以是最精準的做法。
+最後一步，把已經合併的 hotfix 分支刪掉。
 -->
 
 ---
@@ -304,7 +354,7 @@ class: flex flex-col justify-center items-center text-center
 # Commit 工具鏈實戰
 
 <!--
-這部分把團隊實踐建議裡提到的四個工具一一示範安裝和使用方式：commitlint、commit-msg hook、GitHub Desktop Copilot、git rebase -i。
+第三個主題，我們把第二章團隊實踐建議提到的工具，實際安裝和使用一次。
 -->
 
 ---
@@ -338,7 +388,13 @@ echo "update"              | npx commitlint   # ❌ 錯誤
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> commitlint 通常搭配 husky 的 commit-msg hook 一起使用，下一頁說明。</div>
 
 <!--
-commitlint 本身只是一個檢查工具，它不會主動攔截任何東西。要讓它在每次 git commit 時自動執行，需要搭配 Git hook。最常見的搭配是 husky，它負責把 commitlint 掛到 commit-msg 這個 hook 上。如果你的專案還沒有 husky，下一頁會說明怎麼設定。
+第一個工具是 commitlint，它會自動檢查 commit 訊息的格式。
+用 npm 安裝 commitlint，以及 Conventional Commits 的規則設定。
+接著在專案根目錄建立 commitlint.config.js，指定使用這套規則。
+裝好之後，可以先手動測試。
+把訊息 feat: 新增搜尋功能 交給 commitlint，會通過檢查。
+如果只寫 update，就會被判定為錯誤，因為缺少類型。
+不過 commitlint 本身只是一個檢查工具，它不會主動攔截 commit，要搭配下一頁的 hook。
 -->
 
 ---
@@ -372,7 +428,14 @@ husky - commit-msg script failed (code 1)
 ```
 
 <!--
-husky 把 hook 腳本放在 .husky/ 目錄，commit-msg hook 在 git commit 建立 message 之後、正式寫入 .git 之前觸發，如果腳本回傳非 0 exit code 就攔截整個 commit。效果是：message 格式不對 → commit 直接失敗 → 開發者必須修正才能繼續。記得把 .husky/ 目錄和 commitlint.config.js 都 commit 進 repo，讓整個團隊都套用同一套規則。
+要讓 commitlint 在每次 commit 時自動執行，就要用到 Git 的 hook。
+最常見的做法是搭配 husky。
+安裝 husky 並初始化之後，建立一個 commit-msg hook，在裡面呼叫 commitlint。
+commit-msg 這個 hook，會在我們寫好訊息之後、正式建立 commit 之前執行。
+只要檢查沒通過，整個 commit 就會被擋下來。
+看下面的範例，訊息只寫 update something，commitlint 說缺少類型和主旨，commit 沒有建立。
+記得把 husky 的資料夾和 commitlint 的設定檔都 commit 進 repo。
+這樣整個團隊就會套用同一套規則。
 -->
 
 ---
@@ -390,7 +453,11 @@ layout: default
 | 5. 審閱並調整 | Copilot 根據 diff 自動產生 message，確認後 commit |
 
 <!--
-GitHub Desktop 的 Copilot 整合會讀取這次 diff 的完整內容，用 AI 推斷出一條描述準確的 commit message。接下來看如何客製化設定。
+第三個工具，是第四章介紹過的 GitHub Desktop 搭配 Copilot。
+帳號需要有 Copilot 的使用資格。
+在 Changes 頁面勾選要 commit 的檔案。
+接著點 Summary 欄位右邊的星星圖示，Copilot 就會根據改動，自動產生 commit 訊息。
+最後一步很重要：一定要自己審閱、調整之後，再送出。
 -->
 
 ---
@@ -409,7 +476,11 @@ GitHub Desktop 的 Copilot 整合會讀取這次 diff 的完整內容，用 AI �
 </div>
 
 <!--
-對於不熟悉 Conventional Commits 格式的同學，這是一個很好的輔助工具——不只省時間，還可以拿 Copilot 產生的 message 作為範本，慢慢培養出自己寫好 message 的直覺。
+Copilot 產生訊息的方式，也可以在設定裡調整偏好。
+例如使用中文或英文，以及是否遵循 Conventional Commits 格式。
+不過要記住，AI 產生的訊息不一定完全正確，一定要看過再 commit。
+對還不熟悉 Conventional Commits 的人來說，它是一個很好的輔助。
+可以拿 Copilot 的結果當範本，慢慢培養寫好訊息的直覺。
 -->
 
 ---
@@ -443,7 +514,13 @@ pick 7g8h9i 完成功能
 <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-gray-700 text-sm text-left">⚠️ <b>注意：</b> rebase 會改寫 SHA-1，只對「還沒 push 的 commit」操作。已推送的分支不要 rebase。</div>
 
 <!--
-git rebase -i 是整理 commit 歷史最強大的工具。開發功能時在 feature branch 上可以隨意 commit，wip、fix typo、再試一次……全都沒關係，等到要 merge 或 PR review 之前，用 rebase -i 把這些草稿整理成一兩個有意義的 commit。squash 是最常用的操作，它把多個小 commit 合成一個，訊息也可以重新寫過。再次強調：只對未 push 的 commit 做 rebase，已 push 的分支 rebase 後 push 需要 force push，多人協作時會造成很大的麻煩。
+最後一個工具，是第八章學過的互動式 rebase。
+這裡把它放進工作流程裡來看。
+開發功能時，在自己的分支上可以隨意 commit，WIP、fix typo 都沒關係。
+等到要合併或送 PR 審查之前，再用 `git rebase -i`，把這些草稿整理成一兩個有意義的 commit。
+清單裡最常用的指令是 squash 和 fixup，把小 commit 併進上一個。
+reword 改訊息，drop 則是刪掉 commit。
+再提醒一次，rebase 會改寫 commit 編號，只對還沒推送的 commit 操作。
 -->
 
 ---
@@ -475,7 +552,13 @@ b9c1d2e (HEAD -> feature/search) feat: 新增全文搜尋功能
 ```
 
 <!--
-把流程視覺化：原本三個草稿 commit，經過 rebase -i squash 之後變成一個乾淨的 commit，message 也可以完整重寫。這是很多有經驗的工程師在做 PR 前的標準步驟，讓 reviewer 可以更清楚地理解這個 PR 做了什麼，而不是看到一堆 "wip" 和 "fix typo"。搭配前面學到的 Conventional Commits 格式，最後這個 commit 的 message 就會是標準格式，非常漂亮。
+我們看一個完整的 squash 範例。
+執行 `git rebase -i HEAD~3`，把後兩行的 pick 改成 squash。
+存檔關閉後，Git 會再開一次編輯器，讓我們寫最終的訊息。
+這裡我們用 Conventional Commits 的格式，寫成 feat: 新增全文搜尋功能，底下再補充說明。
+完成之後看 log，原本的三個 commit，已經合成一個乾淨的 commit。
+這是很多有經驗的工程師在送 PR 之前的標準步驟。
+審查的人看到的，是一個清楚的功能，而不是一堆 WIP 和 fix typo。
 -->
 
 ---
@@ -486,5 +569,10 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章涵蓋了幾個進階操作技巧：worktree 同時處理多個分支、rebase -i squash 整理 commit，以及 Conventional Commits 規範。有任何問題嗎？
+這一章我們學了三個進階技巧。
+用 rebase 讓歷史保持一直線，並記住只對還沒推送的 commit 使用。
+從過去的 commit 長出分支，修補舊版本，再用 cherry-pick 把修正帶回開發分支。
+最後用 commitlint、husky、Copilot 和互動式 rebase，讓 commit 訊息和歷史都保持整潔。
+下一章，我們回到 GitHub，學習更多進階的操作。我們下一章見。
+【講師】開放提問，可以請大家在練習 repo 裝好 husky，試著用不合格式的訊息 commit 看看。
 -->

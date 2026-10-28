@@ -39,7 +39,11 @@ style: |
 </div>
 
 <!--
-歡迎來到「開始使用 Git」這章。很多同學學 Git 都是從公司前輩說「你去裝個 Git，然後 git clone 一下」開始的，但 Git 的概念其實並不難，只是需要有人帶著你把基礎打穩。這章我們會從建立 Repository 開始，一步一步把最常用的指令和觀念都搞清楚。接下來我們先看今天的大綱。
+歡迎來到第二章，開始使用 Git。
+上一章我們把 Git 裝好、設定好了，這章要真的開始動手。
+我們會從建立 Repository 開始，一步一步走過最常用的指令。
+學完這章，我們就能自己管理一個專案的版本。
+就算不小心刪錯檔案、commit 錯東西，也知道怎麼救回來。
 -->
 
 ---
@@ -58,7 +62,12 @@ layout: default
 
 
 <!--
-今天的大綱分兩大塊：前半段四個主題是最基本的工作流程，後半段是實際工作中常遇到的狀況題。為什麼要設計狀況題？因為實際工作幾乎不會每次都按照理想流程走，先把這些常見情境的應對方式學起來，會讓大家對 Git 的使用更有信心。接下來先從建立 Repository 開始。
+這章分成兩大塊。
+前四個主題是基本工作流程。
+包括建立 repo、add 和 commit、查看紀錄，還有怎麼寫 commit message。
+後三個是狀況題，也就是實際工作中很常遇到的情境。
+例如有些檔案不想放進 Git、要刪檔或改名，還有出錯了怎麼還原。
+先把這些狀況的應對方式學起來，用 Git 會更有信心。
 -->
 
 ---
@@ -70,7 +79,7 @@ class: flex flex-col justify-center items-center text-center
 ## 新增、初始 Repository
 
 <!--
-第一個主題：如何建立一個新的 Git Repository。這是所有事情的起點，沒有 Repository 就什麼都做不了。接下來我們先搞清楚 Repository 是什麼。
+第一個主題，建立 Repository。這是一切的起點，沒有它，Git 什麼都做不了。
 -->
 
 ---
@@ -94,7 +103,14 @@ Git 用一個隱藏目錄 `.git` 來記錄**所有的版本歷史**。
 | 分支、標籤資訊 | `.git/refs/` |
 
 <!--
-很多同學會以為 Git 是把版本資料放到雲端或某個神秘的地方，其實不然。Git 所有的歷史、物件、設定，全部都在你專案目錄裡的 .git 隱藏資料夾裡面。這個設計讓 Git 可以在完全離線的狀態下運作。要注意的是，這個目錄在 macOS 和 Linux 預設是隱藏的，Windows 上需要開啟「顯示隱藏項目」才看得到。接下來我們來實際建立一個 repo。
+很多人以為 Git 把版本資料存在雲端，或某個神秘的地方。
+其實不是。
+Git 所有的歷史、物件和設定，全部都放在專案裡一個叫 `.git` 的隱藏資料夾。
+這個資料夾，就是所謂的「儲存庫」，也就是 Repository。
+表格右邊列的 objects 放的是每一次 commit 的內容，refs 放的是分支和標籤。
+也因為一切都在本機，Git 才能完全離線運作。
+要注意這個資料夾預設是隱藏的。
+Windows 要在檔案總管打開「顯示隱藏的項目」才看得到。
 -->
 
 ---
@@ -114,7 +130,12 @@ Initialized empty Git repository in /tmp/git-practice/.git/
 ```
 
 <!--
-git init 就是對這個目錄說：「從現在起，你被 Git 管理了！」執行後會看到 "Initialized empty Git repository" 的訊息，代表 .git 目錄已建立成功。對於已經存在的專案，直接在專案根目錄執行 git init 就可以，Git 不會動到你現有的任何檔案。建議用 /tmp 練習，因為重開機就會自動清掉，不會留下一堆測試用的垃圾資料夾。接下來有一件事要特別叮嚀大家。
+`git init` 的意思，就是對這個資料夾說：「從現在起，你歸 Git 管了。」
+範例裡，我們先建立一個叫 git-practice 的資料夾，進去之後執行 `git init`。
+執行後會印出 Initialized empty Git repository，代表 `.git` 資料夾建好了。
+如果是已經存在的專案，直接在專案的根目錄執行 `git init` 就可以。
+Git 不會動到任何現有的檔案。
+【講師】請大家跟著建立 git-practice 資料夾，後面的練習都會在這裡進行。
 -->
 
 ---
@@ -135,7 +156,12 @@ git init 就是對這個目錄說：「從現在起，你被 Git 管理了！」
 | 刪除 `.git/` 目錄 | ❌ 所有版本歷史永久消失 |
 
 <!--
-.git 目錄就是整個版本控制系統的心臟，一旦刪除，所有的 commit 歷史、分支、標籤全部消失，沒有任何辦法可以復原。你有沒有聽過有人在整理目錄時誤刪了 .git 的慘劇？這種事真的發生過，請大家務必對這個目錄保持敬畏之心，永遠不要手動修改裡面的內容，除非你非常清楚自己在做什麼。接下來進入第二個主題：把檔案交給 Git。
+接下來有一件事要特別叮嚀。
+整個專案裡，不管刪掉哪個檔案，只要 `.git` 還在，幾乎都救得回來。
+但是 `.git` 本身一旦刪掉，所有的 commit、分支、標籤就全部消失了，沒有任何辦法復原。
+這種事真的有人遇過，例如整理資料夾時順手把它刪了。
+所以請大家對這個資料夾保持敬畏。
+除非非常清楚自己在做什麼，否則不要手動去改裡面的東西。
 -->
 
 ---
@@ -147,7 +173,7 @@ class: flex flex-col justify-center items-center text-center
 ## 把檔案交給 Git 控管
 
 <!--
-有了 Repository 之後，下一步就是把我們的檔案「交給」Git 管理。這個過程比很多同學想像的多一個步驟，讓我們來看看為什麼。
+有了 Repository，下一步就是把檔案交給 Git 管理。這裡會比想像中多一個步驟。
 -->
 
 ---
@@ -168,7 +194,13 @@ Git 不會自動追蹤你的每一個改動。你需要**明確告訴 Git**哪�
 > 新建立的檔案在 Git 眼中是「**Untracked**（未追蹤）」狀態。
 
 <!--
-很多同學剛學 Git 時會覺得「為什麼不能直接 commit，還要多一個 add 的步驟？」其實這個設計是為了讓你有機會「精心挑選」這次要提交什麼。想像一下你同時在修 bug 和加新功能，但你希望這兩件事的 commit 是分開的——透過暫存區，你就可以先 add bug fix 的檔案 commit 一次，再 add 新功能的檔案再 commit 一次，讓歷史記錄更清楚。接下來看核心指令的對照表。
+很多人剛學 Git 都會問：為什麼不能直接 commit，還要先 add？
+因為 Git 不會自動記錄每一個改動，我們得明確告訴它，這次要記錄哪些東西。
+想像一下，我們同時在修 bug 和加新功能，改了五個檔案。
+我們希望這兩件事分成兩個 commit，歷史才會清楚。
+有了暫存區，就可以先 add 修 bug 的檔案，commit 一次。
+再 add 新功能的檔案，再 commit 一次。
+另外，新建立的檔案在 Git 眼中是 Untracked，也就是還沒被追蹤的狀態。
 -->
 
 ---
@@ -185,11 +217,15 @@ Git 不會自動追蹤你的每一個改動。你需要**明確告訴 Git**哪�
 | `git commit -m "訊息"` | 將暫存區內容提交到儲存庫 |
 
 <!--
-這三個指令是 Git 日常使用的核心，幾乎每次 commit 都會用到。git status 是我們最好的朋友，隨時確認現在的狀態；git add 把改動「放進暫存區」；git commit 才是真正的「提交」。
-
-這裡特別說明 git add . 和 git add --all 的差異，因為很多人搞混。git add . 只影響「目前目錄及其子目錄」的變更；git add --all（等同 git add -A）則影響整個 repo，不管你現在在哪個子目錄裡。舉個例子：你在 src/ 目錄下執行 git add .，根目錄的改動不會被加進去；但執行 git add --all 就會。在 repo 根目錄操作時兩者效果相同，但在子目錄操作時行為就不一樣了，這是最常被踩到的坑。日常開發建議用 git add .，語意清楚而且夠用；需要確認涵蓋整個 repo 時才用 --all。
-
-commit 訊息請寫清楚，未來的你或同事看歷史記錄時會感謝現在的你。接下來看實際操作範例。
+這三個指令是日常使用 Git 的核心。
+`git status` 用來隨時確認目前的狀態。
+`git add` 把改動放進暫存區，`git commit` 才是真正寫進歷史。
+這裡要特別講 `git add .` 和 `git add --all` 的差別，很多人會搞混。
+`git add .` 只處理目前所在資料夾，以及它底下的變更。
+`git add --all` 則是處理整個 repo，不管我們現在在哪一層。
+在專案根目錄執行時，兩者效果一樣。
+但如果我們在 src 資料夾裡執行 `git add .`，根目錄的改動就不會被加進去。
+日常開發用 `git add .` 就夠了。
 -->
 
 ---
@@ -205,7 +241,14 @@ $ git commit -m "初始化專案，新增 welcome.html"
 ```
 
 <!--
-接下來我們把 git status 的完整輸出看懂，這是 Ch 1 講的三大區域第一次真的出現在畫面上。
+我們把剛才的指令串起來跑一次。
+先執行 `git status`，可以看到 welcome.html 出現在 Untracked files 底下。
+這代表 Git 發現了這個新檔案，但還沒開始追蹤它。
+接著 `git add welcome.html`，把它放進暫存區。
+最後 `git commit -m`，後面接上這次的說明，就完成了第一個 commit。
+commit 之後再跑一次 `git status`，會看到 working tree clean。
+意思是工作目錄裡的東西，都已經記錄進歷史了。
+【講師】建議現場在 git-practice 裡實際跑一次，讓大家看到每一步 git status 的變化。
 -->
 
 ---
@@ -240,7 +283,14 @@ Untracked files:                ← 未追蹤（紅色）
 
 
 <!--
-git status 是我們在用 Git 時最常執行的指令，沒有之一。不管做任何操作之前，先跑一下 git status 確認狀態，這個習慣能幫我們避免很多失誤。輸出的三個區塊剛好對應 Ch 1 講的三大區域：Changes to be committed 是暫存區（Staging Area）的內容，顯示綠色；Changes not staged 是工作目錄改了但還沒 add 的，紅色；Untracked files 是 Git 完全不認識的新檔案，也是紅色。Git 還很貼心地在每個區塊下方寫了下一步該執行什麼指令，非常適合新手參考。接下來看一個新手常踩的坑。
+`git status` 是我們最常執行的指令，沒有之一。
+做任何操作之前先看一眼狀態，可以避免很多失誤。
+這段輸出的三個區塊，剛好對應上一章講的三大區域。
+Changes to be committed 是暫存區的內容，會顯示綠色。
+Changes not staged for commit 是改了但還沒 add 的檔案，顯示紅色。
+Untracked files 是 Git 完全不認識的新檔案，也是紅色。
+Git 還會在每個區塊底下提示下一步可以執行什麼指令，新手很適合照著看。
+如果覺得輸出太長，可以用 `git status -s`，改成每個檔案一行的簡短模式。
 -->
 
 ---
@@ -263,7 +313,14 @@ $ git commit -m "新增 welcome"
 ```
 
 <!--
-這是新手最常踩的坑。git add 之後，Git 只記住「當下那個時間點」的檔案內容，之後再改的東西不會自動進暫存區。所以 commit 之前養成習慣先跑一下 git status，看看有沒有「Changes not staged for commit」的警告，確認所有想提交的改動都已經 add 進去了。接下來我們專門講 commit message 的寫法，這是很多人學 Git 時忽略的一塊，但在團隊協作時非常重要。
+這是新手最常踩的坑。
+`git add` 的時候，Git 只會記住那一刻的檔案內容。
+之後再改的東西，並不會自動跑進暫存區。
+看這個範例，我們先寫入 Hello，然後 add。
+接著又加了一行 World，但沒有再 add 一次，就直接 commit 了。
+結果 commit 進去的只有 Hello，World 那一行還留在工作目錄。
+所以 commit 之前，養成先跑 `git status` 的習慣。
+只要看到 Changes not staged for commit，就代表還有改動沒 add。
 -->
 
 ---
@@ -275,7 +332,7 @@ class: flex flex-col justify-center items-center text-center
 ## 檢視紀錄
 
 <!--
-有了 commit 之後，我們要能「回顧」這些紀錄。git log 就是 Git 的歷史書，讓我們看到專案從誕生到現在的每一個版本。
+有了 commit 之後，我們要能回頭查看這些紀錄。接下來看 Git 的歷史書，`git log`。
 -->
 
 ---
@@ -291,7 +348,12 @@ class: flex flex-col justify-center items-center text-center
 | `git log --oneline --graph --all` | 最常用的完整概覽組合 |
 
 <!--
-git log 預設從最新到最舊，每個 commit 顯示完整 SHA-1、作者、時間和 commit 訊息。但預設輸出很佔版面，所以大家常用 --oneline 來精簡顯示。--graph 在有分支的時候非常好用，可以直觀看出分支的合流關係。這三個參數組合 --oneline --graph --all 是日常工作中最常用的查看方式。接下來看實際的輸出範例。
+`git log` 會從最新到最舊，列出每一個 commit 的編號、作者、時間和訊息。
+不過預設的輸出很佔版面，所以大家常加上 `--oneline`，讓每個 commit 只佔一行。
+`--graph` 會用簡單的圖形畫出分支結構，有分支的時候特別好用。
+`--all` 則會把所有分支的 commit 都列出來。
+最後一行這三個參數的組合，就是日常最常用的查看方式。
+上一章設定的 alias `git lg`，其實就是這個組合。
 -->
 
 ---
@@ -315,7 +377,12 @@ Date:   Wed Jun 4 10:30:00 2026 +0800
 ```
 
 <!--
-上面是兩種輸出格式的比較。完整 git log 包含 40 字元的 SHA-1、作者、日期和 commit 訊息；--oneline 只顯示前 7 碼的短 SHA-1 和第一行訊息，適合快速瀏覽。注意 HEAD -> main 這個標記，它告訴你目前工作在哪個 commit 上。SHA-1 是由 commit 的內容計算出來的，碰撞機率極低，幾乎可以視為唯一 ID。接下來看 git log 的進階篩選功能。
+這裡比較兩種輸出格式。
+下面是完整的 `git log`，包含 40 個字元的 commit 編號、作者、日期和訊息。
+這個編號是用 SHA-1 從 commit 內容算出來的，幾乎可以當作唯一的身分證。
+上面的 `--oneline` 只顯示前 7 碼的短編號，加上訊息的第一行，適合快速瀏覽。
+要注意的是 HEAD 指向 main 這個標記。
+它告訴我們，目前所在的位置是 main 分支上的這個 commit。
 -->
 
 ---
@@ -340,7 +407,13 @@ pre.shiki { font-size: 0.72rem !important; overflow-x: visible; white-space: pre
 </style>
 
 <!--
-git log 其實是個功能非常強大的查詢工具，在大型專案中能快速定位「這個 bug 是誰在什麼時候引入的」。-S "keyword" 不是搜尋 commit 訊息，而是搜尋哪些 commit 實際改動了含有該字串的程式碼，debug 時非常有用。多個篩選條件可以組合使用，縮小查詢範圍。接下來看怎麼只查單一檔案的歷史。
+`git log` 其實是一個很強的查詢工具。
+在大型專案裡，可以用它快速找出某個問題是誰、在什麼時候引入的。
+`--author` 篩選作者，`--grep` 搜尋 commit 訊息裡的關鍵字。
+要特別注意 `-S`，它搜尋的不是訊息，而是哪些 commit 實際改動了含有這段字串的程式碼。
+除錯的時候，這個功能非常好用。
+`--since` 和 `--until` 則可以限定時間範圍。
+這些條件還可以組合起來，像下面這行，就是找小明在今年改過登入相關的 commit。
 -->
 
 ---
@@ -364,7 +437,13 @@ layout: default
 | `git log -S "keyword" -- <file>` | 找到新增/刪除特定字串的 commit |
 
 <!--
-當 bug 出現，第一步不是亂猜，而是查歷史。git log -- filename 的雙橫線是刻意的，告訴 Git「後面的是檔案路徑，不是分支名稱」，避免歧義。-p 選項（patch 的縮寫）把每次 commit 的實際 diff 一起秀出來，非常適合追蹤「這行是什麼時候加進來的」。--follow 處理檔案改過名字的情況，沒有它的話改名之前的歷史就查不到。接下來看實際的輸出範例。
+想像一下，某個檔案突然壞掉了。
+我們想知道這個檔案最近改了什麼、誰改的、什麼時候改的。
+這時候第一步不是亂猜，而是查歷史。
+在 `git log` 後面加兩個減號再接檔名，就只會列出改過這個檔案的 commit。
+那兩個減號是刻意的，它告訴 Git，後面接的是檔案路徑，不是分支名稱。
+加上 `-p`，會把每次的實際改動一起顯示出來。
+`--follow` 則能處理檔案改過名字的情況，沒有它，改名之前的歷史就查不到。
 -->
 
 ---
@@ -396,7 +475,14 @@ diff --git a/index.html b/index.html
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 搭配 <code>--since</code> 縮小範圍，例如 <code>git log --since="2 weeks ago" -- index.html</code>，快速鎖定最近的改動。</div>
 
 <!--
-看輸出範例讓大家知道要讀什麼。--oneline 格式是 hash + 訊息，很清楚；加上 -p 後每個 commit 會附上標準 diff 格式，- 是刪掉的行，+ 是新增的行。如果一個檔案改動次數很多，可以先用 --oneline 瀏覽清單，找到可疑的 commit 後再單獨用 git show <hash> 看完整 diff，比在海量的 -p 輸出裡翻頁有效率多了。接下來看 git blame 怎麼找到每行程式的作者。
+我們看實際的輸出長什麼樣子。
+第一段用 `--oneline`，列出三個改過 index.html 的 commit，每個一行。
+第二段加上 `-p`，每個 commit 底下會附上改動內容。
+減號開頭的是刪掉的行，加號開頭的是新增的行。
+這裡可以看到，標題從 Welcome 改成了 Welcome to Our Site。
+如果檔案改動很多次，建議先用 `--oneline` 瀏覽清單。
+找到可疑的 commit 之後，再用 `git show` 加上編號，單獨看那一次的完整改動。
+下面的提示也很實用，加上 `--since` 可以只看最近兩週的改動。
 -->
 
 ---
@@ -419,7 +505,12 @@ code review 發現一段奇怪的邏輯，想知道這行是誰、什麼時候�
 | `git blame --since="2 weeks" <file>` | 只看近期的改動 |
 
 <!--
-git blame 的名字聽起來像是在「推卸責任」，其實它的本意是「找到這行的責任人」，好讓你知道該去找誰討論。有個有趣的統計：用 git blame 最常發現的「兇手」，其實是你自己。這不是在嘲諷，而是說版本控制讓每個人的決策都有跡可循，是一種很好的自我覆盤工具。-L 選項只查特定幾行，不需要把整個檔案都列出來。接下來我們看怎麼讀 git blame 的輸出。
+在 code review 時，我們發現一段奇怪的邏輯，想知道是誰、什麼時候加的。
+這時候就用 `git blame`。
+它的名字聽起來像是在「怪罪」，其實本意是找到這行程式的負責人，好去找對方討論。
+不過常有人發現，用 `git blame` 查到的作者，其實是自己。
+這也是版本控制的好處，每個決定都有跡可循。
+`-L` 可以只看特定幾行，`-w` 會忽略單純空白的改動，避免被排版調整干擾。
 -->
 
 ---
@@ -440,7 +531,12 @@ a3f9d2c (Alice  2026-06-01 10:30:00 +0800  10)  <body>
 ```
 
 <!--
-git blame 的輸出格式很固定：最左邊是 commit hash，括號裡是作者和時間，最右邊才是實際程式碼。^ 開頭的 hash 代表這行從第一個 commit 就存在，從來沒被改動過。
+這是 `git blame` 實際的輸出，範例只看第 5 到 10 行。
+每一行的格式都很固定。
+最左邊是 commit 編號，括號裡是作者和時間，接著是行號，最右邊才是程式碼本身。
+例如第 6、7 行，是 Bob 在五月二十號加的。
+注意第 9 行的編號前面有一個 ^ 符號。
+它代表這一行從第一個 commit 就存在，之後從來沒被改過。
 -->
 
 ---
@@ -459,7 +555,13 @@ layout: default
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 找到 commit hash 後，可以用 <code>git show a3f9d2c</code> 查看當時完整的改動脈絡，更了解為什麼這樣寫。</div>
 
 <!--
-找到 hash 之後，用 git show <hash> 可以看到完整的 commit，包括其他檔案的改動和 commit 訊息，通常光看訊息就能理解當初為什麼這樣寫，省去很多猜測。看過這些爛 log 和好 log 的差別之後，接下來我們專門講 commit message 該怎麼寫。
+這張表把剛才的欄位整理起來。
+左邊是 commit 編號，接著是作者和時間，然後是行號。
+前面帶 ^ 符號的，代表這行來自第一次 commit。
+找到編號之後，可以用 `git show` 加上編號，看那次 commit 的完整內容。
+包括同時改了哪些檔案，還有當時寫的 commit 訊息。
+通常光看訊息，就能理解當初為什麼這樣寫。
+前提是，那則訊息要寫得清楚。這就是我們下一個主題。
 -->
 
 ---
@@ -471,7 +573,7 @@ class: flex flex-col justify-center items-center text-center
 ## Commit Message 怎麼寫才對？
 
 <!--
-Commit message 是寫給「未來的自己」和「同事」看的。它記錄了「為什麼做這個改動」，而不只是「改了什麼」——改了什麼，看 diff 就知道，message 的價值在於說明背後的原因和脈絡。
+下一個主題是 commit message。它是寫給未來的自己和同事看的，重點是「為什麼」要這樣改。
 -->
 
 ---
@@ -509,7 +611,13 @@ Commit message 是寫給「未來的自己」和「同事」看的。它記錄�
 </div>
 
 <!--
-大家看左邊那個 log，六個月後你能知道「fix」修了什麼嗎？「aaa」又是什麼？這些 message 在當下寫的時候覺得夠用，但只要過了一個禮拜，就算是你自己寫的也看不懂。右邊的 log 每一行都清楚說明了「做了什麼類型的改動、改了什麼、為什麼改」，這才是對自己和團隊負責任的 commit message。
+大家看左邊的 log。
+六個月後，我們還知道 fix 修了什麼嗎？aaa 又是什麼？
+這些訊息在當下覺得夠用，但過一個禮拜，連自己都看不懂。
+右邊的 log，每一行都說清楚改動的類型和內容。
+例如 fix 開頭，說明修正了登入頁 token 過期不跳轉的問題。
+改了什麼，看程式碼的差異就知道。
+commit message 真正的價值，是留下背後的原因和脈絡。
 -->
 
 ---
@@ -546,7 +654,13 @@ Commit message 是寫給「未來的自己」和「同事」看的。它記錄�
 </div>
 
 <!--
-這個格式是從 Angular 團隊的規範演化而來，現在叫做 Conventional Commits，已經被非常多開源專案和企業團隊採用。三個部分只有第一行是必填的，body 和 footer 視情況加。第一行的格式是「type(scope): subject」，type 說明這次改動的類型，scope 說明影響範圍（可以省略），subject 是簡短描述。接下來我們看 type 有哪些選項。
+這是業界通用的格式，叫做 Conventional Commits，很多開源專案和公司都在用。
+它分成三個部分，只有第一行是必填的。
+第一行的格式是 type、括號裡的 scope，然後冒號接上 subject。
+type 說明這次改動的類型，scope 說明影響範圍，可以省略，subject 是簡短描述。
+第一行建議在 50 個字以內，不加句點。
+空一行之後是 body，說明為什麼改、改了什麼。
+最後的 footer，用來關聯 issue 或標記重大變更。
 -->
 
 ---
@@ -566,7 +680,13 @@ Commit message 是寫給「未來的自己」和「同事」看的。它記錄�
 | `chore` | 雜務（依賴更新、設定檔） | ❌ |
 
 <!--
-這九個 type 涵蓋了日常開發的大部分情境。其中最常用的是 feat、fix、docs、refactor 和 chore。特別注意 style 是指「程式碼格式」的調整，不是 CSS 樣式；refactor 是指在不改變功能的前提下重整程式結構。有了這個分類，光看 git log 就能快速過濾出想找的類型，比如只看 fix 的 commit 來追查 bug 引入時間。
+這張表列出常見的 type。
+最常用的是 feat、fix、docs、refactor 和 chore。
+要特別注意兩個容易誤會的。
+style 指的是程式碼格式的調整，例如縮排、空白，不是 CSS 樣式。
+refactor 是重構，也就是在功能不變的前提下，整理程式的結構。
+有了這些分類，光看 log 就能快速篩出想找的類型。
+例如只看 fix 的 commit，追查某個 bug 是什麼時候修的。
 -->
 
 ---
@@ -609,7 +729,14 @@ refactor: 拆分 AuthController
 </div>
 
 <!--
-Subject 是最重要的部分，因為這是 git log --oneline 唯一會顯示的內容。50 字的限制不是硬規定，但 GitHub 和大多數工具超過 72 字就會截斷，所以養成精簡的習慣很重要。「祈使句」的意思是：假設每個 commit message 前面都有一個隱形的「這個 commit 會…」——所以是「新增搜尋功能」而不是「新增了搜尋功能」或「我加了搜尋功能」。
+第一行是最重要的部分，因為 `git log --oneline` 只會顯示這一行。
+長度盡量控制在 50 個字以內，太長在 GitHub 和很多工具上會被截斷。
+第二個原則是用祈使句。
+想像每個 commit 訊息前面都有一句隱形的「這個 commit 會」。
+所以寫「新增搜尋功能」，而不是「新增了搜尋功能」。
+另外標題不加句點，團隊裡也要統一用中文或英文，不要混著用。
+對照下面兩欄，左邊的 fixed the bug、update，都看不出改了什麼。
+右邊的每一行，都能一眼看懂。
 -->
 
 ---
@@ -641,7 +768,13 @@ Refs #138
 ```
 
 <!--
-Body 不是每次都需要寫，但遇到以下情況建議加：改動的原因不明顯、有多個方案選擇其一、有需要特別說明的副作用或影響範圍。Footer 裡的 Closes #142 在 GitHub 上有特殊效果：當這個 commit 被 merge 進主分支，對應的 issue 會自動關閉，非常方便。BREAKING CHANGE 是讓工具和協作者知道這次升級可能需要調整呼叫端的寫法。
+body 不是每次都要寫。
+但如果改動的原因不明顯，或是在幾個做法中選了一個，就值得寫下來。
+上面的範例，body 說明了原本的 JWT 驗證少了黑名單檢查，現在改成每次都查一次。
+還寫出了影響範圍，看的人馬上就知道要注意哪裡。
+footer 的 Closes 加上 issue 編號，在 GitHub 上有特別的效果。
+這個 commit 合併進主分支時，對應的 issue 會自動關閉。
+BREAKING CHANGE 則是提醒大家，這次的改動會影響呼叫端，升級時要跟著調整。
 -->
 
 ---
@@ -690,7 +823,13 @@ git commit -m \
 </div>
 
 <!--
-看這個對比最直觀。左邊的 log 一個月後沒有任何參考價值；右邊的 commit 即使過了一年，你也能從訊息裡知道當時發生了什麼、為什麼這樣改、對應哪個 issue。對團隊來說，好的 commit message 是比程式碼本身更難取代的知識資產——程式碼可以重寫，但「為什麼這樣設計」的脈絡一旦遺失就很難還原。
+我們把兩種寫法放在一起比較。
+左邊的 fix bug、update、ok now，一個月後就沒有任何參考價值。
+右邊這個 commit，類型是 fix，說明了密碼重設信沒寄出去的根本原因。
+原來是 staging 環境少了 TLS 設定，最後還關聯了 issue 87。
+就算過了一年，我們也能從訊息裡知道當時發生了什麼。
+對團隊來說，好的 commit message 是很難取代的資產。
+程式碼可以重寫，但「為什麼這樣設計」的脈絡一旦遺失，就很難找回來。
 -->
 
 ---
@@ -716,7 +855,12 @@ git commit -m \
 </div>
 
 <!--
-把規範落地最有效的方式是工具化，不要靠人工自律。commitlint 可以在 CI pipeline 裡自動檢查格式，不符合就讓 PR 無法 merge；commit-msg hook 則在本機提交時就直接攔截。VS Code 的 Conventional Commits 擴充套件讓你用圖形介面選 type 和填 scope，不用記格式。WIP commit 是開發過程中的草稿，只要在合入主分支前用 rebase -i 整理成有意義的 commit，並不是問題。
+要讓規範真正落地，最有效的方式是交給工具，而不是靠每個人自律。
+commitlint 可以在 CI 裡自動檢查格式，不符合就不讓程式碼合併。
+`commit-msg` hook 則是在本機 commit 的時候就先攔下來。
+GitHub Desktop 內建的 Copilot，還能依照改動自動產生 commit message。
+開發途中的 WIP commit 也沒問題，合併前用 `rebase -i` 整理好就好。
+寫訊息時，就假設讀者是六個月後、什麼都不記得的自己。
 -->
 
 ---
@@ -739,7 +883,12 @@ git commit -m \
 | 程式碼可以正常執行時 | 避免 commit 壞掉的程式 |
 
 <!--
-「什麼時候 commit」是很多同學會問的問題。沒有標準答案，但大原則是：commit 應該代表一個有意義的「工作單元」。不要一個 commit 裡面混雜了修 bug、加功能、改格式三件事；也不要每改一行就 commit 一次。一個好的 commit 讓人光看訊息就能知道這個版本做了什麼。如果你發現自己的 commit 訊息越來越難寫，可能就是改動太雜了，應該拆分。接下來進入狀況題，第一個是：有些檔案我根本不想放進 Git。
+「什麼時候該 commit」也是很常被問的問題。
+沒有標準答案，但大原則是，一個 commit 應該代表一個有意義的工作單元。
+完成一個功能、修好一個 bug，或是要嘗試有風險的改動之前，都是好時機。
+不要在一個 commit 裡混著修 bug、加功能和改格式。
+也不要每改一行就 commit 一次。
+如果發現 commit 訊息越來越難寫，通常代表這次改動太雜，應該拆開。
 -->
 
 ---
@@ -751,7 +900,7 @@ class: flex flex-col justify-center items-center text-center
 ## 【狀況題】檔案忽略 `.gitignore`
 
 <!--
-進入狀況題的第一個。開發過程中，有些檔案根本不該進版本庫——密碼、暫存檔、IDE 設定、動輒幾百 MB 的套件目錄。這個部分要教的 .gitignore，是越早設定越好的東西，因為機密一旦 commit 進去，就算之後刪掉也還留在歷史裡。
+接下來進入狀況題。第一個是：有些檔案，我們根本不想放進 Git。
 -->
 
 ---
@@ -775,7 +924,13 @@ layout: default
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 把資料庫密碼或 AWS 金鑰 commit 進去是很常見的資安事故，.gitignore 是第一道防線。</div>
 
 <!--
-機密設定檔一旦推上 GitHub，就算之後刪掉，有心人還是可以從 commit 歷史撈回來，這是很常見的資安事故。IDE 產生的設定檔讓每次 git status 都亂七八糟；node_modules 動輒幾百 MB，根本不需要版控。.gitignore 就是解法，它不是在「騙」Git，而是明確告訴 Git「這些我知道，不用管它們」。接下來看 .gitignore 的語法規則。
+開發的時候，有幾類檔案不應該被追蹤。
+最危險的是機密設定，像 `.env` 或資料庫的密碼檔。
+一旦推上 GitHub，就算之後刪掉，別人還是能從歷史紀錄裡撈回來，這是很常見的資安事故。
+其他像編譯產物、IDE 的個人設定，會讓 `git status` 變得一團亂。
+`node_modules` 這種套件資料夾，動輒幾百 MB，也完全不需要版控。
+解法就是 `.gitignore`。
+它的作用，是明確告訴 Git：「這些檔案我知道，不用管它們。」
 -->
 
 ---
@@ -797,7 +952,13 @@ layout: default
 | `#` 開頭 | 這是註解行 |
 
 <!--
-.gitignore 的語法很直覺，但有幾個地方值得注意。目錄結尾要加斜線，這樣 Git 才知道是整個目錄；! 開頭可以做例外，比如 *.log 忽略所有 log，但 !error.log 保留 error log。接下來看建立與提交 .gitignore 的方式。
+`.gitignore` 的語法很直覺，一行寫一條規則。
+直接寫檔名，就是忽略那個檔案；星號是萬用字元，`*.tmp` 代表所有 tmp 檔。
+有兩個地方要注意。
+第一，要忽略整個資料夾，結尾要加斜線，像 `node_modules/`。
+第二，驚嘆號開頭代表例外。
+例如先用 `*.log` 忽略所有 log，再寫一條驚嘆號接 important.log，就能把這一個留下來。
+井字號開頭的則是註解。
 -->
 
 ---
@@ -824,7 +985,10 @@ git commit -m "Add .gitignore"
 </div>
 
 <!--
-.gitignore 本身一定要 commit 進去，這樣整個團隊都享有相同的忽略規則，不然每個人本地跑 git status 的結果都不一樣。接下來看各語言的常用樣板。
+`.gitignore` 本身就是一個普通的文字檔，用 touch 或編輯器建立都可以。
+重點是，它自己一定要 commit 進去。
+這樣整個團隊才會共用同一套忽略規則。
+不然每個人跑 `git status`，看到的結果都不一樣。
 -->
 
 ---
@@ -859,7 +1023,12 @@ bin/
 ```
 
 <!--
-後端的部分：Maven/Gradle 編譯出的 target/ 不需要進版控，每次 build 都會重新產生；Spring Boot 的本地設定檔（application-local.yml）通常包含本機的資料庫密碼或 API key，絕對不能進 repo；Eclipse 的 .classpath、.project 是 workspace 個人設定，不同人的 IDE 設定不同，不應該共享。接下來看前端的部分。
+接下來看幾個常用的樣板，先看後端的部分。
+Maven 和 Gradle 編譯出來的 target 資料夾不需要版控，每次 build 都會重新產生。
+Spring Boot 的本機設定檔，通常放著資料庫密碼或 API key。
+這些絕對不能進 repo。
+Eclipse 的 classpath、project 這些檔案，是每個人的 IDE 設定。
+每個人的環境都不一樣，也不應該共享。
 -->
 
 ---
@@ -892,7 +1061,13 @@ Thumbs.db
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 建立新專案時，GitHub 會在 repo 建立時提供選擇 .gitignore 樣板的選項，直接套用即可。</div>
 
 <!--
-前端的部分：VS Code 的 .vscode/ 忽略個人設定，但 extensions.json 可以保留讓團隊共享推薦套件（用 ! 前綴排除例外）；Angular 的 node_modules/ 體積龐大、dist/ 是編譯產物、.angular/ 是快取，都不應進版控；OS 產生的 .DS_Store（macOS）和 Thumbs.db（Windows）是系統垃圾，加進去讓 git status 更乾淨。接下來看已追蹤的檔案怎麼處理。
+再來是前端和作業系統的部分。
+VS Code 的 `.vscode` 資料夾放的是個人設定，所以整個忽略。
+但下一行用驚嘆號把 extensions.json 留下來，讓團隊共享推薦的擴充套件。
+Angular 的 `node_modules`、`dist` 和 `.angular` 快取，都不應該進版控。
+最後是作業系統自動產生的檔案。
+macOS 的 `.DS_Store` 和 Windows 的 `Thumbs.db`，加進來可以讓 `git status` 乾淨很多。
+另外，在 GitHub 建立 repo 時，也可以直接選擇現成的 `.gitignore` 樣板。
 -->
 
 ---
@@ -923,7 +1098,14 @@ git commit -m "Stop tracking secret.yml"
 <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-gray-700 text-sm text-left">⚠️ <b>注意：</b> git rm --cached 只是讓 Git 「忘記」追蹤這個檔案，不會刪除你本地的實際檔案。但其他人 pull 之後，他們本地的那份檔案會被刪除。</div>
 
 <!--
-這是很多初學者踩過的坑：加了 .gitignore，但 node_modules 早就 commit 進去了，結果規則完全沒效。關鍵是：.gitignore 只對「尚未被追蹤」的檔案生效。已經在版本庫裡的檔案，要先用 git rm --cached 把它從追蹤清單移除，之後 .gitignore 才會生效。--cached 的意思是「只從 Git 索引裡刪除，不動本地檔案」，非常重要，否則你的密碼設定檔就真的不見了。接下來看刪除和改名這兩個動作在 Git 裡該怎麼做。
+這是很多人都踩過的坑。
+加了 `.gitignore`，結果 `node_modules` 早就 commit 進去了，規則完全沒效。
+關鍵是，`.gitignore` 只對還沒被追蹤的檔案有效。
+已經在版本庫裡的檔案，要先用 `git rm --cached` 把它從追蹤清單移除。
+`--cached` 的意思是，只讓 Git 忘記這個檔案，不會刪掉我們電腦上的實際檔案。
+下面的範例就是這個流程。
+先移除追蹤，確認 `.gitignore` 裡有這條規則，再 commit。
+要注意的是，其他人 pull 之後，他們電腦上的那份檔案會被刪除，記得先提醒大家備份。
 -->
 
 ---
@@ -935,7 +1117,7 @@ class: flex flex-col justify-center items-center text-center
 ## 【狀況題】刪除、改名與空目錄
 
 <!--
-工作中常常需要刪除檔案或改名，但如果只用作業系統的指令來做，Git 可能會「看不懂」發生了什麼事。讓我們來看看正確的做法。
+下一個狀況題：刪除、改名和空目錄。直接用系統指令操作，Git 可能看不懂發生了什麼。
 -->
 
 ---
@@ -956,7 +1138,13 @@ class: flex flex-col justify-center items-center text-center
 | 改名/移動檔案 | 「舊檔案刪了 + 新檔案新增了」→ Git 會偵測為 renamed |
 
 <!--
-很多同學以為刪掉一個被 Git 追蹤的檔案，這個改動就自動被記錄了，其實不然。刪除操作跟新增、修改一樣，都需要走 add 到 commit 的流程，Git 才不管你用什麼方式刪除或改名。Git 判斷改名的方式是看「內容」：新檔案的內容跟舊檔案相似度夠高，Git 就會自動識別為 renamed，而不是 deleted + created。接下來看刪除的兩種方法。
+很多人以為刪掉一個被追蹤的檔案，Git 就自動記錄了。
+其實不是。
+在 Git 眼中，刪除和改名都是一種「修改」。
+跟新增、修改檔案一樣，都要走 add 再 commit 的流程。
+改名的話，Git 會看內容來判斷。
+新檔案和舊檔案的內容夠相似，Git 就會認出這是改名，顯示成 renamed。
+而不是一個檔案被刪掉、另一個檔案被新增。
 -->
 
 ---
@@ -981,7 +1169,13 @@ $ git commit -m "移除 welcome.html"
 ```
 
 <!--
-git rm 是 Git 原生的刪除指令，同時做兩件事：從工作目錄刪除實體檔案，並把刪除動作加入暫存區。比起 rm 再 git add 的兩步，用 git rm 更方便。--cached 參數特別有用，它只把檔案從 Git 追蹤中移除（讓它變成 Untracked），但不刪除實體檔案。這在你想把某個已 commit 的檔案加進 .gitignore 時非常有用：先 git rm --cached，再把它加到 .gitignore。接下來看改名的做法。
+刪除檔案有兩種方法。
+第一種是用系統的 rm 刪掉，再用 `git add` 把刪除這件事放進暫存區，總共兩步。
+第二種是直接用 `git rm`，一步就同時刪除檔案、並把刪除放進暫存區。
+看下面的範例，執行 `git rm` 之後，`git status` 會顯示 deleted，而且已經在暫存區了。
+接著 commit 就完成了。
+表格最後一行的 `--cached`，剛才看過。
+它只讓 Git 停止追蹤，不會刪掉實際的檔案。
 -->
 
 ---
@@ -1004,7 +1198,13 @@ $ git commit -m "將 hello.html 重新命名為 world.html"
 ```
 
 <!--
-改名的邏輯跟刪除一樣，git mv 是 Git 原生的移動和改名指令，效果等同於先 mv 再 git add --all。一個有趣的冷知識：Git 其實不在乎檔案叫什麼名字，它是根據「內容」來計算 SHA-1 的，所以改名的時候不會產生新的 Blob 物件，只會更新 Tree 物件。這也是為什麼 Git 能識別出改名操作。如果你既改名又改了很多內容，Git 可能識別不出來，會當成 delete + new。接下來進入下一個狀況題：空目錄的問題。
+改名的邏輯跟刪除一樣。
+第一種方法是先用系統的 mv 改名，再用 `git add --all`，Git 會自動偵測成改名。
+第二種方法是直接用 `git mv`，一步完成。
+範例裡，`git mv` 把 hello.html 改成 world.html。
+`git status` 馬上顯示 renamed，接著 commit 就好。
+要注意，如果改名的同時又大幅修改了內容，Git 可能認不出來。
+這時它會當成刪掉一個檔案、新增另一個檔案。
 -->
 
 
@@ -1029,7 +1229,13 @@ $ git status
 ```
 
 <!--
-Git 的物件模型中，目錄（Tree 物件）是由它包含的檔案和子目錄組成的。如果一個目錄裡面什麼都沒有，就沒辦法建立對應的 Tree 物件，所以 Git 根本不認識空目錄。這讓很多人第一次碰到時很困惑——他們建了一個 logs/ 或 uploads/ 目錄想 commit 進去，結果 git status 完全沒有反應。這是 Git 的限制，但社群有個約定俗成的解決方案，接下來我們來看。
+再來是一個讓很多人意外的行為：Git 不追蹤空目錄。
+範例裡，我們建立了一個空的 images 資料夾。
+但 `git status` 卻顯示 nothing to commit，Git 完全看不到它。
+這是因為 Git 只追蹤「檔案」。
+在 Git 的設計裡，資料夾是由它裡面的檔案組成的。
+裡面什麼都沒有，對 Git 來說就等於不存在。
+很多人想把 logs 或 uploads 這種空資料夾 commit 進去，就會卡在這裡。
 -->
 
 ---
@@ -1054,7 +1260,12 @@ $ git status
 ```
 
 <!--
-.gitkeep 是社群約定的慣例檔名，它不是 Git 的官方功能，只是大家都同意用這個名字代表「這個目錄是空的，我只是放個佔位符讓 Git 追蹤到它」。你也可以放 .keep 或任何名字的空檔案，效果一樣。這個技巧在需要預先建立目錄結構的專案（如 logs/、uploads/、tmp/）中非常實用，讓新 clone 的人可以直接有正確的目錄結構。接下來做個小結。
+解法很簡單，在資料夾裡放一個空的佔位檔，通常叫 `.gitkeep`。
+步驟是先建立資料夾，用 touch 放一個 `.gitkeep`。
+接著 add 這個檔案並 commit。
+Git 追蹤了這個檔案，就會連帶記住它所在的資料夾。
+這樣其他人 clone 下來之後，也會有一樣的資料夾結構。
+logs、uploads 這類需要預先建立的資料夾，特別適合這樣做。
 -->
 
 ---
@@ -1071,7 +1282,14 @@ $ git status
 | `.gitkeep` 的檔名一定要這樣嗎？ | 不一定，任何空檔案都可以，但 `.gitkeep` 是最被廣泛接受的命名 |
 
 <!--
-空目錄問題是 Git 一個有點讓人出乎意料的行為，但了解之後就很好應對了。.gitkeep 這個名字語義清楚，任何看到它的工程師都會立刻明白「這個目錄應該被保留，只是現在是空的」。在 .gitignore 裡你也可以搭配例外規則，先 ignore 整個目錄的內容，但讓 .gitkeep 不被 ignore，這樣目錄結構就會保留、實際內容不會被 commit，是個很實用的進階技巧。接下來進入最後一個部分：出錯了怎麼救。
+我們整理一下。
+Git 不能追蹤空目錄，所以我們放一個 `.gitkeep` 空檔案進去。
+`.gitkeep` 不是 Git 的官方功能，只是社群約定的命名。
+其實任何空檔案都可以，但這個名字大家一看就懂。
+它的意思是：「這個資料夾要保留，只是現在是空的。」
+還有一個進階用法。
+在 `.gitignore` 裡先忽略資料夾的所有內容，再用驚嘆號把 `.gitkeep` 排除在外。
+這樣資料夾結構會保留，裡面的實際檔案則不會被 commit。
 -->
 
 ---
@@ -1083,7 +1301,7 @@ class: flex flex-col justify-center items-center text-center
 ## 【狀況題】還原與修復
 
 <!--
-進入最後一個部分，很多同學學 Git 最想知道的就是「出錯了怎麼辦」。誤刪檔案、commit 了不想要的東西、用 --hard 把東西清掉了……這些情況幾乎都有對應的救援方式。Git 的設計讓幾乎所有的操作都是可逆的，關鍵是要知道用什麼工具。我們從最簡單的誤刪檔案開始。
+最後一個狀況題，也是大家最想知道的：出錯了怎麼辦？好消息是，Git 的大部分操作都救得回來。
 -->
 
 ---
@@ -1105,7 +1323,13 @@ layout: default
 | 已 commit 的刪除 | 在歷史紀錄裡 | `git checkout HEAD~1 -- <file>` |
 
 <!--
-誤刪檔案是最常見的「啊！」時刻之一。好消息是：只要 .git 目錄還在，幾乎都救得回來。重點是先搞清楚「刪到哪一步了」——只是用 rm 刪掉本地檔案，還是已經 git rm 進暫存區，還是已經 commit 了？不同情境的救法不一樣，不確定的話先跑 git status 看看。接下來看實際操作。
+誤刪檔案是最常見的狀況之一。
+好消息是，只要 `.git` 還在，幾乎都救得回來。
+重點是先搞清楚，刪到哪一步了。
+如果只是用 rm 刪掉，檔案只在工作目錄消失，用 `git restore` 就能還原。
+如果已經 `git rm`，刪除動作進了暫存區，就要先撤回暫存，再還原檔案。
+如果連 commit 都做了，就要從上一個 commit 把檔案拿回來。
+不確定是哪一種，先跑 `git status` 看看。
 -->
 
 ---
@@ -1134,7 +1358,14 @@ $ git restore welcome.html           # 再還原檔案
 ```
 
 <!--
-情境 A 最簡單，一個 git restore 就解決；情境 B 稍微麻煩，要兩步：先把刪除動作從暫存區撤回（--staged），再把檔案從工作目錄還原。因為 Git 的三個區域是獨立的，救援也要對應區域來操作。
+我們看前兩種情境的實際操作。
+情境 A，只是用 rm 刪掉。
+`git status` 顯示 deleted，但還沒暫存，這時一個 `git restore` 就能立刻救回。
+情境 B，已經用 `git rm` 刪掉，刪除已經進了暫存區。
+這時要分兩步。
+先用 `git restore --staged`，把刪除從暫存區撤回。
+再用 `git restore`，把檔案還原到工作目錄。
+因為三個區域是各自獨立的，救援也要一區一區處理。
 -->
 
 ---
@@ -1157,7 +1388,13 @@ $ git status
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> 情境 A/B 可用 <code>git restore</code>；情境 C 需要 <code>git checkout HEAD~N -- filename</code> 從特定 commit 取回檔案。</div>
 
 <!--
-如果要從更早的 commit 救回，git checkout HEAD~N -- filename 可以精準指定要取哪個版本。接下來看 git reset 的三種模式。
+情境 C，刪除已經 commit 了。
+先用 `git log --oneline` 確認，最新的 commit 就是刪掉 welcome.html 的那一個。
+那它的上一個 commit，也就是 HEAD 往前一步，檔案還在。
+所以我們用 `git checkout`，指定從 HEAD 往前一步的版本，把 welcome.html 拿出來。
+執行後，`git status` 會顯示 new file，而且已經在暫存區了。
+再 commit 一次就完成救援。
+如果要從更早的版本拿，把數字改成往前幾步就可以。
 -->
 
 ---
@@ -1185,7 +1422,14 @@ git reset HEAD~1 --hard    # 完全清除（危險！）
 ```
 
 <!--
-git reset 是 Git 裡讓人又愛又怕的指令。愛是因為它很強大；怕是因為 --hard 模式真的會把東西清掉。一個記憶方式：想成「回到哪個狀態」。--soft 就是回到「剛 git add 完，準備 commit 的狀態」；--mixed 就是回到「剛改完程式碼，還沒 git add 的狀態」；--hard 就是回到「這個 commit 之前，什麼都沒做的狀態」。HEAD~1 是前一個 commit，HEAD~2 就是前兩個。接下來看實際範例。
+第二個狀況：剛才的 commit 後悔了，想拆掉重做。
+這時候用 `git reset`，它有三種模式。
+記憶的方式是想成「要回到哪個狀態」。
+`--soft` 回到剛 add 完、準備 commit 的狀態，改動還在暫存區。
+`--mixed` 是預設模式，回到剛改完程式、還沒 add 的狀態。
+`--hard` 則是完全丟棄，連改動都不見。
+指令裡的 HEAD 波浪號 1，代表前一個 commit，波浪號 2 就是前兩個。
+`--hard` 會真的清掉檔案內容，使用前一定要想清楚。
 -->
 
 ---
@@ -1218,7 +1462,15 @@ $ git commit -m "只 commit 該 commit 的東西"
 <div class="mt-4 p-3 bg-red-50 border-l-4 border-red-400 text-gray-700 text-sm text-left">⚠️ <b>注意：</b> 如果這個 commit 已經 push 到遠端，reset 之後要強制 push（<code>git push --force</code>），這會影響到其他人。公共分支上慎用。</div>
 
 <!--
---soft 最常用在「我想把最後幾個小 commit 合成一個大 commit」的情境；--mixed 適合「commit 了但發現還有東西要改」；--hard 要特別小心，改動的程式碼確實會不見，如果還沒 add 進去的修改就真的救不回來了。大原則：有 push 過的 commit，盡量不要 reset，改用 git revert 反向 commit 比較安全。接下來看 reflog，這是 Git 的終極安全網。
+我們看兩個實際的例子。
+第一個，commit 完發現訊息寫錯了。
+用 `--soft` 撤銷最後一個 commit，改動還在暫存區，直接重新 commit 一次就好。
+第二個，commit 了不該 commit 的東西。
+用預設的 `--mixed`，改動會退回工作目錄。
+重新挑選要 add 的檔案之後，再 commit。
+要特別注意下面的提醒。
+如果這個 commit 已經推上遠端，reset 之後就得強制推送，會影響其他人。
+推上去的 commit，比較安全的做法是用 `git revert`，這個後面的章節會介紹。
 -->
 
 ---
@@ -1248,7 +1500,15 @@ $ git reset e12d8ef --hard
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>提示：</b> reflog 預設保留 90 天的紀錄。在這個時間內，幾乎所有的「誤操作」都有機會救回來。</div>
 
 <!--
-這是很多同學第一次看到會有種「這也行？」的驚喜感。git reset --hard 聽起來很可怕，但 Git 其實沒有真的刪掉 commit，它只是「移動了 branch 指向的位置」，讓那些 commit 暫時看不見而已。reflog 就是記錄 HEAD 每次移動的日記，透過它找到被「遺忘」的 commit hash，再用 git reset --hard 跳回去，一切就恢復了。只要在 90 天內想到要救，幾乎都沒問題。接下來看完整的救援流程。
+第三個狀況：不小心用 `--hard` reset 了，還救得回來嗎？
+答案是可以。
+`git reset --hard` 聽起來很可怕，但 Git 其實沒有真的刪掉那些 commit。
+它只是把分支指向的位置往回移，讓那些 commit 暫時看不見。
+`git reflog` 就像 HEAD 的日記，記錄它每一次移動，包括 commit、reset、checkout。
+範例裡，最上面那一行就是剛才的 reset。
+往下一行，就是 reset 之前所在的 commit。
+找到它的編號，再 reset 回去，一切就恢復了。
+reflog 預設保留 90 天，在這段時間內，大部分誤操作都救得回來。
 -->
 
 ---
@@ -1279,7 +1539,14 @@ e12d8ef (HEAD -> master) Add login feature   # 回來了！
 ```
 
 <!--
-把完整流程一次秀出來，讓大家照著操作。Step 1 先確認問題，log 顯示的 commit 數量不對；Step 2 開 reflog，找到 HEAD 移動的紀錄，定位到「reset 之前」的那個 hash；Step 3 用 --hard reset 回去；Step 4 用 log 驗證。整個過程的關鍵是要冷靜，先查 reflog，不要又亂操作一通。接下來做兩個練習來驗收今天學到的東西。
+我們把完整的救援流程走一次。
+第一步，用 `git log` 發現最新的兩個 commit 不見了。
+第二步，打開 `git reflog`，找到 reset 之前的那筆紀錄。
+Add login feature 的編號，就是我們要的。
+第三步，用 `git reset --hard` 加上這個編號，跳回去。
+第四步，再用 `git log` 確認，三個 commit 都回來了。
+整個過程的關鍵是冷靜。
+先查 reflog，不要在慌亂中又做了其他操作。
 -->
 
 ---
@@ -1302,7 +1569,14 @@ layout: default
 8. 加入 `node_modules/` 到 .gitignore，然後建立 `node_modules/test.txt`，確認它被忽略
 
 <!--
-這個練習的目的是讓大家從零開始體驗完整流程，不是只看指令。建立 repo、設定 .gitignore、commit、模擬誤刪，每個步驟都對應今天學到的概念。特別注意步驟 4：git add . 之後，git status 應該不會看到 secret.yml，如果看到了就是 .gitignore 沒設對。步驟 7 的 git restore 應該瞬間把 app.js 救回來，那個感覺會讓大家對 Git 的信心大增。接下來是解題提示。
+我們來做第一個練習，從零開始走一次完整流程。
+先建立一個 repo，放兩個檔案，其中 secret.yml 要用 `.gitignore` 排除。
+接著只 commit app.js 和 `.gitignore`。
+然後模擬誤刪 app.js，再把它救回來。
+最後加入 `node_modules` 的規則，確認裡面的檔案會被忽略。
+大家可以先想一想：做完第四步，要怎麼確認 secret.yml 真的沒被加進去？
+我們先暫停一下，自己動手試試看。
+【講師】給大家十分鐘操作，巡視時特別留意第四步 git status 的結果。
 -->
 
 ---
@@ -1327,7 +1601,13 @@ git ls-files                      # 列出所有被追蹤的檔案
 ```
 
 <!--
-解題提示的重點是「怎麼驗證自己做對了」，而不是直接給答案。git check-ignore -v 是個很少人知道的好工具，可以直接告訴你哪條 .gitignore 規則讓這個檔案被忽略，以及規則在第幾行。git ls-files 列出所有被 Git 追蹤的檔案，比 git status 更直接，用它可以確認 secret.yml 真的沒有在追蹤清單裡。接下來做第二個練習：reset 和 reflog。
+我們來看解題的重點。
+剛才的問題，答案是看 `git status`。
+如果 secret.yml 沒有出現在任何區塊，就代表 `.gitignore` 設定成功。
+刪掉 app.js 之後，`git status` 應該顯示 deleted 而且還沒暫存，這時 `git restore` 就能救回。
+另外介紹兩個驗證工具。
+`git check-ignore -v` 會告訴我們，是哪一條規則讓這個檔案被忽略。
+`git ls-files` 會列出所有被追蹤的檔案，可以直接確認 secret.yml 不在清單裡。
 -->
 
 ---
@@ -1350,7 +1630,14 @@ layout: default
 8. 用 `git log --oneline` 確認三個 commits 都回來了
 
 <!--
-這個練習讓大家直接感受三種 reset 模式的差異，最好的學習方式就是親自操作並觀察 git status 的變化。每次 reset 前後看一下 git log 和 git status，就能理解「commit 去哪了、改動去哪了」。步驟 6-8 的 reflog 救援是重頭戲，成功救回的瞬間會讓大家對 Git 安全性的信心大增。接下來是解題提示。
+第二個練習，要親手體驗 reset 的三種模式，還有 reflog 救援。
+先在剛才的 repo 裡，連續做三個 commit。
+接著依序用 soft、mixed、hard 三種模式各 reset 一次。
+每次 reset 之後，都用 `git status` 觀察改動跑到哪裡去了。
+最後用 reflog 找回被 hard 掉的 commit。
+大家可以邊做邊想：每一次 reset，commit 去哪了？改動又去哪了？
+我們先暫停一下，自己動手試試看。
+【講師】給大家十分鐘，成功救回的同學可以協助旁邊的人。
 -->
 
 ---
@@ -1382,7 +1669,13 @@ $ git log --oneline
 ```
 
 <!--
-提供快速建立三個 commit 的 one-liner，讓大家專注在練習 reset 和 reflog，而不是卡在建立測試資料。特別強調「雙重確認」——git log 看 commit 歷史，cat app.js 看實際內容，兩個一起驗證才完整。reflog 找 hash 的時候，看「動作描述」欄位最直觀，commit: v3 就是我們要找的那個。接下來做個本章總結。
+這裡提供一個快速建立三個 commit 的寫法，這樣就能專心練習 reset。
+每次 reset 之後，建議用 `git status` 和 cat app.js 雙重確認。
+一個看改動在哪個區域，一個看檔案的實際內容。
+回答剛才的問題。
+soft 之後改動在暫存區，mixed 之後回到工作目錄，hard 之後就完全消失了。
+但那些 commit 都還在 reflog 裡。
+找到 commit v3 那一行的編號，reset 回去，`git log` 就會再看到三個 commit。
 -->
 
 ---
@@ -1418,7 +1711,13 @@ layout: default
 </div>
 
 <!--
-總結的時候，重點不是重複每個指令，而是讓大家帶走幾個核心心態：Git 幾乎不可能搞爛，因為有 reflog；.gitignore 要越早設越好，機密絕對不能進 repo；git log 和 git blame 是調查工具，出 bug 先查歷史；reset 的三種模式理解清楚，就不會再用錯。commit message 寫清楚這個習慣養成之後，未來的你和你的同事都會感謝現在的你。
+我們回顧這章的重點。
+`.git` 資料夾存著所有歷史，刪了就救不回來。
+add 和 commit 是兩個步驟，add 之後又改了檔案，要再 add 一次。
+`git log` 和 `git blame` 是我們的調查工具，出了問題先查歷史。
+commit message 用 Conventional Commits 格式，重點寫「為什麼」。
+`.gitignore` 越早設越好，機密絕對不能進 repo。
+出錯了也不用慌，restore、reset 和 reflog 讓大部分狀況都救得回來。
 -->
 
 ---
@@ -1429,5 +1728,9 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章從 git init 出發，走過了 add、commit、status、log，再到 .gitignore、restore、reset，最後用 reflog 建立了「Git 幾乎不可能搞爛」的信心。如果對任何指令或流程有疑問，歡迎提出來。下一章我們要把這些本機的 commit 推上 GitHub，開始跟其他人協作！
+這一章我們從 `git init` 出發，學會了 add、commit、status 和 log。
+也處理了忽略檔案、刪除改名，以及各種救援的狀況。
+有了 reflog，我們可以放心地操作，Git 沒那麼容易被搞壞。
+下一章，我們要把這些本機的 commit 推上 GitHub，開始跟其他人協作。我們下一章見。
+【講師】開放提問，可以請大家分享練習時遇到的狀況。
 -->

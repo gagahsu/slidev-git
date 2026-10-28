@@ -41,7 +41,11 @@ style: |
 </div>
 
 <!--
-上一章我們已經會在自己的電腦上 init、add、commit 了，但真實的工作場景幾乎都是多人協作，光在本機作業不夠用。這章要進入 GitHub，把上一章做好的 commit 推上雲端、學會拿別人的更新，以及怎麼開 PR 讓同事審查程式碼。因為 add 和 commit 都學過了，這章可以直接把重點放在「本機 ↔ 遠端」這條線上。接下來我們會從基礎的 push 和 pull 開始，一步步帶大家掌握遠端協作的完整流程。
+歡迎來到第三章，遠端共同協作。
+上一章我們已經能在自己的電腦上 init、add、commit 了。
+但實際工作幾乎都是多人一起開發，只在本機作業是不夠的。
+這章我們要進入 GitHub。
+學會把 commit 推上雲端、把別人的更新拉回來，還有怎麼開 Pull Request 請同事審查。
 -->
 
 ---
@@ -61,7 +65,11 @@ layout: default
 
 
 <!--
-這是本章的整體大綱，總共七個主題。我們會先搞清楚 Git 和 GitHub 的差別，然後學 push 和 pull 這兩個最基本的操作，接著處理幾個大家一定會踩到的狀況題，再來介紹 PR 這個協作核心，最後收尾幾個實用的延伸主題。接下來我們來看第一個主題。
+這章的主題比較多，但其實都圍繞著同一條線：本機和遠端之間怎麼同步。
+我們先搞清楚 Git 和 GitHub 的差別，接著註冊帳號。
+然後學 push 和 pull 這兩個最基本的動作，處理推不上去的狀況。
+再來是用 clone 取得別人的專案。
+最後介紹協作的核心，Pull Request。
 -->
 
 ---
@@ -73,7 +81,7 @@ class: flex flex-col justify-center items-center text-center
 ## GitHub 是什麼？
 
 <!--
-很多人學 Git 的第一步就是去申請 GitHub 帳號，所以常常把 Git 和 GitHub 當成同一件事。我們先把這個誤解釐清，這對後面的學習很重要。
+很多人把 Git 和 GitHub 當成同一件事。我們先把這個誤會釐清。
 -->
 
 ---
@@ -100,7 +108,13 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-想像一下：Gmail 壞掉了，不代表 Email 這個東西不存在，我們還是可以用其他信箱。同理，就算沒有 GitHub，Git 還是可以正常運作。Git 在 2005 年就有了，GitHub 是 2008 年才成立的。理解這個差別，才能知道為什麼有時候「離線也能 commit」，但「推不上去可能是 GitHub 的問題」。接下來我們來看 GitHub 還提供了哪些功能。
+Git 是一套版本控制軟體，安裝在我們自己的電腦上。
+GitHub 則是一個雲端平台，幫我們存放 Git 的 repo，讓大家可以一起協作。
+就像 Email 和 Gmail 的關係。
+Gmail 壞掉了，不代表 Email 不存在，我們還是可以換別的信箱。
+同樣的，就算沒有 GitHub，Git 也能正常運作。
+事實上 Git 在 2005 年就有了，GitHub 是 2008 年才成立，後來在 2018 年被微軟收購。
+搞懂這個差別，就能理解為什麼離線也能 commit，但 push 一定要連得上 GitHub。
 -->
 
 ---
@@ -133,7 +147,14 @@ GitHub 除了存放 Repository，還提供了完整的**開發協作生態系**�
 </div>
 
 <!--
-GitHub 現在幾乎是整個開發生命週期的平台，從需求追蹤、程式碼審查、自動化部署，到文件管理都包辦了。接下來看主要競爭對手的比較。
+GitHub 除了存放 repo，還提供了一整套協作工具。
+左邊是協作功能。
+Issues 用來追蹤問題和任務，Pull Requests 用來審查和合併程式碼。
+Projects 是看板式的專案管理，Wiki 則用來寫文件。
+右邊是自動化和部署。
+Actions 可以自動跑測試和部署，Pages 能免費架設靜態網站。
+Releases 管理版本發布，Packages 則用來發布套件。
+現在從需求追蹤到上線部署，很多團隊都在 GitHub 上一站完成。
 -->
 
 ---
@@ -153,7 +174,12 @@ GitHub 現在幾乎是整個開發生命週期的平台，從需求追蹤、程�
 </div>
 
 <!--
-如果你是開源愛好者，GitHub 是首選；公司已經用 Atlassian 工具的話，Bitbucket 整合比較好；偏向 DevOps 的企業環境，GitLab 或 Azure DevOps 也很有競爭力。
+GitHub 不是唯一的選擇，這裡列出幾個常見的競爭對手。
+GitLab 可以自己架設，內建的 CI/CD 功能很強。
+Bitbucket 和 Jira、Confluence 這些 Atlassian 的工具整合得很好。
+Azure DevOps 則適合微軟生態系的企業環境。
+它們底層用的都是 Git，所以觀念是通用的。
+對大多數人來說，先把 GitHub 學好就夠用了。
 -->
 
 ---
@@ -164,7 +190,7 @@ class: flex flex-col justify-center items-center text-center
 # 註冊 GitHub 帳號
 
 <!--
-講完平台的差別，接下來就要真的動手了。第一件事就是要有一個 GitHub 帳號。這一段我們會用最省事的方式——直接用 Google 帳號註冊，全程不用記新密碼。
+講完平台的差別，接下來動手註冊一個 GitHub 帳號。
 -->
 
 ---
@@ -201,7 +227,14 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-以前註冊 GitHub 一定要填表單、設密碼、等驗證信，班上永遠會有幾個人卡在收不到信。GitHub 在 2025 年正式開放 Google 社群登入之後，這件事變得非常簡單：按一下 Continue with Google，選你的 Gmail，帳號就開好了。所以等一下大家統一走這條路，我們把時間留給 Git 本身。要注意的是，這是「註冊新帳號」的方式，如果你已經有 GitHub 帳號了，目前還沒辦法直接把 Google 綁上去當登入方式，這點後面會再提。
+打開 GitHub 的註冊頁，最上方有兩種註冊方式。
+方式 A 是 Continue with Google，直接用 Google 帳號註冊。
+不用另外設密碼，也不用等信箱收驗證碼。
+方式 B 是傳統的填表單，要輸入 email、設密碼，再收一組驗證碼。
+以前用表單註冊，常常有人卡在收不到驗證信。
+GitHub 從 2025 年開始支援 Google 登入之後，這件事簡單很多。
+所以課堂上我們統一用方式 A，把時間留給 Git 本身。
+要注意，這是註冊新帳號的方式，已經有帳號的人，目前還不能事後綁定 Google 登入。
 -->
 
 ---
@@ -226,7 +259,15 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-整個流程大概三十秒。要特別提醒兩件事。第一是第二步選帳號時，請選一個你長期會用的信箱，不要選學校或公司可能之後會被停用的帳號，不然以後拿不回帳號會很麻煩。第二是第四步的 Username，這個名字之後會出現在你的個人頁網址上，也會跟著你每一個 commit，能不能改？可以改，但改了之後舊網址會失效，別人的連結會壞掉，所以第一次就取好比較省事。不要取 xxx520、qwerty123 這種，之後放在履歷上會很尷尬。
+整個流程大概三十秒，這裡有兩個地方要特別注意。
+第一是第二步選帳號的時候，請選一個會長期使用的信箱。
+學校或公司的信箱以後可能會被停用，到時候帳號就很難拿回來。
+第二是第四步的 Username。
+它會出現在個人頁的網址上，也會跟著我們的每一個 commit。
+之後雖然可以改，但舊網址會失效，別人給的連結都會壞掉。
+所以第一次就取一個以後放在履歷上也不尷尬的名字。
+建議用英文小寫，搭配數字或短橫線。
+【講師】給大家五分鐘完成註冊，巡視確認每個人都進到 GitHub 首頁。
 -->
 
 ---
@@ -254,7 +295,14 @@ Settings → Password and authentication
 </div>
 
 <!--
-這頁是最容易被跳過、但最重要的一頁。用 Google 註冊很方便，但代價是你的 GitHub 帳號完全掛在 Google 上。萬一 Google 帳號被鎖、被停用、或是你換了公司信箱，GitHub 就一起進不去了，裡面的專案也拿不回來。所以註冊完請馬上做兩件事：補一組 GitHub 自己的密碼當備援，還有開兩步驟驗證。GitHub 上放的是你的程式碼資產，值得這兩分鐘。另外補充一個常見問題：如果你早就有 GitHub 帳號了，能不能事後把 Google 綁上去當登入方式？目前官方還不支援，社群討論串裡也是一樣的答案，所以已有帳號的同學就繼續用原本的帳密登入就好。
+這頁很容易被跳過，但很重要。
+用 Google 註冊很方便，代價是 GitHub 帳號完全依賴 Google。
+萬一 Google 帳號被鎖、被停用，GitHub 就跟著進不去，裡面的專案也拿不回來。
+所以註冊完請馬上補兩件事。
+第一，補設一組 GitHub 自己的密碼當作備援。
+因為原本沒有密碼，要用「忘記密碼」的流程來設定。
+第二，開啟兩步驟驗證，用手機上的驗證 App 掃 QR Code。
+GitHub 上放的是我們的程式碼資產，值得花這兩分鐘。
 -->
 
 ---
@@ -281,11 +329,15 @@ git config --global user.email "你註冊 GitHub 的 email"
 </div>
 
 <!--
-這頁很多課程都會漏掉。我們在 Ch 1 一開始就設了 user.name 和 user.email，但那時候大家還沒有 GitHub 帳號，很多人隨手填了一個信箱。現在帳號有了，要回頭對一下。
-
-重點是要分清楚這兩個設定的角色。user.name 只是顯示名稱，寫在 commit 裡給人看的，你要叫小明、叫 Ming、叫什麼都可以，GitHub 完全不看這個欄位來認人。真正的關鍵是 user.email，GitHub 是拿 commit 裡的 email 去比對帳號綁定的信箱，比對到了才會把這個 commit 算在你頭上。
-
-對不上會怎樣？commit 的作者頭像會是灰色的預設圖，點下去也連不到你的 GitHub 個人頁，最有感的是貢獻牆——你明明每天都在 commit，但 GitHub 上那面綠格子牆一片空白，因為 GitHub 根本不知道那些 commit 是你做的。接下來看兩個相關的補充。
+現在有 GitHub 帳號了，我們要回頭檢查第一章設定的 `user.email`。
+那時候還沒有帳號，很多人是隨手填了一個信箱。
+這裡要分清楚兩個設定的角色。
+`user.name` 只是顯示名稱，寫什麼都可以，GitHub 不會用它來認人。
+真正關鍵的是 `user.email`。
+GitHub 是拿 commit 裡的 email，去比對帳號綁定的信箱，比對到了才算是我們的 commit。
+如果對不上，commit 的頭像會是灰色的，點下去也連不到我們的個人頁。
+最明顯的是貢獻牆，明明每天都在 commit，那面綠格子卻是一片空白。
+解法很簡單，把 `user.email` 改成 GitHub 帳號裡已驗證的信箱就好。
 -->
 
 ---
@@ -311,11 +363,14 @@ Settings → Emails → Add email address → 收信點驗證連結
 <div class="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 text-gray-700 text-sm text-left">💡 <b>驗證：</b> <code>git log -1 --format='%an &lt;%ae&gt;'</code> 可以看最後一個 commit 實際記錄的作者與 email。</div>
 
 <!--
-補充兩件事。第一，如果你不想讓真實信箱出現在每一個公開 commit 裡——這是會被爬蟲抓去發垃圾信的——GitHub 提供一組 noreply 位址，格式是「數字 + username @users.noreply.github.com」，在 Settings 的 Emails 頁面勾選 Keep my email addresses private 就會給你。用這組位址一樣會正確歸戶，貢獻牆照樣有綠格子，但真實信箱不會外流。
-
-第二，很多同學會問：那我之前用舊信箱 commit 的那一堆紀錄怎麼辦，要改歷史嗎？不用。改歷史是很麻煩而且危險的事。正確做法是反過來——把那個舊 email 加進 GitHub 帳號並完成驗證，GitHub 就會回頭把那些 commit 全部認回來，貢獻牆會直接補上去。一個帳號可以綁很多個 email，這也是為什麼建議公司信箱、個人信箱都加進去，這樣不管在哪台電腦 commit 都算得到。
-
-最後給大家一個驗證指令，git log 加上 format 參數可以直接看到最後一個 commit 實際記錄的作者名字和 email，設定完跑一下就知道有沒有生效。
+關於 email，還有兩個補充。
+第一，如果不想讓真實信箱出現在公開的 commit 裡，可以用 GitHub 提供的 noreply 位址。
+在 Settings 的 Emails 頁面，勾選 Keep my email addresses private，就會拿到一組專屬位址。
+用它 commit 一樣會算在我們頭上，但真實信箱不會外流。
+第二，以前用舊信箱 commit 的紀錄，不需要去改歷史。
+只要把舊信箱也加進 GitHub 帳號並完成驗證，GitHub 就會自動把那些 commit 認回來。
+最後，用下面這行 `git log` 指令，可以確認最後一個 commit 實際記錄的作者和 email。
+【講師】一個帳號可以綁多個 email，可以建議大家把公司和個人信箱都加進去。
 -->
 
 ---
@@ -339,7 +394,13 @@ Settings → Emails → Add email address → 收信點驗證連結
 </div>
 
 <!--
-這頁要先把觀念講清楚，不然同學會很混亂：有人說要 Token，有人說要 SSH Key，但自己什麼都沒做也能 push。其實這三個是同一個問題的三種答案——GitHub 要確認「敲這台電腦的人真的是帳號主人」，差別只在憑證從哪來、誰幫你保管。現在的 Git 安裝檔會順便裝一個叫 Git Credential Manager 的小工具，它會直接幫你走瀏覽器授權，Token 也是它自動去申請、自動存進 Windows 認證管理員或 macOS 鑰匙圈的，你根本不會看到那串字。所以如果你安裝完 Git 直接 push 就成功了，那不是你漏做什麼，而是工具已經幫你做完了。
+帳號有了，但我們的電腦還沒被 GitHub 認識。
+第一次 push 的時候，GitHub 要確認操作這台電腦的人，真的是帳號主人。
+有人說要用 Token，有人說要用 SSH Key，其實這三種方式是同一個問題的三種答案。
+差別只在於憑證從哪裡來、由誰保管。
+現在安裝 Git 時，會一起裝一個叫 Git Credential Manager 的工具，簡稱 GCM。
+它會自動帶我們走瀏覽器授權，Token 也是它在背後申請和保管的。
+所以如果裝完 Git，直接 push 就成功了，不是漏做了什麼，而是工具已經幫我們做完了。
 -->
 
 ---
@@ -366,7 +427,15 @@ git push origin main
 </div>
 
 <!--
-這就是為什麼很多人根本沒聽過 Personal Access Token，也一路用得很順。整個流程就是：打了 push、跳出小視窗、按「用瀏覽器登入」、瀏覽器問要不要授權、按 Authorize、關掉，結束，大概十秒。背後其實 GCM 幫你申請了一組 OAuth token 存起來，只是你看不到。想確認的同學可以打開 Windows 的「認證管理員」搜尋 git，就會看到 github.com 那一筆。順帶一提，哪天想登出或換帳號，就是去那裡把那筆刪掉，下次 push 會重新問一次。
+我們看第一次 push 時會發生什麼事。
+執行 `git push` 之後，會跳出一個 GCM 的視窗，按下 Sign in with your browser。
+瀏覽器會打開 GitHub 的登入頁，已經登入的話就直接下一步。
+接著出現授權頁，按 Authorize。
+看到 Authentication Succeeded，就可以關掉分頁，回到終端機，push 已經完成了。
+整個過程大概十秒，而且只需要做一次。
+憑證會存在 Windows 的認證管理員，或是 macOS 的鑰匙圈。
+之後 push、pull、clone 都不會再問。
+【講師】想登出或換帳號，可以示範到 Windows 認證管理員搜尋 git，刪掉 github.com 那一筆。
 -->
 
 ---
@@ -412,7 +481,14 @@ Password: ghp_xxxxxxxxxxxxxxxxxxxx   # ← 貼 Token
 </div>
 
 <!--
-Token 不是被淘汰，只是從「每個人都要做」變成「特定情況才要做」。最常見的是你 SSH 連到一台遠端 Linux 主機要 git pull，那台機器沒有桌面、開不了瀏覽器，GCM 那套就用不了，就得自己產一組 Token 貼上去。CI/CD 腳本也是同樣道理，機器不會幫你按 Authorize。所以這頁大家知道有這個東西、知道去哪產就好，真的遇到再回來看。要記得 Token 等同你的密碼，千萬不要不小心 commit 進程式碼，GitHub 掃到會直接把它作廢。
+那什麼時候才需要自己產生 Personal Access Token？
+主要是開不了瀏覽器的環境。
+例如遠端的 Linux 主機、Docker 容器，或是自動化的 CI/CD 腳本。
+產生的方式在 Settings 的 Developer settings 裡面，勾選 repo 權限之後產生。
+使用的時候，Git 會用文字要求輸入帳號密碼，密碼欄要貼的是 Token，不是登入密碼。
+要特別注意，Token 只會顯示一次，關掉頁面就看不到了。
+而且 Token 等同於我們的密碼，千萬不要不小心 commit 進程式碼裡。
+這頁先知道有這個東西就好，真的遇到再回來看。
 -->
 
 ---
@@ -424,7 +500,7 @@ class: flex flex-col justify-center items-center text-center
 ## Push 上傳到 GitHub
 
 <!--
-帳號有了，驗證方式也搞清楚了。現在來學最核心的操作：怎麼在 GitHub 建一個新 Repository，然後把本機的 repo 推上去，讓別人也看得到你的程式碼。
+帳號和驗證都搞定了。接下來學最核心的操作：把本機的 repo 推上 GitHub。
 -->
 
 ---
@@ -444,7 +520,13 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-建立空 repo 這一步很多同學會被 README 那個勾選框坑到。GitHub 很貼心，會問你要不要順便幫你建一個 README，但如果你本機已經有東西了，勾了這個選項，遠端就會多一個「初始化 commit」，跟你本機的歷史對不起來，等一下第一次 push 就會被拒絕。所以記住：本機已經有內容，遠端就建全空的 repo，什麼都不要勾。
+在 GitHub 右上角按加號，選 New repository。
+填一個 repo 名稱，再選擇公開或私人。
+這裡有一個很多人會被坑的地方，就是 Initialize 開頭的那幾個勾選框。
+GitHub 會問要不要順便建立 README。
+但如果本機已經有內容，勾了之後，遠端就會多出一個本機沒有的 commit。
+兩邊的歷史對不起來，等一下第一次 push 就會被拒絕。
+所以記住，本機已經有內容的話，遠端就建一個全空的 repo，什麼都不要勾。
 -->
 
 ---
@@ -470,7 +552,14 @@ git push -u origin main
 </div>
 
 <!--
-GitHub 建完空 repo 之後，網頁上會直接給你一段「…or push an existing repository from the command line」的指令，把它整段複製貼上就行，不用自己一行一行背。如果本機專案本來就有在用 Git 了（已經 git init 過），就跳過 init、add、commit 這幾行，直接從 remote add 開始接著做。push 完之後重新整理 GitHub 頁面，就能看到你的檔案已經在雲端上了。
+repo 建好之後，GitHub 頁面上會直接給我們一段指令，整段複製貼上就可以。
+如果本機專案還沒用過 Git，就從 init、add、commit 開始。
+如果已經 init 過了，就跳過前三行，從 `git remote add` 開始。
+`git remote add` 告訴本機的 repo，遠端的位址在哪裡，並把它取名叫 origin。
+`git branch -M main` 確保分支名稱叫 main。
+最後 `git push -u origin main`，把 main 推上去。
+第一次 push 會跳出剛才看到的瀏覽器授權。
+完成後重新整理 GitHub 頁面，就能看到檔案已經在雲端上了。
 -->
 
 ---
@@ -502,7 +591,13 @@ git remote remove origin
 </div>
 
 <!--
-你有沒有注意到，git remote -v 後面那個 v 代表 verbose，就是「顯示詳細資訊」的意思，會同時列出 fetch 和 push 的 URL。origin 這個名字是慣例，當你執行 git clone 的時候，Git 會自動把遠端命名為 origin。大家都用這個名字，所以看到別人的教學或文章，大家都知道 origin 是什麼，不用再解釋。接下來我們來看怎麼第一次推送。
+剛才的 `git remote add` 只是其中一種用法。
+`git remote -v` 可以查看目前設定了哪些遠端，v 代表顯示詳細資訊。
+它會同時列出 fetch 和 push 用的網址。
+如果 repo 搬家了，可以用 `set-url` 修改網址，不需要的話，用 `remove` 移除。
+origin 只是一個名字，理論上可以取別的。
+但整個 Git 社群都用 origin 代表主要的遠端，clone 的時候 Git 也會自動用這個名字。
+所以建議不要打破這個慣例。
 -->
 
 ---
@@ -524,7 +619,12 @@ git push --all origin
 ```
 
 <!--
--u 這個旗標很重要，它幫本機分支和遠端分支建立了「追蹤關係」。設定好之後，之後直接 git push 就行了，不用再加 origin main。接下來看 -u 具體做了什麼。
+這頁整理 `git push` 的常見寫法。
+第一次推送時加上 `-u`，之後只要打 `git push` 就好，不用再寫 origin main。
+如果要推送其他分支，就在後面寫上分支名稱，例如 feature/login。
+`--all` 則會一次推送所有分支。
+分支的部分，我們在後面的章節會詳細介紹。
+接下來看 `-u` 到底做了什麼。
 -->
 
 ---
@@ -545,7 +645,13 @@ git push --all origin
 </div>
 
 <!--
-想像一下你跟同事說「我的報告就放在那個共用資料夾裡」，之後你們就知道固定去那個地方找，不用每次都說地址。-u 就是在做這件事，讓 Git 知道這個本機的 main 對應到 origin 的 main。
+`-u` 的作用，是幫本機分支和遠端分支建立「追蹤關係」。
+想像一下，我們跟同事說：「報告都放在那個共用資料夾。」
+之後大家就知道固定去那裡找，不用每次都重新說地址。
+`-u` 做的就是這件事。
+它讓 Git 記住，本機的 main 對應到 origin 的 main。
+設定好之後，`git push` 會自動推到 origin 的 main，`git pull` 也會自動從那裡拉。
+這個設定只需要做一次。
 -->
 
 ---
@@ -573,7 +679,11 @@ https://github.com/user/repo.git
 </div>
 
 <!--
-先看 HTTPS。我們前面 clone、push 用的都是這個方式，URL 開頭是 https://。它走 port 443，跟一般瀏覽器上網同一個通道，所以公司防火牆幾乎不會擋。驗證這件事都交給 Git Credential Manager 自動處理，第一次按一下 Authorize 之後就不用再管了，對新手最省事。
+GitHub 支援兩種連線方式，先看我們一路在用的 HTTPS。
+它的網址是 https 開頭。
+HTTPS 走的是 443 port，跟一般瀏覽網頁是同一個通道，所以公司的防火牆幾乎不會擋。
+驗證的部分交給 Git Credential Manager，第一次按一下 Authorize 之後就不用再管。
+對新手來說，這是最省事的方式，也是本課程使用的方式。
 -->
 
 ---
@@ -601,7 +711,12 @@ git@github.com:user/repo.git
 </div>
 
 <!--
-SSH 是另一條路，URL 長得不一樣，是 git@github.com 開頭。設定好金鑰之後完全不用再輸入任何東西，長期用起來更順手，安全性也高，但第一次要產生金鑰、把公鑰貼到 GitHub，步驟比較繁瑣。等你對 Git 更熟悉之後，可以再回頭研究要不要換成 SSH。
+另一種方式是 SSH，網址是 git@github.com 開頭。
+它用的是一對金鑰。
+我們在自己的電腦產生金鑰，把公鑰貼到 GitHub，之後就完全不用再輸入任何東西。
+長期用起來很順手，安全性也高。
+缺點是第一次設定的步驟比較多。
+等大家對 Git 更熟悉之後，可以再考慮要不要換成 SSH。
 -->
 
 ---
@@ -613,7 +728,7 @@ class: flex flex-col justify-center items-center text-center
 ## Pull 下載更新
 
 <!--
-推上去了，那怎麼把別人的更新下載回來？這是 push 的反向操作，但其實有兩個指令可以做到：fetch 和 pull，我們來搞清楚差別在哪。
+推上去之後，反過來，要怎麼把別人的更新拿回來？這裡有兩個指令：fetch 和 pull。
 -->
 
 ---
@@ -647,7 +762,14 @@ git pull
 ```
 
 <!--
-fetch 和 pull 的差別可以這樣想：fetch 就像去信箱拿信，但先放在玄關桌上，還沒有拆開；pull 是直接拿進去、拆開、讀完。fetch 只把遠端的資訊同步到本機的「遠端追蹤分支」origin/main，不會動到你正在工作的 main 分支。pull 則是直接合併進來。建議養成先 fetch、看一下有什麼更新再決定要不要 merge 的習慣，特別是在共享分支上工作的時候。
+fetch 和 pull 很容易搞混，我們用上面的圖來看。
+遠端已經走到 D，但本機的 main 還停在 B。
+`git fetch` 只會把遠端的新 commit 下載下來，不會動到我們正在工作的 main。
+下載之後，origin/main 會指向 D，可以用 `git log origin/main` 看看遠端多了什麼。
+`git pull` 則是 fetch 加上 merge。
+它下載完，會直接把 main 往前推到 D，工作目錄也跟著更新。
+可以這樣想：fetch 是把信拿回來放在桌上，還沒拆；pull 是直接拆開來讀完。
+在共享分支上工作時，建議先 fetch，看過有什麼更新，再決定要不要合併。
 -->
 
 ---
@@ -669,7 +791,12 @@ A → B → D → C'（你的 commit 重放接在最後，歷史是線性的）
 ```
 
 <!--
-用 pull（預設是 merge）的話，你的 commit C 跟遠端的 commit D 會各自從共同祖先 B 分岔出去，pull 完 Git 會自動產生一個新的 merge commit E，同時接住 C 和 D 兩條線。用 pull --rebase 的話，Git 會先把你的 C 拿掉，把本機同步到遠端最新的 D，再把 C 重新放到 D 後面重放一次，變成新的 commit C'，整條歷史就是一直線，沒有 merge commit。接下來看指令怎麼下。
+如果我們在本機也有新的 commit，pull 的結果會有兩種樣子。
+用預設的 pull，我們的 C 和遠端的 D 會從 B 分岔出去。
+Git 會自動產生一個合併用的 commit E，把兩條線接起來。
+用 `git pull --rebase` 的話，Git 會先把我們的 C 暫時拿開。
+把本機更新到遠端最新的 D，再把 C 重新接到 D 的後面，變成一個新的 C'。
+這樣整條歷史就是一直線，沒有多出合併用的 commit。
 -->
 
 ---
@@ -691,7 +818,12 @@ git config --global pull.rebase true
 </div>
 
 <!--
---rebase 的好處是歷史很乾淨，線性一條，git log --oneline 看起來賞心悅目。壞處是如果 rebase 過程有衝突，需要解決完再繼續，對初學者來說多了一個步驟。設定 pull.rebase true 是我個人很推薦的全域設定，可以讓你的 git log 更好看，code review 的時候也更容易追蹤每個 commit 的意義。接下來我們來看一個很常見的狀況題。
+指令很簡單，pull 的時候加上 `--rebase` 就好。
+如果想每次都這樣做，可以用 `git config` 把 `pull.rebase` 設成 true。
+它的好處是歷史很乾淨，`git log` 看起來是一直線，code review 時也更容易追蹤。
+缺點是，如果 rebase 過程中遇到衝突，要先解決再繼續，對初學者來說多了一個步驟。
+建議在自己的分支上用 `--rebase`。
+共享的分支，就依照團隊的規範來決定。
 -->
 
 ---
@@ -703,7 +835,7 @@ class: flex flex-col justify-center items-center text-center
 ## 【狀況題】怎麼有時候推不上去？
 
 <!--
-你有沒有遇過這種情況：明明 git push 用了很多次都成功，但某天突然失敗，跳出一堆英文錯誤訊息？這是多人協作裡最常見的狀況，我們來看看發生了什麼事。
+大家有沒有遇過，push 一直都很順，某天卻突然失敗，跳出一堆錯誤訊息？我們來看這個常見狀況。
 -->
 
 ---
@@ -732,7 +864,12 @@ hint: 'git pull ...') before pushing again.
 Git 拒絕這次 push，因為這樣會**覆蓋掉** C。
 
 <!--
-non-fast-forward 這個錯誤訊息看起來很嚇人，但其實是 Git 在保護我們和同事。想像一下，你和同事都在編輯同一份 Google 文件，他剛存檔了一個版本，你如果直接把你的版本蓋上去，他的修改就不見了。Git 拒絕這次 push，就是在說「你少了別人的東西，先把那些東西整合進來再說」。接下來我們來看怎麼解決。
+這個錯誤叫做 non-fast-forward，看起來很嚇人，其實是 Git 在保護我們。
+原因是遠端有我們沒有的 commit。
+看下面的圖，別人已經 push 了 C，而我們的本機是從 B 接著做了 D。
+如果 Git 讓我們直接推上去，C 就會被蓋掉。
+就像兩個人同時編輯一份文件，同事剛存了一版，我們直接把自己的版本蓋上去，他的修改就不見了。
+所以 Git 拒絕這次 push，意思是：先把別人的東西整合進來，再推上去。
 -->
 
 ---
@@ -765,7 +902,13 @@ git push origin main
 </div>
 
 <!--
-解法其實很直觀，就是先把遠端的東西拉回來整合，再推上去。用 merge 的話，你和同事的 commit 都會保留，但會多一個 merge commit。用 rebase 的話，你的 commit 會接到遠端最新的後面，歷史比較乾淨。初學者建議先用 pull merge，比較直覺，不容易出錯。千萬不要用 force push 來硬解這個問題，那會造成更大的麻煩，force push 的細節我們後面會專門討論。
+解法很直觀：先拉回來整合，再推上去。
+方法一是 `git pull`，會產生一個合併用的 commit，雙方的 commit 都保留。
+方法二是 `git pull --rebase`，把我們的 commit 接到遠端最新的後面，歷史比較乾淨。
+如果 rebase 過程中有衝突，解決之後先 `git add`，再 `git rebase --continue`，最後 push。
+初學者建議先用方法一，比較直覺。
+要特別注意的是，千萬不要用 `git push --force` 來硬解。
+在共享分支上強制推送，會讓其他人的歷史和遠端對不起來，造成更大的麻煩。
 -->
 
 ---
@@ -777,7 +920,7 @@ class: flex flex-col justify-center items-center text-center
 ## 從伺服器上取得 Repository
 
 <!--
-前面學的是「已有本機 repo，推到 GitHub」。現在反過來：如果你是新加入一個專案，或者在一台新電腦上工作，怎麼從 GitHub 把完整的 repo 拿下來？答案就是 git clone。
+前面是把本機的 repo 推上去。現在反過來，加入一個新專案時，怎麼把整個 repo 拿下來？
 -->
 
 ---
@@ -796,7 +939,11 @@ git clone https://github.com/username/repo-name.git && cd repo-name
 ```
 
 <!--
-git clone 是進入一個新專案最常用的第一步。你只需要一行指令，背後 Git 幫你做了好幾件事。接下來看 clone 完 Git 自動做了什麼。
+答案就是 `git clone`，這是加入一個新專案最常用的第一步。
+最基本的用法，是在 `git clone` 後面接上 repo 的網址。
+Git 會建立一個跟 repo 同名的資料夾，把所有東西下載進去。
+如果想換一個資料夾名稱，就在網址後面再接上自己想要的名字。
+最後一行是加上 cd，clone 完直接進到資料夾裡。
 -->
 
 ---
@@ -817,7 +964,12 @@ Clone 下來的是**完整歷史**，不是只有最新快照。所有 log 和 d
 </div>
 
 <!--
-它背後其實做了好幾件事：建立空的 repo、設定遠端、下載所有資料、切換到預設分支，但你只需要一行指令就搞定了。接下來看一個進階用法。
+一行 `git clone`，背後其實幫我們做了好幾件事。
+它會下載完整的歷史，包括所有的 commit、分支和標籤。
+自動設定好名叫 origin 的遠端，用 `git remote -v` 就看得到。
+接著切換到預設分支，並讓本機的 main 追蹤 origin 的 main。
+要特別注意，clone 下來的是完整歷史，不是只有最新的檔案。
+所有的 log 和改動紀錄都在我們的電腦裡，離線也能查看。
 -->
 
 ---
@@ -838,7 +990,12 @@ git clone --depth 1 --single-branch --branch main <url>
 ```
 
 <!--
-Shallow clone 在 CI/CD 場景非常有用。每次 build 只需要最新的程式碼，--depth 1 完全夠用。接下來看完整 clone 和 shallow clone 的比較。
+如果 repo 的歷史非常龐大，可以用 shallow clone，只下載最近的幾個 commit。
+`--depth 1` 只拿最新的一個 commit，這是最常見的用法。
+改成 10，就是最近十個 commit。
+這在 CI/CD 的情境特別有用。
+例如用 GitHub Actions 自動部署，每次 build 其實只需要最新的程式碼。
+最後一行再加上只拿 main 這一個分支，速度更快、也更省空間。
 -->
 
 ---
@@ -859,7 +1016,11 @@ Shallow clone 在 CI/CD 場景非常有用。每次 build 只需要最新的程�
 </div>
 
 <!--
-如果你用 GitHub Actions 做自動部署，每次 build 都要完整 clone 一個有幾千個 commit 的大型專案，光下載就浪費很多時間和頻寬。--depth 1 只取最新的一個快照，通常 build 只需要最新的程式碼，完全夠用。
+我們比較一下完整 clone 和 shallow clone。
+完整 clone 有全部的歷史，下載比較大，適合日常開發。
+shallow clone 只有指定深度的歷史，下載小、速度快，適合 CI/CD 或單純部署。
+要注意的是，shallow clone 查不到指定深度以前的歷史。
+如果需要 `git blame` 或完整的 log，就要用完整 clone。
 -->
 
 ---
@@ -871,7 +1032,7 @@ class: flex flex-col justify-center items-center text-center
 ## 【常見問題】Clone 跟 Pull 有什麼不一樣？
 
 <!--
-很多同學會問：我已經用 clone 把 repo 拿回來了，為什麼還需要 pull？讓我們來說清楚這兩個指令分別在什麼時候用。
+很多人會問：已經 clone 下來了，為什麼還需要 pull？我們來把這兩個指令分清楚。
 -->
 
 ---
@@ -920,7 +1081,14 @@ git pull
 </div>
 
 <!--
-搬進新辦公室是一次性的動作，你不會每天早上「重新搬一次」；但你每天早上進辦公室會看看公告板有沒有新消息。clone 和 pull 的關係就是這樣，clone 是「建立」副本，只做一次；pull 是「更新」副本，每次別人有新的東西都要做。好習慣是：每次開始工作前先 git pull，確保自己在最新狀態上工作，之後合併的麻煩就少很多。
+clone 和 pull 的使用時機完全不同。
+`git clone` 是第一次取得 repo，從無到有建立本機的副本，一個 repo 只會做一次。
+`git pull` 是已經有本機 repo 了，把別人的新更新拉回來，只下載有差異的部分。
+可以想成搬進新辦公室，和每天早上看公告。
+搬家只做一次，不會每天早上重新搬一次。
+但每天進辦公室，都會先看看公告板有沒有新消息。
+所以好習慣是，每天開始工作前先 `git pull`，確保在最新的狀態上工作。
+這樣之後合併時的麻煩就會少很多。
 -->
 
 ---
@@ -932,7 +1100,7 @@ class: flex flex-col justify-center items-center text-center
 ## 與其它開發者互動 — Pull Request
 
 <!--
-現在來到協作的核心：Pull Request。不管你是參與開源專案還是公司內部開發，PR 都是你最常用的協作工具之一。我們來看它解決了什麼問題。
+現在來到協作的核心：Pull Request。不管是開源專案還是公司開發，它都是最常用的協作工具。
 -->
 
 ---
@@ -946,7 +1114,11 @@ class: flex flex-col justify-center items-center text-center
 - 不知道為什麼要做這個改動
 
 <!--
-想像一下，四個人同時在修改同一個系統，沒有人知道別人在改什麼，也沒有人在確認「這樣改有沒有問題」。直接 push 到 main 就是這種狀況。接下來看 PR 如何解決這些問題。
+想像一下，四個人同時在改同一個系統。
+每個人都直接 push 到 main，沒有人知道別人在改什麼，也沒有人確認這樣改有沒有問題。
+一個人的錯誤，會直接影響所有人。
+而且事後也不知道，當初為什麼要做這個改動。
+這就是直接 push 到 main 的問題。
 -->
 
 ---
@@ -968,7 +1140,13 @@ class: flex flex-col justify-center items-center text-center
 </div>
 
 <!--
-Pull Request 的「Pull」是有意義的，你在請求別人把你的改動「拉」進去主幹，這個機制讓每次程式碼進到主幹之前都有人確認過，大大降低 bug 進到生產環境的機率。接下來看 Fork 工作流程。
+Pull Request 就是用來解決這些問題的，簡稱 PR。
+它的意思是，請求別人把我們的改動「拉」進主幹。
+在合併之前，其他人可以檢視改動、留下評論，也可以在上面討論設計的決定。
+還能自動跑測試，確保不會把主幹弄壞。
+合併之後，每個功能為什麼這樣做，都留下了紀錄。
+最重要的是，每段程式碼進入 main 之前，都有人確認過。
+這大大降低了 bug 跑到正式環境的機率。
 -->
 
 ---
@@ -998,7 +1176,14 @@ Pull Request 的「Pull」是有意義的，你在請求別人把你的改動「
 ```
 
 <!--
-流程裡的 `git checkout -b` 是建立分支，分支的完整用法我們在 Ch 5 會專門講，這裡先照著做就好。Fork 讓你有一個完整的副本可以自由修改，不會影響原始 repo，這也是開源協作的標準做法。建立功能分支是個好習慣，讓每個 PR 只做一件事，審查者比較容易理解你在改什麼。推送到你的 fork 之後，GitHub 通常會自動跳出提示「這個分支有新的 push，要開 PR 嗎？」，非常方便。接下來看 merge PR 的三種方式。
+參與開源專案時，標準的做法是 Fork 工作流程。
+第一步，在 GitHub 上按 Fork，把別人的 repo 複製一份到自己的帳號下。
+這樣我們就有一份完整的副本可以自由修改，不會影響原始的 repo。
+第二步，把自己的 fork clone 到電腦上。
+第三步，建立一個功能分支來開發，不要直接在 main 上改。
+`git checkout -b` 就是建立分支，完整用法在第五章會講，這裡先照著做就好。
+開發完 commit，推送到自己的 fork，最後在 GitHub 上開 PR，請原作者把改動合併進去。
+推送之後，GitHub 通常會自動跳出提示，問要不要開 PR，非常方便。
 -->
 
 ---
@@ -1022,7 +1207,13 @@ Pull Request 的「Pull」是有意義的，你在請求別人把你的改動「
 </div>
 
 <!--
-三種合併方式都有人用，沒有絕對的對錯。Squash 的好處是讓 main 的歷史很乾淨，每個 commit 對應一個功能；Rebase 保留線性歷史但重寫了 commit SHA；Merge commit 最保守，歷史完整但會有很多 merge commit。重點是團隊統一規範，大家都用同一種，不要讓 main 的歷史風格混亂，未來查 log 會很痛苦。
+在 GitHub 上合併 PR 時，有三個選項，會影響歷史的樣子。
+Create merge commit 保留所有的 commit，再加上一個合併用的 commit，歷史最完整。
+Squash and merge 會把 PR 裡的所有 commit 壓成一個。
+如果 PR 裡有很多修錯字之類的小 commit，用它可以讓 main 很乾淨。
+Rebase and merge 則是把 commit 一個一個接到 main 上，形成一直線。
+三種方式沒有絕對的對錯，重點是團隊要統一。
+許多團隊選擇 Squash，讓 main 上的每個 commit 都對應一個完整的功能。
 -->
 
 ---
@@ -1059,7 +1250,14 @@ Pull Request 的「Pull」是有意義的，你在請求別人把你的改動「
 </div>
 
 <!--
-PR 是一個溝通工具，寫好 PR 描述是對 reviewer 的尊重。「Fixes #123」這個語法在 merge 之後會自動關閉對應的 Issue，非常方便。小 PR 原則很重要，超過 400 行的改動，reviewer 很難仔細看，review 品質就下降了。如果功能很大，考慮拆成多個 PR 分步驟合併，每個 PR 做一件事，審查起來輕鬆很多。
+PR 是一種溝通工具，寫好 PR 是對審查者的尊重。
+左邊是建議的做法。
+一個 PR 只做一件事，標題用動詞開頭，描述裡說明「為什麼」要這樣改。
+在描述寫上 Fixes 加 issue 編號，PR 合併之後，對應的 issue 會自動關閉。
+PR 的大小也很重要。
+超過四百行的改動，審查者就很難仔細看，品質會下降。
+如果功能很大，就拆成幾個 PR 分批合併。
+送出之前，記得先自己檢查一遍，也確認測試都跑過了。
 -->
 
 ---
@@ -1085,7 +1283,14 @@ PR 是一個溝通工具，寫好 PR 描述是對 reviewer 的尊重。「Fixes 
 </div>
 
 <!--
-這一章的核心其實只有一條線：本機和遠端是兩份各自獨立的歷史，push 和 pull 就是在同步它們。理解了這條線，non-fast-forward 為什麼會發生、為什麼要先 pull 再 push，就都說得通了。PAT 的部分如果之後過期了，回到 GitHub 網頁重新產生一組就好。
+我們回顧這章的重點。
+Git 是工具，GitHub 是平台。
+連線驗證預設走瀏覽器授權，只有沒有瀏覽器的環境，才需要 Personal Access Token。
+第一次推送要用 `git remote add` 設定遠端，再加 `-u` 建立追蹤關係。
+fetch 只下載，pull 是下載再合併。
+推不上去時，先 pull 整合再 push，不要用 force。
+clone 是第一次取得，pull 是之後的更新。
+最後，Pull Request 是團隊協作的核心。
 -->
 
 ---
@@ -1096,5 +1301,9 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章涵蓋了遠端協作的核心：remote、push、pull、clone，以及 PR 和 fork 的工作流程。如果有任何問題，歡迎提出來討論。下一章我們換個角度，看看這些操作用 GitHub Desktop 點滑鼠怎麼完成。
+這一章的核心其實只有一條線。
+本機和遠端是兩份各自獨立的歷史，push 和 pull 就是在同步它們。
+理解這一點，就知道為什麼會推不上去，也知道為什麼要先 pull 再 push。
+下一章，我們換個角度，看這些操作在 GitHub Desktop 上怎麼用滑鼠完成。我們下一章見。
+【講師】開放提問，並確認每個人都已經成功 push 過一次。
 -->

@@ -38,7 +38,10 @@ layout: default
 </div>
 
 <!--
-這個章節涵蓋幾個 GitHub 上的進階操作：同步 Fork、刪除遠端分支、正確使用 force push，以及 GitHub Pages 靜態網站托管。最後也會聊聊 Git 的分散式本質——不是一定要有 GitHub 才能協作。
+歡迎來到第十二章，進階 GitHub 操作，這也是整門課的最後一章。
+這章會介紹幾個 GitHub 上的進階操作。
+包括同步 fork 的專案、刪除遠端分支、正確使用強制推送，以及用 GitHub Pages 免費架設網站。
+最後，我們會回頭思考 Git 的本質：協作，其實不一定要有 GitHub。
 -->
 
 ---
@@ -50,7 +53,7 @@ class: flex flex-col justify-center items-center text-center
 ## 怎麼跟上當初 fork 專案的進度？
 
 <!--
-你有沒有遇過這種情況：三個月前 fork 了一個開源專案，現在原始專案已經有幾十個新的 commit，你的 fork 落後很多，想提 PR 卻有一堆衝突。怎麼把原始專案的更新同步回來？
+第一個狀況題：fork 了別人的專案，過了幾個月，要怎麼跟上原始專案的進度？
 -->
 
 ---
@@ -73,7 +76,14 @@ git fetch upstream
 ```
 
 <!--
-upstream 這個名字代表「上游」，也就是原始的 repo。接下來看合併與推回的步驟。
+想像一下，三個月前我們 fork 了一個開源專案。
+現在原始專案已經多了幾十個 commit，我們的 fork 落後了很多。
+這時候要提 PR，就會出現一堆衝突。
+解法的核心觀念是，除了指向自己 fork 的 origin，再加一個指向原始 repo 的遠端。
+慣例上叫它 upstream，也就是「上游」的意思。
+用 `git remote add upstream` 加上原始 repo 的網址，這個設定只需要做一次。
+接著用 `git remote -v` 確認，會看到 origin 和 upstream 兩個遠端。
+最後用 `git fetch upstream`，把原始專案的最新內容下載下來。
 -->
 
 ---
@@ -98,7 +108,12 @@ git push origin main
 </div>
 
 <!--
-這個 sync fork 的流程在開源貢獻中非常常用。如果你的 fork 落後太多，提出的 PR 就可能有很多衝突，維護者要花很多時間處理，你的 PR 被合併的機率也會降低。
+下載之後，切換到本機的 main，把 upstream 的 main 合併進來。
+想保持一直線的歷史，也可以改用 rebase。
+最後再 `git push origin main`，把更新推回自己在 GitHub 上的 fork。
+其實 GitHub 網頁上也有一個 Sync fork 按鈕，按一下就能同步，不用自己下指令。
+保持 fork 跟上原始專案很重要。
+落後太多，PR 就會有很多衝突，維護者要花更多時間處理，被合併的機會也會降低。
 -->
 
 ---
@@ -110,7 +125,7 @@ class: flex flex-col justify-center items-center text-center
 ## 怎麼刪除遠端的分支？
 
 <!--
-分支合併完之後，遠端上的分支不會自動消失。久了 GitHub 上會有一堆廢棄的 feature 分支，看起來很亂。怎麼把它們清掉？
+第二個狀況題：分支合併之後，遠端的分支不會自動消失。要怎麼清掉它們？
 -->
 
 ---
@@ -132,7 +147,12 @@ git fetch --prune
 ```
 
 <!--
-現代的 --delete 語法更易讀，建議用這個。prune 執行後會把本機記錄的「已刪除遠端分支引用」清掉，讓 git branch -r 的結果清爽。接下來看注意事項和自動刪除設定。
+刪除遠端分支，推薦用 `git push origin --delete`，後面接分支名稱。
+另一種是舊的寫法，在分支名稱前面加一個冒號。
+意思是把「空的內容」推送到那個遠端分支，效果一樣，但比較難懂。
+刪掉之後，我們本機可能還留著那些遠端分支的紀錄。
+用 `git remote prune origin`，或是在 fetch 時加上 `--prune`，就能把它們清乾淨。
+這樣 `git branch -r` 列出來的結果就會很清爽。
 -->
 
 ---
@@ -152,7 +172,11 @@ Repo **Settings → General** → 勾選 **Automatically delete head branches**
 PR merge 後自動刪除遠端分支，省去手動清理的麻煩，強烈推薦開啟。
 
 <!--
-GitHub 的自動刪除設定非常推薦開啟，省去手動清理的麻煩。
+要注意，刪除遠端分支，並不會影響本機的分支。
+如果本機的也要刪，要另外用 `git branch -d`。
+另外推薦一個 GitHub 的設定。
+在 repo 的 Settings 裡，勾選 Automatically delete head branches。
+這樣 PR 合併之後，GitHub 就會自動刪掉那個分支，省去手動清理的麻煩。
 -->
 
 ---
@@ -164,7 +188,7 @@ class: flex flex-col justify-center items-center text-center
 ## git push -f 很可怕嗎？
 
 <!--
-force push 是 Git 裡讓很多人又愛又怕的指令。它到底做了什麼？什麼時候能用？什麼時候絕對不能用？我們來把這件事說清楚。
+第三個狀況題：`git push -f` 很可怕嗎？它到底做了什麼，什麼時候能用？
 -->
 
 ---
@@ -190,7 +214,14 @@ git pull 會出現大量衝突，甚至讓 Alice 很困惑
 ```
 
 <!--
-force push 的問題在於，它是以「你的版本為主」強制覆蓋遠端，不管遠端有沒有別人的 commit。別人的工作可能就這樣在遠端消失，雖然他們本機還有，但下次 pull 的時候會出現很複雜的衝突。最嚴重的情況是，如果同事不注意，可能用 git reset --hard 把自己本機的 commit 也搞丟了。這就是為什麼 force push 到 main 是很多公司明文禁止的行為。
+強制推送做的事情，是讓遠端的歷史，完全變成我們本機的樣子。
+看上面的例子，遠端是 A、B、C、D。
+我們在本機做了 rebase，歷史變成 A、B、X、Y。
+強制推送之後，遠端就變成 A、B、X、Y，C 和 D 在遠端消失了。
+問題是，同事 Alice 已經在 D 的後面繼續開發了 E。
+現在遠端沒有 D 了，她的歷史和遠端對不起來，pull 的時候會出現一大堆衝突。
+處理不好，甚至可能把自己的工作也弄丟。
+這就是為什麼很多公司明文禁止強制推送到 main。
 -->
 
 ---
@@ -215,7 +246,11 @@ git push --force-with-lease
 </div>
 
 <!--
---force-with-lease 是個非常好的設計，給 force push 加了一個安全網。接下來看何時可以 force push。
+比較安全的做法，是用 `--force-with-lease`。
+它會記住我們上次 fetch 時，遠端在什麼位置。
+推送之前先確認，遠端是不是還停在那裡。
+如果這段時間有人推了新的 commit，它就會拒絕推送。
+這等於幫強制推送加了一道安全網，避免我們不小心蓋掉別人的工作。
 -->
 
 ---
@@ -236,7 +271,12 @@ git push --force-with-lease
 </div>
 
 <!--
-不是百分之百安全，但比無腦 --force 安全很多。接下來換個輕鬆的主題。
+那什麼時候可以強制推送呢？
+只有自己在用的功能分支，可以。
+PR 修改之後重新推送，還沒有人合併，也沒問題。
+大家共用的 develop 分支，就要事先溝通，請大家先暫停再做。
+main 分支，則是嚴格禁止。
+很多公司的規範是：可以用 `--force-with-lease`，但禁止用 `--force`。
 -->
 
 ---
@@ -248,7 +288,7 @@ class: flex flex-col justify-center items-center text-center
 ## 使用 GitHub 免費製作個人網站
 
 <!--
-來介紹一個很實用的 GitHub 功能：GitHub Pages。你可以免費把靜態網站部署到網路上，非常適合做個人作品集或技術部落格，而且設定不難。
+接下來換個輕鬆的主題：用 GitHub 免費架設個人網站。
 -->
 
 ---
@@ -304,7 +344,15 @@ git push origin gh-pages
 </div>
 
 <!--
-GitHub Pages 是完全免費的靜態網站托管，由 GitHub 的 CDN 提供服務，速度不差。限制是只能托管靜態內容（HTML、CSS、JavaScript），沒辦法跑後端程式。對前端開發者、學生做作品集、技術文件網站來說非常夠用。很多開源專案的官網就是用 GitHub Pages 架的，個人域名也可以設定 CNAME 指向它。接下來看進階的用法。
+GitHub Pages 可以免費托管靜態網站，有兩種使用方式。
+左邊是個人網站。
+建立一個名稱叫「帳號名稱點 github 點 io」的 repo。
+放一個 index.html，推上去之後，用同樣的網址就能看到網站。
+右邊是專案網站。
+任何 repo 都可以在 Settings 的 Pages 裡開啟，選擇要從哪個分支發布。
+網址會是個人網址，後面再加上 repo 的名稱。
+它的限制是只能放 HTML、CSS、JavaScript 這類靜態內容，不能跑後端程式。
+但拿來做作品集或技術文件，已經非常夠用，也可以設定自己的網域。
 -->
 
 ---
@@ -324,7 +372,11 @@ GitHub Pages 是完全免費的靜態網站托管，由 GitHub 的 CDN 提供服
 </div>
 
 <!--
-Jekyll 是 GitHub 原生支援的，push markdown 就自動編譯，不需要額外設定。但 Jekyll 比較慢，現在更多人用 Hugo 或 Astro。接下來看 Actions 的設定範例。
+如果不想手寫 HTML，可以搭配靜態網站產生器。
+Jekyll 是 GitHub 原生支援的，只要有設定檔，GitHub 就會自動幫我們建置。
+Hugo 用 Go 寫成，建置速度非常快。
+Astro 和 VitePress 則屬於現代的前端生態系。
+後面這幾種，都需要搭配 GitHub Actions 來部署。
 -->
 
 ---
@@ -352,7 +404,11 @@ jobs:
 ```
 
 <!--
-搭配 GitHub Actions，每次 push 到 main 就自動 build 和部署，完全自動化，免費又穩定，是個人作品集的好選擇。
+這是一個 GitHub Actions 的設定範例，放在 `.github/workflows` 資料夾裡。
+它設定成每次推送到 main 的時候觸發。
+先把程式碼 checkout 下來，執行建置指令，再把建置出來的 dist 資料夾部署到 GitHub Pages。
+這樣每次 push，網站就會自動更新，完全不用手動操作。
+免費又穩定，是個人作品集很好的選擇。
 -->
 
 ---
@@ -364,7 +420,7 @@ class: flex flex-col justify-center items-center text-center
 ## 一定要有 GitHub 才能得到別人更新的檔案嗎？
 
 <!--
-我們學了這麼多 GitHub 相關的東西，最後來重新思考 Git 的本質：Git 其實不需要 GitHub 也能做到遠端協作，因為 Git 本身是分散式的設計。
+最後一個冷知識。學了這麼多 GitHub，我們回頭問：一定要有 GitHub，才能拿到別人的更新嗎？
 -->
 
 ---
@@ -383,7 +439,13 @@ git clone /path/to/another/repo my-copy
 ```
 
 <!--
-Git 是去中心化的，每個人的本機都是一個完整的 repo，GitHub 只是大家約定好的「協調點」。接下來看區網架設方式。
+答案是不用。
+GitHub 只是讓多人協作最方便的工具，但 Git 本身是分散式的，不需要中央伺服器。
+還記得第一章講的嗎？每個人的電腦上，都是一個完整的 repo。
+所以遠端不一定是網址，也可以是本機的一個路徑。
+範例裡，我們把電腦上的一個備份資料夾設成遠端，直接 push 過去。
+也可以直接用路徑 clone 另一個 repo。
+GitHub，只是大家約定好的一個集合點。
 -->
 
 ---
@@ -405,7 +467,11 @@ git clone git://192.168.1.100/my-project.git
 </div>
 
 <!--
-接下來我們來看各種替代方案的總覽。
+在區域網路裡，也可以自己提供 Git 服務。
+`git daemon` 是 Git 內建的指令，可以在區網裡提供唯讀的 Git 服務。
+其他人就能用 git 開頭的網址，直接從這台電腦 clone。
+如果公司內網不能連外，或是保密的專案不能放在雲端，這就是一個選擇。
+也可以在自己的伺服器上架設 Git 服務。
 -->
 
 ---
@@ -420,7 +486,12 @@ git clone git://192.168.1.100/my-project.git
 | SSH 伺服器 | `git clone user@host:/path/repo.git` | 自架 SSH 服務器 |
 
 <!--
-不需要完整的 web UI，直接用 bare git repository 加 SSH 是最簡單的方案，什麼都不用安裝。接下來看自架 Git 服務的選項。
+這張表整理了沒有 GitHub 時的協作方式。
+同一台電腦，可以用本機路徑做備份。
+完全離線的環境，可以把 repo 放在 USB 隨身碟裡傳遞。
+辦公室內網，可以用 `git daemon`。
+如果有一台可以用 SSH 連線的伺服器，在上面放一個 bare repository 就能共用。
+這是最簡單的方式，不需要安裝額外的軟體。
 -->
 
 ---
@@ -439,7 +510,12 @@ git clone git://192.168.1.100/my-project.git
 </div>
 
 <!--
-需要私有 Git 服務時，Gitea 是個很輕量的選擇，用 Go 寫的，一個 binary 就能跑，可以部署在樹莓派上。GitLab Community Edition 功能更完整，有內建 CI/CD，但資源需求也更高。如果只是個人小團隊，Gitea 就夠用了。
+如果想要像 GitHub 一樣的網頁介面，也有自己架設的方案。
+Gitea 很輕量，用 Go 寫成，一個執行檔就能跑，連樹莓派都能部署。
+GitLab 社群版功能完整，內建 CI/CD，但需要的資源也比較多。
+個人或小團隊，用 Gitea 通常就夠了。
+所以結論是：GitHub 提供的是便利性和社群，而不是 Git 必要的元件。
+理解這一點，才算真正理解 Git 的架構設計。
 -->
 
 ---
@@ -450,5 +526,10 @@ class: flex flex-col justify-center items-center text-center
 # Q & A
 
 <!--
-這一章看了 GitHub 的進階功能，從 GitHub Actions CI/CD、protected branches，到 fork 工作流程，以及理解 Git 和 GitHub 的本質差異。如果有任何問題，歡迎提出來！
+這一章我們學會了同步 fork、清理遠端分支，也知道強制推送該怎麼安全地使用。
+還用 GitHub Pages 架設了網站，最後理解了 Git 分散式的本質。
+到這裡，整門 Git 課程就結束了。
+從版本控制的觀念、基本操作、分支、遠端協作，到修改歷史和底層原理，我們一路走了過來。
+接下來最重要的，是在每天的工作裡實際使用它。謝謝大家。
+【講師】開放提問，可以請大家分享整門課最有幫助的一個指令。
 -->
