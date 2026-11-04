@@ -249,7 +249,7 @@ class: cheatsheet
 這門課的目標不是背指令，而是認得它們。
 以後看到網路教學或同事打指令，能對應到自己在 Desktop 裡按的是哪個按鈕，就夠了。
 這一頁可以用 export 匯出 PDF 印出來。
-【講師】課前可先用 `pnpm export:beginner` 匯出 PDF，印好小抄發給大家。
+【講師】課前可先用 `pnpm export:all b08` 匯出 PDF，印好小抄發給大家。
 -->
 
 ---

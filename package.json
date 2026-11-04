@@ -7,7 +7,7 @@
     "build": "slidev build",
     "export": "slidev export",
     "dev:beginner": "slidev beginner.md",
-    "export:beginner": "slidev export beginner.md --output beginner.pdf"
+    "export:all": "node scripts/export-all.mjs"
   },
   "dependencies": {
     "@slidev/cli": "^52.14.2",

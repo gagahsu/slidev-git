@@ -287,7 +287,7 @@ Desktop 本身不能改檔案內容，所以要用 VS Code 來解。
 
 # 用 VS Code 打開衝突的檔案
 
-<div style="display:grid; grid-template-columns: 2fr 3fr; gap: 1.5rem; text-align:left;">
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; text-align:left;">
 <div>
 
 | # | 操作 |
